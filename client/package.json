@@ -1,0 +1,16 @@
+{
+  "name": "pp_client",
+  "version": "1.0.0",
+  "description": "frontend application payment.",
+  "main": "index.js",
+  "scripts": {
+    "start": "run index.js"
+  },
+  "author": "RamsPantoja",
+  "license": "ISC",
+  "dependencies": {
+    "next": "^10.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
