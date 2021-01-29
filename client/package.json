@@ -4,11 +4,15 @@
   "description": "frontend application payment.",
   "main": "index.js",
   "scripts": {
-    "start": "run index.js"
+    "start": "next start",
+    "dev": "next dev",
+    "build": "next build"
   },
   "author": "RamsPantoja",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "next": "^10.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
