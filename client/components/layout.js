@@ -7,7 +7,7 @@ const Layout = ({children}) => {
         <div className={styles.app_container}>
             <header className={styles.header}>
                 <div className={styles.header_site}>
-                    <h1><Link href='/'><a>|Profe/Paco|</a></Link></h1>
+                    <h1 className={styles.logo_fit}><Link href='/'><a>|Profe/Paco|</a></Link></h1>
                     <div className={styles.header_links}>
                         <Link href='/courses'><a className={styles.header_linkInf}>Cursos</a></Link>
                         <Link href='/about'><a className={styles.header_linkInf}>Sobre nosotros</a></Link>
@@ -19,7 +19,7 @@ const Layout = ({children}) => {
                 </div>
             </header>
             <div className={styles.content}>
-                <div className={styles.content_size}>{children}</div>
+                {children}
             </div>
         </div>
     )

@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
-import Layout from '../components/layout';
+import styles from './styles/sign_up.module.css';
 
 const SignUp = () => {
     return (
-        <Layout>
+        <Fragment>
             <Head>
                 <title>Sign Up</title>
             </Head>
-            <h2>Sign Up</h2>
-        </Layout>
+            <div className={styles.signUp}>
+                <div></div>
+            </div>
+        </Fragment>
     )
 }
 

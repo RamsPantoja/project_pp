@@ -1,0 +1,34 @@
+.loginForm {
+    display: grid;
+    gap: 1.5em;
+}
+
+.loginForm_input {
+    display: block;
+    padding: 1em;
+    border-radius: 1em;
+    outline: none;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
+
+.loginForm_input:focus {
+    border: 0.5px solid #1983ff;
+}
+
+.loginForm > button {
+    outline: none;
+    padding: 1em;
+    border: none;
+    margin: 0 4em;
+    border-radius: 1em;
+    background-color: #1983ff;
+    color: #ffffff;
+    transition: 0.1s ease;
+}
+
+.loginForm > button:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
