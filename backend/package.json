@@ -1,0 +1,11 @@
+{
+  "name": "backend_project_pp",
+  "version": "1.0.0",
+  "description": "servidor backend para el projecto pp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RamsPantoja",
+  "license": "ISC"
+}

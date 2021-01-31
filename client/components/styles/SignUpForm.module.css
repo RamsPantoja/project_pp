@@ -1,24 +1,33 @@
-.loginForm {
+.SignUpForm {
     display: grid;
     gap: 1.5em;
 }
 
-.loginForm_input {
+.SignUpForm_input {
     display: block;
-    padding: 15px;
+    padding: 15px 30px;
     border-radius: 1em;
     outline: none;
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
 }
+.SignUpForm_inputError {
+    display: block;
+    padding: 14px 29px;
+    border-radius: 1em;
+    outline: none;
+    border: 1px solid #ff5555;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
 
-.loginForm_input:focus {
+}
+.SignUpForm_input:focus {
     border: 1px solid #1983ff;
-    padding: 14px;
+    padding: 14px 29px;
 }
 
-.loginForm > button {
+.SignUpForm > button {
     outline: none;
     padding: 1em;
     border: none;
@@ -29,7 +38,7 @@
     transition: 0.1s ease;
 }
 
-.loginForm > button:hover {
+.SignUpForm > button:hover {
     transform: scale(1.1);
     cursor: pointer;
 }
