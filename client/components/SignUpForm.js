@@ -3,9 +3,9 @@ import React, { Fragment, useEffect, useState } from 'react';
 import styles from './styles/SignUpForm.module.css';
 import cn from 'classnames';
 
-const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch}) => {
+const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser}) => {
     const {firstname, lastname, email, password, confirmpassword} = state;
-    const isPasswordMatch = passwordNoMatch ? 'SignUpForm_inputError' : 'SignUpForm_input';
+    const isPasswordMatch = passwordNoMatch || confirmpassword.errorfield === 'SignUpForm_inputError' ? 'SignUpForm_inputError' : 'SignUpForm_input';
 
     useEffect(() => {
         if (confirmpassword.value !== password.value) {
@@ -15,9 +15,17 @@ const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch}) => {
         }
     },[confirmpassword, password]);
 
+    const handleOnSubmit = (e, createUser) => {
+        e.preventDefault();
+        createUser();
+    }
+
     return (
         <Fragment>
-            <form className={styles.SignUpForm}>
+            <form className={styles.SignUpForm}
+                onSubmit={(e) => {
+                    handleOnSubmit(e, createUser)
+                }}>
                 <input className={
                     cn({
                         [styles.SignUpForm_input]: firstname.errorfield === 'SignUpForm_input',
@@ -44,8 +52,6 @@ const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch}) => {
                 } type='password' placeholder='Contraseña' name='password' onChange={handleOnChange} value={password.value}/>
                 <input className={
                     cn({
-                        [styles.SignUpForm_input]: confirmpassword.errorfield === 'SignUpForm_input',
-                        [styles.SignUpForm_inputError]: confirmpassword.errorfield === 'SignUpForm_inputError',
                         [styles.SignUpForm_inputError]: isPasswordMatch === 'SignUpForm_inputError',
                         [styles.SignUpForm_input]: isPasswordMatch === 'SignUpForm_input'
                     })

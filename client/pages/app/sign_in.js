@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import Head from 'next/head';
-import styles from './styles/sign_in.module.css';
+import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../../components/LoginForm';
 
 const SignIn = () => {
     return (

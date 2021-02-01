@@ -1,14 +1,25 @@
 import React, { Fragment } from 'react';
 import Head from 'next/head';
-import styles from './styles/sign_up.module.css';
+import styles from '../styles/sign_up.module.css';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import SignUpForm from '../components/SignUpForm';
-import useFormValidation from '../components/hooks/handleAddUserHook';
-import { stateSchemaInfUser, validationSchema, disableSchema } from '../components/hooks/handleAddUserHook';
+import SignUpForm from '../../components/SignUpForm';
+import useFormValidation from '../../components/hooks/handleAddUserHook';
+import { stateSchemaInfUser, validationSchema, disableSchema } from '../../components/hooks/handleAddUserHook';
+import { useMutation } from '@apollo/client';
+import { CREATE_USER } from '../../apollo/mutations';
 
 const SignUp = () => {
     const [state, disable, handleOnChange, passwordNoMatch] = useFormValidation(stateSchemaInfUser, validationSchema, disableSchema);
-    
+    const { firstname, lastname, email, password } = state;
+    const [createUser, {data, error, loading }] = useMutation(CREATE_USER, {
+        variables: { input: {
+            firstname: firstname.value,
+            lastname: lastname.value,
+            email: email.value,
+            password: password.value
+        }}
+    })
+
     return (
         <Fragment>
             <Head>
@@ -26,7 +37,8 @@ const SignUp = () => {
                             handleOnChange={handleOnChange}
                             state={state}
                             disable={disable}
-                            passwordNoMatch={passwordNoMatch}/>
+                            passwordNoMatch={passwordNoMatch}
+                            createUser={createUser}/>
                         </div>
                     </div>
                 </div>

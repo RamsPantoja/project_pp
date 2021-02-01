@@ -13,8 +13,8 @@ const Layout = ({children}) => {
                         <Link href='/about'><a className={styles.header_linkInf}>Sobre nosotros</a></Link>
                         <Link href='/contact'><a className={styles.header_linkInf}>Contacto</a></Link>
                         <p>|</p>
-                        <Link href='/sign_up'><a className={styles.header_link}>Crear cuenta</a></Link>
-                        <Link href='/sign_in'><a className={styles.header_link}>Iniciar sesión</a></Link>
+                        <Link href='/app/sign_up'><a className={styles.header_link}>Crear cuenta</a></Link>
+                        <Link href='/app/sign_in'><a className={styles.header_link}>Iniciar sesión</a></Link>
                     </div>
                 </div>
             </header>
