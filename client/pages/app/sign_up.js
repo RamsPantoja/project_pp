@@ -19,6 +19,7 @@ const SignUp = () => {
             password: password.value
         }}
     })
+    
 
     return (
         <Fragment>
@@ -38,7 +39,8 @@ const SignUp = () => {
                             state={state}
                             disable={disable}
                             passwordNoMatch={passwordNoMatch}
-                            createUser={createUser}/>
+                            createUser={createUser}
+                            error={error}/>
                         </div>
                     </div>
                 </div>

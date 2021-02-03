@@ -19,7 +19,7 @@
     flex-direction: column;
     width: 100%;
     padding: 0.5em;
-    border-bottom: 1px solid #eaeaea;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .logo_fit {
@@ -48,7 +48,7 @@
 }
 
 .header_linkInf:hover {
-    color:#0a2540;
+    color:#009ee3;
 }
 
 .header_link {
@@ -65,15 +65,14 @@
 }
 
 .header_link:hover {
-    background-color: #0a2540;
+    background-color: #009ee3;
 }
 
 .header_site > h1 > a {
     text-decoration: none;
-    color: #dbf998;
+    color: #0a2540;
     font-weight: bolder;
     padding: 0 1em;
-    background-color: #15639d;
     border-radius: 0.5em;
 }
 

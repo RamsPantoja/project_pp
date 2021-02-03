@@ -21,7 +21,8 @@ export const resolvers = {
                 firstname: input.firstname,
                 lastname: input.lastname,
                 email: input.email,
-                img: input.email
+                password: input.password,
+                img: ''
             }).save();
 
             return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`

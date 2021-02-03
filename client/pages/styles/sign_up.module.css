@@ -2,55 +2,55 @@
     display: flex;
     overflow: hidden;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    padding: 1em 1em;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    background: rgb(255,255,255);
+    background: linear-gradient(333deg, rgba(255,255,255,1) 45%, rgba(25,131,255,1) 45%);
 }
 
 .signUp_center {
     display: flex;
     flex-direction: column;
-    position: fixed;
-    justify-content: center;
+    position: relative;
     align-items: center;
-    height: 100%;
+    overflow: auto;
     width: 100%;
-    padding: 4em 1em;
-    box-sizing: border-box;
-    justify-content: center;
-    align-items: center;
-    background: rgb(255,255,255);
-    background: linear-gradient(333deg, rgba(255,255,255,1) 45%, rgba(25,131,255,1) 45%);
-}
-
-.signUp_card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff;
     max-width: 30em;
     min-width: 15em;
-    height: 40em;
     min-width: 15em;
     border-radius: 1em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.signUp_card {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
 .signUp_title {
     display: flex;
     flex-direction: column;
-    padding: 1em;
+    padding-top: 1em;
     justify-content: center;
     align-items: center;
-    width: 20em;
+    margin: 0 auto;
 }
 
 .signUp_title > p {
-    margin: 0.5em;
     font-size: 2rem;
 }
 
 .signUp_form {
+    justify-content: center;
+    text-align: center;
     display: flex;
     flex-direction: column;
-    padding: 1em;
+    padding: 2em 1em;
 }

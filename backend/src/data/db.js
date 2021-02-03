@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt, { hash }from 'bcrypt';
 
 const mongoURI = 'mongodb+srv://RamsPantoja:Left4Dead2@devclosterrams.nodjj.mongodb.net/profepacoDB?retryWrites=true&w=majority';
 
@@ -8,12 +9,28 @@ mongoose.connect(mongoURI, {
     useNewUrlParser: true
 });
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
     firstname: String,
     lastname: String,
     email: String,
     password: String,
     img: String
 })
+
+userSchema.pre('save', function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) return next(err);
+
+        bcrypt.hash(this.password, salt, (err, hash) => {
+            if (err) return next(err);
+            this.password = hash;
+            next();
+        });
+    })
+});
 
 export const Users = mongoose.model('Users', userSchema);

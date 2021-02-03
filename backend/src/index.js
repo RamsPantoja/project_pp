@@ -3,6 +3,10 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { resolvers } from './data/resolvers';
 import { typeDefs } from './data/schema';
+import dotenv from 'dotenv';
+
+
+dotenv.config({path: 'variables.env'});
 
 const app = express();
 

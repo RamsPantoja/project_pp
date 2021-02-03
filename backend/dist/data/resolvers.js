@@ -46,15 +46,20 @@ var resolvers = {
                 throw new Error('El email ya existe!');
 
               case 6:
-                newUser = new _db.Users({
+                _context.next = 8;
+                return new _db.Users({
                   firstname: input.firstname,
                   lastname: input.lastname,
                   email: input.email,
-                  img: input.email
+                  password: input.password,
+                  img: ''
                 }).save();
-                return _context.abrupt("return", "Gracias por registrarte ".concat(input.firstname, ", ya puedes iniciar sesion con tu nueva cuenta."));
 
               case 8:
+                newUser = _context.sent;
+                return _context.abrupt("return", "Gracias por registrarte ".concat(input.firstname, ", ya puedes iniciar sesion con tu nueva cuenta."));
+
+              case 10:
               case "end":
                 return _context.stop();
             }

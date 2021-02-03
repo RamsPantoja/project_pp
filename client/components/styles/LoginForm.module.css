@@ -33,3 +33,10 @@
     transform: scale(1.1);
     cursor: pointer;
 }
+
+.linkToCreateAccount {
+    display: inline-block;
+    text-decoration: none;
+    padding: 2px 3px;
+    color: #1983ff;
+}

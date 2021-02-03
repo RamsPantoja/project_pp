@@ -10,7 +10,13 @@ var _resolvers = require("./data/resolvers");
 
 var _schema = require("./data/schema");
 
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+_dotenv["default"].config({
+  path: 'variables.env'
+});
 
 var app = (0, _express["default"])();
 var server = new _apolloServerExpress.ApolloServer({
