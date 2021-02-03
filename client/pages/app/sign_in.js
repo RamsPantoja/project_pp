@@ -3,8 +3,11 @@ import Head from 'next/head';
 import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginForm from '../../components/LoginForm';
+import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook'
 
 const SignIn = () => {
+    const [state, handleOnChange, disable] = useAuthFormValidation(authUserSchema, validationSchema, disableSchema);
+
     return (
         <Fragment>
             <Head>
@@ -18,7 +21,10 @@ const SignIn = () => {
                             <p>Cuenta Usuario</p>
                         </div>
                         <div className={styles.sign_in_form}>
-                            <LoginForm/>
+                            <LoginForm
+                            state={state}
+                            handleOnChange={handleOnChange}
+                            disable={disable}/>
                         </div>
                     </div>
                 </div>
