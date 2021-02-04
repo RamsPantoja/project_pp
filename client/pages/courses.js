@@ -15,10 +15,13 @@ const Courses = () => {
                 </div>
                 <div className={styles.coursesContent}>
                     <div className={styles.coursesList}>
-                        <div className={styles.courseCard}>1</div>
-                        <div className={styles.courseCard}>2</div>
-                        <div className={styles.courseCard}>3</div>
-                        <div className={styles.courseCard}>4</div>
+                        <div className={styles.courseCard}>
+                            <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
+                            <div className={styles.courseCard_inf}>
+                                <h3>Termodinamica II</h3>
+                                <p>Bertha Alicia Naranjo</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
