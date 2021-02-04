@@ -28,6 +28,7 @@ const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser
     const isDisableErrorAlert = disableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
     const isMinimumLenghtPassword = password.error ? <span className={styles.disableErrorAlert}>{password.error}</span> : null;
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
+    
     return (
         <Fragment>
             <form className={styles.SignUpForm}

@@ -1,6 +1,7 @@
 .loginForm {
     display: grid;
     gap: 1.5em;
+    justify-items: center;
 }
 
 .loginForm_input {
@@ -9,8 +10,23 @@
     border-radius: 1em;
     outline: none;
     border: none;
+    width: 100%;
+    max-width: 20em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
+}
+
+.loginForm_inputError {
+    display: flex;
+    padding: 14px 29px;
+    border-radius: 1em;
+    width: 100%;
+    outline: none;
+    max-width: 20em;
+    border: 1px solid #ff5555;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+
 }
 
 .loginForm_input:focus {
@@ -39,4 +55,14 @@
     text-decoration: none;
     padding: 2px 3px;
     color: #1983ff;
+}
+
+.disableErrorAlert {
+    display: block;
+    font-size: 0.7rem;
+    text-align: center;
+    background-color: #ff5555;
+    color: #ffffff;
+    padding: 1em;
+    border-radius: 0.5em;
 }

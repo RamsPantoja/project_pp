@@ -3,10 +3,28 @@ import Head from 'next/head';
 import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginForm from '../../components/LoginForm';
+import { useRouter } from 'next/router';
 import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook'
+import { USER_AUTH } from '../../apollo/mutations';
+import { useMutation, useQuery } from '@apollo/client';
+import { CURRENT_USER } from '../../apollo/querys';
 
 const SignIn = () => {
+    const router = useRouter();
+    const {data: userData, error: userError, loading: userLoading, refetch: userRefetch} = useQuery(CURRENT_USER);
     const [state, handleOnChange, disable] = useAuthFormValidation(authUserSchema, validationSchema, disableSchema);
+    const {email, password} = state;
+    const [userAuth, {data, error, loading}] = useMutation(USER_AUTH, {
+        variables: {
+            email: email.value,
+            password: password.value
+        },
+        onCompleted: async (data) => {
+            localStorage.setItem('token', data.userAuth.token);
+            await userRefetch();
+            router.push('/')
+        }
+    })
 
     return (
         <Fragment>
@@ -24,7 +42,9 @@ const SignIn = () => {
                             <LoginForm
                             state={state}
                             handleOnChange={handleOnChange}
-                            disable={disable}/>
+                            disable={disable}
+                            userAuth={userAuth}
+                            error={error}/>
                         </div>
                     </div>
                 </div>

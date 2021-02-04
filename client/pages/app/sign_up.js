@@ -5,10 +5,12 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SignUpForm from '../../components/SignUpForm';
 import useFormValidation from '../../components/hooks/handleAddUserHook';
 import { stateSchemaInfUser, validationSchema, disableSchema } from '../../components/hooks/handleAddUserHook';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER } from '../../apollo/mutations';
+import { CURRENT_USER } from '../../apollo/querys';
 
 const SignUp = () => {
+    const {data: userData, error: userError, loading: userLoading} = useQuery(CURRENT_USER)
     const [state, disable, handleOnChange, passwordNoMatch] = useFormValidation(stateSchemaInfUser, validationSchema, disableSchema);
     const { firstname, lastname, email, password } = state;
     const [createUser, {data, error, loading }] = useMutation(CREATE_USER, {

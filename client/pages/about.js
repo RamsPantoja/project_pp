@@ -8,7 +8,7 @@ const About = () => {
             <Head>
                 <title>Profe Paco</title>
             </Head>
-            <h1>About</h1>
+            
         </Layout>
     )
 }

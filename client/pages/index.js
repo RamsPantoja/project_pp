@@ -2,8 +2,12 @@ import React from 'react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/Index.module.css';
+import { useQuery } from '@apollo/client';
+import { CURRENT_USER } from '../apollo/querys';
 
 const HomePage = () => {
+    const {data, error, loading} = useQuery(CURRENT_USER);
+
     return (
         <Layout>
             <Head>

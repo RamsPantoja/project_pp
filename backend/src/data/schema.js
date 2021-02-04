@@ -19,11 +19,16 @@ export const typeDefs = gql `
         img: String
     }
 
+    type Token {
+        token: String!
+    }
     type Query {
         getUsers: [User]
+        getUserAuth: User
     }
 
     type Mutation {
         createUser(input: inputUser) : String
+        userAuth(email: String!, password: String!) : Token
     }
 `

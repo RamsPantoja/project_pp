@@ -72,15 +72,15 @@
     padding-top: 2em;
 }
 
-.featureList2_container > h2 {
-    padding: 1em 0;
-    color: #0a2540;
-}
-
 .featureList2_right {
     padding: 1em;
     display: flex;
     flex-direction: column;
+}
+
+.featureList2_right > h2 {
+    padding-top: 1em;
+    color: #0a2540;
 }
 
 .cardFeature2 {
@@ -110,7 +110,7 @@
     }
 
     .featureList2_container {
-        flex-direction: row;
+        flex-direction: row-reverse;
     }
 
     .featureList2_container > img {
