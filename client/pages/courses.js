@@ -18,9 +18,26 @@ const Courses = () => {
                         <div className={styles.courseCard}>
                             <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
                             <div className={styles.courseCard_inf}>
-                                <h3>Termodinamica II</h3>
-                                <p>Bertha Alicia Naranjo</p>
+                                <h3>Nombre del curso</h3>
+                                <p>Nombre del profesor</p>
                             </div>
+                            <p>Integrantes: 5/30</p>
+                        </div>
+                        <div className={styles.courseCard}>
+                            <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
+                            <div className={styles.courseCard_inf}>
+                                <h3>Nombre del curso</h3>
+                                <p>Nombre del profesor</p>
+                            </div>
+                            <p>Integrantes: 5/30</p>
+                        </div>
+                        <div className={styles.courseCard}>
+                            <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
+                            <div className={styles.courseCard_inf}>
+                                <h3>Nombre del curso</h3>
+                                <p>Nombre del profesor</p>
+                            </div>
+                            <p>Integrantes: 5/30</p>
                         </div>
                     </div>
                 </div>
