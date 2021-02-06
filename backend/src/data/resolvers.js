@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Users } from './db';
+import { Courses, Users } from './db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -24,10 +24,13 @@ export const resolvers = {
 
             const user = await Users.findOne({email: context.getUserEmail.email});
             return user;
+        },
+        getCourses: (parent) => {
+            return Courses.find({});
         }
     },
     Mutation: {
-        createUser: async (root, {input}) => {
+        createUser: async (parent, {input}) => {
             const emailAlreadyExist = await Users.findOne({
                 email: input.email
             });
@@ -46,7 +49,7 @@ export const resolvers = {
 
             return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`
         },
-        userAuth: async (root, {email, password}) => {
+        userAuth: async (parent, {email, password}) => {
             const user = await Users.findOne({email: email});
 
             if(!user) {
@@ -62,6 +65,21 @@ export const resolvers = {
             }
 
             return {token: createUserToken(user, process.env.SECRET, '1h')}
+        },
+
+        addCourse: async (parent, {input}) => {
+            const newCourse = await new Courses({
+                title: input.title,
+                teacher: input.teacher,
+                description: input.description,
+                objectives: input.objectives,
+                conceptList: input.conceptList,
+                enrollmentLimit: input.enrollmentLimit,
+                enrollmentUers: [],
+                price: input.price
+            }).save();
+
+            return newCourse;
         }
     }
 }

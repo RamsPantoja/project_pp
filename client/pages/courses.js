@@ -2,8 +2,15 @@ import React from 'react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/courses.module.css';
+import { useRouter } from 'next/router'
 
-const Courses = () => {
+const Courses = ({}) => {
+    const router = useRouter();
+
+    const handleOnClickCard = (e) => {
+        e.preventDefault();
+    }
+
     return (
         <Layout>
             <Head>
@@ -15,23 +22,7 @@ const Courses = () => {
                 </div>
                 <div className={styles.coursesContent}>
                     <div className={styles.coursesList}>
-                        <div className={styles.courseCard}>
-                            <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
-                            <div className={styles.courseCard_inf}>
-                                <h3>Nombre del curso</h3>
-                                <p>Nombre del profesor</p>
-                            </div>
-                            <p>Integrantes: 5/30</p>
-                        </div>
-                        <div className={styles.courseCard}>
-                            <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
-                            <div className={styles.courseCard_inf}>
-                                <h3>Nombre del curso</h3>
-                                <p>Nombre del profesor</p>
-                            </div>
-                            <p>Integrantes: 5/30</p>
-                        </div>
-                        <div className={styles.courseCard}>
+                        <div className={styles.courseCard} onClick={(e) => {handleOnClickCard(e)}}>
                             <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
                             <div className={styles.courseCard_inf}>
                                 <h3>Nombre del curso</h3>

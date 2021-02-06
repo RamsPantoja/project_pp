@@ -10,6 +10,23 @@ export const typeDefs = gql `
         img: String
     }
 
+    type Course {
+        id: ID
+        title: String
+        teacher: String
+        description: String
+        objectives: [String]
+        conceptList: [Concept]
+        enrollmentLimit: Int
+        enrollmentUsers: [User]
+        price: Int
+    }
+
+    type Concept {
+        concept: String
+        subConceptList: [String]
+    }
+
     input inputUser {
         id: ID
         firstname: String!
@@ -25,10 +42,28 @@ export const typeDefs = gql `
     type Query {
         getUsers: [User]
         getUserAuth: User
+        getCourses: [Course]
+    }
+
+    input inputConcept {
+        concept: String!
+        subConceptList: [String!]
+    }
+
+    input inputCourse {
+        id: ID
+        title: String!
+        teacher: String!
+        description: String!
+        objectives: [String!]
+        conceptList: [inputConcept!]
+        enrollmentLimit: Int!
+        price: Int!
     }
 
     type Mutation {
         createUser(input: inputUser) : String
         userAuth(email: String!, password: String!) : Token
+        addCourse(input: inputCourse) : Course
     }
 `

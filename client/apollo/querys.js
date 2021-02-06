@@ -7,3 +7,11 @@ export const CURRENT_USER = gql `
         }
     }
 `
+
+export const GET_COURSES = gql `
+    query getCourses {
+        getCourses {
+            id
+        }
+    }
+`
