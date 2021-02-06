@@ -41,6 +41,10 @@
     padding: 1em;
 }
 
+.errorMessageApollo {
+    color: #ff5555;
+}
+
 @media(max-width: 1024px) {
     .coursesList {
         grid-template-columns: auto;

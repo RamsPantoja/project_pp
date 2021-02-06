@@ -19,6 +19,10 @@ const CourseCard = () => {
         return <CircularProgress/>
     }
 
+    if (error) {
+        return <span className={styles.errorMessageApollo}>{error.message}</span>
+    }
+
     return (
         <div className={styles.coursesList}>
             { data.getCourses.map((item) => {
