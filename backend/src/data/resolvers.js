@@ -25,8 +25,16 @@ export const resolvers = {
             const user = await Users.findOne({email: context.getUserEmail.email});
             return user;
         },
-        getCourses: (parent) => {
-            return Courses.find({});
+        getCourses: async (parent) => {
+            const courses = await Courses.find((err, data) => {
+                if(err) {
+                    throw new Error(err)
+                } else {
+                    return data;
+                }
+            })
+
+            return courses
         }
     },
     Mutation: {

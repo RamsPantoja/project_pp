@@ -4,12 +4,14 @@ import Head from 'next/head';
 import useSWR from 'swr';
 
 const DescriptionCourse = ({id}) => {
+    console.log(id)
     return (
         <Layout>
             <Head>
+                <title>Profe Paco!</title>
             </Head>
             <div>
-                <h1>hello</h1>
+                
             </div>
         </Layout>
     )

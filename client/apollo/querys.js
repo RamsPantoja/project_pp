@@ -12,6 +12,10 @@ export const GET_COURSES = gql `
     query getCourses {
         getCourses {
             id
+            title
+            price
+            enrollmentLimit
+            teacher
         }
     }
 `
