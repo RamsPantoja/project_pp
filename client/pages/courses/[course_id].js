@@ -20,10 +20,28 @@ const DescriptionCourse = ({id}) => {
                             <li className={styles.objective}>Conocer herramientas para programar</li>
                             <li className={styles.objective}>Aprender conceptos básicos de Python</li>
                         </ul>
+                        <span className={styles.price}>$1400</span>
+                        <button>OBTENER CURSO</button>
                     </div>
-                    <div>
+                    <div className={styles.courseDescription_headerButton}>
                         <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
-                        <button>Adquirir curso</button>
+                    </div>
+                </div>
+                <div className={styles.conceptContent}>
+                    <div className={styles.conceptCourse}>
+                        <h2>Temario del Curso Básico de Python</h2>
+                    </div>
+                    <div className={styles.conceptBlock}>
+                        <div className={styles.conceptBlock_grid}>
+                            <div className={styles.conceptTitle}>
+                                <h2>Introducción a la programación con Python</h2>
+                            </div>
+                            <ul className={styles.subConceptList}>
+                                <li className={styles.subConcept}>El arte de la programación</li>
+                                <li className={styles.subConcept}>¿Por que Python?</li>
+                                <li className={styles.subConcept}>El nucleo de un programa: los algoritmos</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

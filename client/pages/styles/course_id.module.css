@@ -4,41 +4,158 @@
     height: 100%;
     width: 100%;
     overflow: auto;
+
 }
 
 .courseDescription_header {
     display: flex;
     justify-content: space-around;
     flex: 1;
-    justify-content: center;
     padding: 3em 1em;
-    background-color: #1983ff;
+    background-color: #ffffff;
 }
 
 .courseDescription_headerInf {
     display: flex;
+    padding: 2em;
     flex-direction: column;
-    flex: 0.6;
     justify-content: center;
 }
+
 .courseDescription_headerInf > h2 {
     font-size: 3rem;
-    color: #ffffff;
+    color: #000000;
 }
 
 .courseDescription_headerInf > p {
-    color: #000000;
+    color: #15639d;
     font-weight: bold;
     font-size: 1.1rem;
     padding: 1em 0;
     max-width: 50em;
 }
 
+.courseDescription_headerInf > button {
+    padding: 0.8em 1em;
+    outline: none;
+    color: #15639d;
+    max-width: 10em;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    border-radius: 1em;
+    background-color: #dbf998;
+    margin-top: 1em;
+}
+
+.courseDescription_headerInf > button:hover {
+    background-color: #b0e5ff;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 .objectiveList {
     display: flex;
     flex-direction: column;
-    color: #000000;
+    color: #15639d;
     font-weight: bold;
     padding-left: 2em;
     font-size: 1.1rem;
+}
+
+.objective {
+    padding: 0.2em;
+}
+
+.courseDescription_headerButton {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex: 0.4;
+    padding: 1em;
+}
+
+.courseDescription_headerButton > img {
+    border-radius: 1em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.price {    
+    font-size: 2.5rem;
+    padding-top: 1em;
+}
+
+.conceptContent {
+    display: flex;
+    flex-direction: column;
+    background-color: #15639d;
+    padding: 0 1em;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.conceptCourse {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+}
+
+.conceptCourse > h2{
+    padding: 1em;
+    color: #dbf998;
+    font-size: 2em;
+    text-align: center;
+}
+
+.conceptBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+    padding: 1em;
+}
+
+.conceptBlock_grid {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    gap: 1em;
+}
+
+.conceptTitle {
+    color: #ffffff;
+}
+
+.subConceptList {
+    display: grid;
+    grid-template-columns: auto;
+    gap: 1em;
+}
+
+.subConcept {
+    display: flex;
+    color: #15639d;
+    padding: 0.5em 1em;
+    background-color: #b0e5ff;
+    border-radius: 0.5em;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+@media(max-width: 1200px) {
+    .courseDescription_headerButton > img {
+        object-fit: contain;
+        height: 15em;
+    }
+
+    .conceptBlock {
+        width: 100%;
+    }
+}
+
+@media(max-width: 768px) {
+    .courseDescription_header {
+        flex-direction: column-reverse;
+    }
 }
