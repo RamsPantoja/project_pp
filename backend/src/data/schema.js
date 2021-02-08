@@ -43,6 +43,7 @@ export const typeDefs = gql `
         getUsers: [User]
         getUserAuth: User
         getCourses: [Course]
+        getCourseById(id: ID): Course
     }
 
     input inputConcept {
@@ -64,6 +65,7 @@ export const typeDefs = gql `
     type Mutation {
         createUser(input: inputUser) : String
         userAuth(email: String!, password: String!) : Token
+        adminAuth(email: String!, password: String!): Token
         addCourse(input: inputCourse) : Course
     }
 `

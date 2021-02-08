@@ -15,7 +15,7 @@
     padding: 4em 1em;
     box-sizing: border-box;
     background: rgb(255,255,255);
-    background: linear-gradient(333deg, rgba(255,255,255,1) 45%, rgba(25,131,255,1) 45%);
+    background: linear-gradient(333deg, rgba(255,255,255,1) 45%, #15639d 45%);
 }
 
 .sign_in_card {
@@ -52,4 +52,15 @@
     padding: 1em;
     width: 100%;
     max-width: 20em;
+}
+
+.linkToCreateAccount {
+    display: inline-block;
+    text-decoration: none;
+    padding: 2px 3px;
+    color: #15639d;
+}
+
+.linkToCreateAccount:hover {
+    color: #1983ff;
 }

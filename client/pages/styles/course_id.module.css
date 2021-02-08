@@ -121,6 +121,7 @@
     grid-template-columns: auto;
     grid-template-rows: auto;
     gap: 1em;
+    padding: 0.5em;
 }
 
 .conceptTitle {
@@ -141,6 +142,20 @@
     border-radius: 0.5em;
     font-weight: bold;
     font-size: 1.1em;
+}
+
+.courseDescription_progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    position: fixed;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 1em;
 }
 
 @media(max-width: 1200px) {

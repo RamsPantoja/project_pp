@@ -2,8 +2,29 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/course_id.module.css';
+import {useQuery} from '@apollo/client';
+import { GET_COURSE_BY_ID } from '../../apollo/querys';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const DescriptionCourse = ({id}) => {
+
+    const {data, error, loading} = useQuery(GET_COURSE_BY_ID, {
+        variables: {id: id}
+    })
+
+
+    if (loading) {
+        return (
+            <Layout>
+                <div className={styles.courseDescription_progress}>
+                    <CircularProgress/>
+                </div>
+            </Layout>
+        )
+    }
+
+    const {title, description, price, objectives, conceptList} = data.getCourseById;
+
     return (
         <Layout>
             <Head>
@@ -12,15 +33,16 @@ const DescriptionCourse = ({id}) => {
             <div className={styles.courseDescription}>
                 <div className={styles.courseDescription_header}>
                     <div className={styles.courseDescription_headerInf}>
-                        <h2>Curso Básico de Python</h2>
-                        <p>Inicia en el mundo de la programación con el lenguaje de mayor crecimiento en el planeta: Python. Descubre qué es un algoritmo, y cómo se construye uno. Domina las variables, funciones, estructuras de datos, los condicionales y ciclos.</p>
+                        <h2>{title}</h2>
+                        <p>{description}</p>
                         <ul className={styles.objectiveList}>
-                            <li className={styles.objective}>Hacer estructuras de datos</li>
-                            <li className={styles.objective}>Crear bucles</li>
-                            <li className={styles.objective}>Conocer herramientas para programar</li>
-                            <li className={styles.objective}>Aprender conceptos básicos de Python</li>
+                            { objectives.map((item, index) => {
+                                return (
+                                    <li key={index} className={styles.objective}>{item}</li>
+                                )
+                            })}
                         </ul>
-                        <span className={styles.price}>$1400</span>
+                        <span className={styles.price}>{`$ ${price}`}</span>
                         <button>OBTENER CURSO</button>
                     </div>
                     <div className={styles.courseDescription_headerButton}>
@@ -29,19 +51,25 @@ const DescriptionCourse = ({id}) => {
                 </div>
                 <div className={styles.conceptContent}>
                     <div className={styles.conceptCourse}>
-                        <h2>Temario del Curso Básico de Python</h2>
+                        <h2>{`Temario del ${title}`}</h2>
                     </div>
                     <div className={styles.conceptBlock}>
-                        <div className={styles.conceptBlock_grid}>
-                            <div className={styles.conceptTitle}>
-                                <h2>Introducción a la programación con Python</h2>
-                            </div>
-                            <ul className={styles.subConceptList}>
-                                <li className={styles.subConcept}>El arte de la programación</li>
-                                <li className={styles.subConcept}>¿Por que Python?</li>
-                                <li className={styles.subConcept}>El nucleo de un programa: los algoritmos</li>
-                            </ul>
-                        </div>
+                        {conceptList.map((item, index) => {
+                            return (
+                                <div key={index} className={styles.conceptBlock_grid}>
+                                    <div className={styles.conceptTitle}>
+                                        <h2>{item.concept}</h2>
+                                    </div>
+                                    <ul className={styles.subConceptList}>
+                                        {item.subConceptList.map((subConcept, index) => {
+                                            return (
+                                                <li key={index} className={styles.subConcept}>{subConcept}</li>
+                                            )
+                                        })}
+                                    </ul>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

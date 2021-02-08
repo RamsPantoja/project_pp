@@ -3,7 +3,7 @@ import styles from './styles/LoginForm.module.css';
 import Link  from 'next/link';
 import cn from 'classnames';
 
-const LoginForm = ({state, handleOnChange, disable, userAuth, error}) => {
+const LoginForm = ({state, handleOnChange, disable, entityAuth, error}) => {
     const {email, password} = state;
     const [disableErrorAlert, setDisableErrorAlert] = useState(false)
 
@@ -13,7 +13,7 @@ const LoginForm = ({state, handleOnChange, disable, userAuth, error}) => {
             setDisableErrorAlert(true)
         } else {
             setDisableErrorAlert(false);
-            userAuth();
+            entityAuth();
         }
     }
 
@@ -38,7 +38,6 @@ const LoginForm = ({state, handleOnChange, disable, userAuth, error}) => {
                 })
             } type='password' placeholder='Contraseña' name='password' value={password.value} onChange={handleOnChange}/>
             <button type='submit'>Iniciar sesión</button>
-            <span>Aun no tienes una cuenta? <Link href='/app/sign_up'><a className={styles.linkToCreateAccount}>Crear cuenta</a></Link></span>
         </form>
     )
 }

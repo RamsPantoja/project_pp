@@ -13,3 +13,11 @@ export const USER_AUTH = gql `
         }
     }
 `
+
+export const ADMIN_AUTH = gql `
+    mutation AdminAuth($email: String!, $password: String!) {
+        adminAuth(email: $email, password: $password) {
+            token
+        }
+    }
+`

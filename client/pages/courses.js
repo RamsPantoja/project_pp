@@ -3,8 +3,12 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/courses.module.css';
 import CourseCard from '../components/CourseCard';
+import { useQuery } from '@apollo/client';
+import { CURRENT_USER } from '../apollo/querys';
 
 const Courses = () => {
+    const {data, error, loading} = useQuery(CURRENT_USER);
+    
     return (
         <Layout>
             <Head>

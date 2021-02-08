@@ -10,7 +10,7 @@ import { CREATE_USER } from '../../apollo/mutations';
 import { CURRENT_USER } from '../../apollo/querys';
 
 const SignUp = () => {
-    const {data: userData, error: userError, loading: userLoading} = useQuery(CURRENT_USER)
+    const {data: userData, error: userError, loading: userLoading} = useQuery(CURRENT_USER);
     const [state, disable, handleOnChange, passwordNoMatch] = useFormValidation(stateSchemaInfUser, validationSchema, disableSchema);
     const { firstname, lastname, email, password } = state;
     const [createUser, {data, error, loading }] = useMutation(CREATE_USER, {

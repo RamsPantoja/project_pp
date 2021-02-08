@@ -19,3 +19,18 @@ export const GET_COURSES = gql `
         }
     }
 `
+
+export const GET_COURSE_BY_ID = gql `
+    query getCourseById($id: ID) {
+        getCourseById(id: $id) {
+            title
+            description
+            objectives
+            conceptList {
+                concept
+                subConceptList
+            }
+            price
+        }
+    }
+`

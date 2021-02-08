@@ -1,8 +1,16 @@
 import React, { Fragment } from 'react';
 import styles from './styles/Layout.module.css'
 import Link from 'next/link';
+import { useQuery } from '@apollo/client';
+import { CURRENT_USER } from '../apollo/querys';
 
 const Layout = ({children}) => {
+    const {data: currentUser, error, loading} = useQuery(CURRENT_USER);
+    
+    if (currentUser) {
+
+    }
+
     return (
         <div className={styles.app_container}>
             <header className={styles.header}>

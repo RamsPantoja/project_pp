@@ -47,3 +47,12 @@ const courseSchema = new mongoose.Schema({
 });
 
 export const Courses = mongoose.model('Courses', courseSchema);
+
+
+const adminSchema = new mongoose.Schema({
+    email: String,
+    password: String,
+    isAdmin: Boolean
+});
+
+export const Admins = mongoose.model('Admins', adminSchema);

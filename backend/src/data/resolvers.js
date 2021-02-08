@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Courses, Users } from './db';
+import { Admins, Courses, Users } from './db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -17,6 +17,7 @@ export const resolvers = {
         getUsers: (parent) => {
             return Users.find({});
         },
+
         getUserAuth: async (parent, args, context) => {
             if(!context.getUserEmail){
                 return null
@@ -25,6 +26,7 @@ export const resolvers = {
             const user = await Users.findOne({email: context.getUserEmail.email});
             return user;
         },
+
         getCourses: async (parent) => {
             const courses = await Courses.find((err, data) => {
                 if(err) {
@@ -35,6 +37,18 @@ export const resolvers = {
             })
 
             return courses
+        },
+        
+        getCourseById: async (parent, args) => {
+            const course = await Courses.findOne({_id: args.id}, (err, data) => {
+                if(err) {
+                    throw new Error(err);
+                } else {
+                    return data
+                }
+            });
+
+            return course;
         }
     },
     Mutation: {
@@ -57,6 +71,7 @@ export const resolvers = {
 
             return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`
         },
+
         userAuth: async (parent, {email, password}) => {
             const user = await Users.findOne({email: email});
 
@@ -88,6 +103,22 @@ export const resolvers = {
             }).save();
 
             return newCourse;
+        },
+
+        adminAuth: async (parent, {email, password}) => {
+            const user = await Admins.findOne({email: email});
+
+            if(!user) {
+                throw new Error('El email ó contraseña son incorrectos')
+            } else if (!user.isAdmin) {
+                throw new Error('No tienes los permisos para acceder')
+            }
+
+            if (password !== user.password) {
+                throw new Error('El email ó contraseña son incorrectos');
+            }
+
+            return {token: createUserToken(user, process.env.SECRET, '1h')}
         }
     }
 }

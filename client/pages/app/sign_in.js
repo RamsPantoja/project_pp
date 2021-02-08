@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginForm from '../../components/LoginForm';
@@ -43,14 +44,14 @@ const SignIn = () => {
                             state={state}
                             handleOnChange={handleOnChange}
                             disable={disable}
-                            userAuth={userAuth}
+                            entityAuth={userAuth}
                             error={error}/>
                         </div>
+                        <span>Aun no tienes una cuenta? <Link href='/app/sign_up'><a className={styles.linkToCreateAccount}>Crear cuenta</a></Link></span>
                     </div>
                 </div>
             </div>  
         </Fragment>
-
     )
 }
 
