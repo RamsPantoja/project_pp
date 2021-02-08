@@ -1,0 +1,16 @@
+.header_link {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 0.5em 1.2em;
+    background-color: #1983ff;
+    border-radius: 20px;
+    transition: 0.1s ease;
+    cursor: pointer;
+    margin: 0.2em;
+    text-align: center;
+    border: none;
+}
+
+.header_link:hover {
+    background-color: #15639d;
+}

@@ -1,15 +1,18 @@
-import React, { Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles/Layout.module.css'
 import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import { CURRENT_USER } from '../apollo/querys';
+import DropDownUser from './DropdownUser';
+import ButtonsInUp from '../components/ButtonsInUp';
+import { useAuth } from './hooks/useAuth';
 
 const Layout = ({children}) => {
-    const {data: currentUser, error, loading} = useQuery(CURRENT_USER);
+    const {isUser} = useAuth();
     
-    if (currentUser) {
+    const isMenu = isUser ? <DropDownUser/> : <ButtonsInUp/>
+    
 
-    }
 
     return (
         <div className={styles.app_container}>
@@ -21,8 +24,7 @@ const Layout = ({children}) => {
                         <Link href='/about'><a className={styles.header_linkInf}>Sobre nosotros</a></Link>
                         <Link href='/contact'><a className={styles.header_linkInf}>Contacto</a></Link>
                         <p>|</p>
-                        <Link href='/app/sign_up'><a className={styles.header_link}>Crear cuenta</a></Link>
-                        <Link href='/app/sign_in'><a className={styles.header_link}>Iniciar sesión</a></Link>
+                        {isMenu}
                     </div>
                 </div>
             </header>
