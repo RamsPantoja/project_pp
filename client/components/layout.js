@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from './styles/Layout.module.css'
 import Link from 'next/link';
-import { useQuery } from '@apollo/client';
-import { CURRENT_USER } from '../apollo/querys';
 import DropDownUser from './DropdownUser';
 import ButtonsInUp from '../components/ButtonsInUp';
-import { useAuth } from './hooks/useAuth';
 
-const Layout = ({children}) => {
-    const {isUser} = useAuth();
-    
-    const isMenu = isUser ? <DropDownUser/> : <ButtonsInUp/>
-    
-
+const Layout = ({children, useAuth}) => {
+    const isMenu = useAuth ? <DropDownUser userAuthEmail={useAuth.email}/> : <ButtonsInUp/>
 
     return (
         <div className={styles.app_container}>

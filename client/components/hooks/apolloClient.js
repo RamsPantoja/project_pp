@@ -1,12 +1,17 @@
-import { ApolloClient, ApolloLink, concat, InMemoryCache } from '@apollo/client';
+import { 
+    ApolloClient, 
+    ApolloLink, concat, 
+    InMemoryCache } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
-import { isEnumType } from 'graphql';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState} from 'react';
+import merge from 'deepmerge';
 
 let apolloClient;
 
 const createApolloClient = () => {
     const isServer = typeof window === 'undefined';
+
+    const httpLink = new createUploadLink({uri: 'http://localhost:4200/graphql'})
 
     const getToken = (isServer) => {
         let token;
@@ -24,8 +29,6 @@ const createApolloClient = () => {
         })
         return forward(operation);
     })
-
-    const httpLink = new createUploadLink({uri: 'http://localhost:4200/graphql'})
 
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',

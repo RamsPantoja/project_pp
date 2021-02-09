@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/Index.module.css';
-import { useQuery } from '@apollo/client';
+import { concat, useQuery } from '@apollo/client';
 import { CURRENT_USER } from '../apollo/querys';
+import { initializeApollo } from '../components/hooks/apolloClient';
 
 const HomePage = () => {
+    const {data, error, loading} = useQuery(CURRENT_USER, {fetchPolicy: 'cache-and-network'});
+    const {getUserAuth} = data;
     return (
-        <Layout>
+        <Layout useAuth={getUserAuth}>
             <Head>
                 <title>Profe Paco!</title>
             </Head>
@@ -39,6 +42,19 @@ const HomePage = () => {
             </div>
         </Layout>
     )
+}
+
+export async function getStaticProps() {
+    const apolloClient = await initializeApollo();
+    await apolloClient.query({
+        query: CURRENT_USER
+    });
+
+    return {
+        props: {
+            initialApolloState: apolloClient.cache.extract()
+        }
+    }
 }
 
 export default HomePage;

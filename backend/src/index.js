@@ -24,18 +24,8 @@ app.use(cors(corsOptions));
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: async ({req}) => {
-        const token = req.headers.authorization || '';
-        if(token !== "null") {
-            try {
-                const getUserEmail = await jwt.verify(token, process.env.SECRET);
-                req.getUserEmail = getUserEmail;
-                console.log(getUserEmail)
-                return {getUserEmail}
-            } catch (error) {
-                console.log(error);
-            }
-        }
+    context: async ({req, res}) => {
+        console.log(req.headers.authorization)
     }
 });
 
