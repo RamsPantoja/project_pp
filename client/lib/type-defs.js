@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql } from '@apollo/client';
 
 export const typeDefs = gql `
     type User {
@@ -64,7 +64,7 @@ export const typeDefs = gql `
 
     type Mutation {
         createUser(input: inputUser) : String
-        userAuth(email: String!, password: String!) : Token
+        userAuth(email: String!, password: String!) : String
         adminAuth(email: String!, password: String!): Token
         addCourse(input: inputCourse) : Course
     }

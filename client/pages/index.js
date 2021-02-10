@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/Index.module.css';
-import { concat, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { CURRENT_USER } from '../apollo/querys';
 import { initializeApollo } from '../components/hooks/apolloClient';
 
 const HomePage = () => {
-    const {data, error, loading} = useQuery(CURRENT_USER, {fetchPolicy: 'cache-and-network'});
+    const {data, error, loading} = useQuery(CURRENT_USER);
     const {getUserAuth} = data;
+
     return (
         <Layout useAuth={getUserAuth}>
             <Head>

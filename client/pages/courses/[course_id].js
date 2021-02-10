@@ -5,6 +5,7 @@ import styles from '../styles/course_id.module.css';
 import {useQuery} from '@apollo/client';
 import { GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { getAllCourseIds } from '../../lib/getCoursesIds';
 
 const DescriptionCourse = ({id}) => {
 
@@ -85,18 +86,6 @@ export async function getStaticPaths() {
     }
 }
 
-const getAllCourseIds = async () => {
-    const res = await fetch('http://localhost:4200/courses');
-    const data = await res.json();
-
-    return data.map((item) => {
-        return {
-            params: {
-                course_id: item.id
-            }
-        }
-    });
-}
 
 export async function getStaticProps({params}) {
     return {

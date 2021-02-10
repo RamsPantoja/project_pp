@@ -5,9 +5,9 @@ import '../styles.css'
 
 export default function MyApp({ Component, pageProps }) {
     
-    const client = useApollo(pageProps.initialApolloState);
+    const apolloClient = useApollo(pageProps.initialApolloState);
     return (
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
             <Component {...pageProps} />
         </ApolloProvider>
     )

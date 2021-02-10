@@ -1,33 +1,71 @@
-import mongoose from 'mongoose';
-import { Admins, Courses, Users } from './db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import dbConnect from './dbConnect';
+import Users from '../models/Users';
+import Courses from '../models/Courses';
+import Admins from '../models/Admins';
+import {serialize, parse} from 'cookie';
 
-dotenv.config({path: 'variables.env'});
 
+//Crea el token para enviarlo a las headers atraves de la cookie.
 const createUserToken = (entity, SECRET, expiresIn) => {
+    const createdAt = Date.now();
     const {email} = entity
+    const obj = {email, createdAt, maxAge: 3600}
+    return jwt.sign(obj, SECRET, {expiresIn});
+}
 
-    return jwt.sign({email}, SECRET, {expiresIn});
+export const parseCookies = (req) => {
+    if(req.cookies) return req.cookies
+
+    const cookie = req.headers?.cookie
+    return parse(cookie || '');
+}
+
+export const getTokenCookie = (req) => {
+    const cookies = parseCookies(req);
+    return cookies['authToken']
 }
 
 export const resolvers = {
     Query: {
-        getUsers: (parent) => {
+        getUsers: async (parent) => {
+            await dbConnect();
             return Users.find({});
         },
 
         getUserAuth: async (parent, args, context) => {
-            if(!context.getUserEmail){
-                return null
+            
+            const token = await getTokenCookie(context.req);
+
+            if (!token) return null;
+
+            const userSession = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
+                if(!err && decoded) {
+                    return decoded
+                }
+            });
+
+            const expiresAt = userSession.createdAt + userSession.maxAge * 1000; 
+
+            if (Date.now() > expiresAt) {
+                throw new Error('Session expired');
             }
 
-            const user = await Users.findOne({email: context.getUserEmail.email});
+            const user = await Users.findOne({email: userSession.email}, (err, data) => {
+                if(err) {
+                    throw new Error('Usuario no encontrado')
+                }
+
+                return data;
+            });
+
             return user;
+
         },
 
         getCourses: async (parent) => {
+            await dbConnect();
             const courses = await Courses.find((err, data) => {
                 if(err) {
                     throw new Error(err)
@@ -40,6 +78,7 @@ export const resolvers = {
         },
         
         getCourseById: async (parent, args) => {
+            await dbConnect();
             const course = await Courses.findOne({_id: args.id}, (err, data) => {
                 if(err) {
                     throw new Error(err);
@@ -72,7 +111,8 @@ export const resolvers = {
             return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`
         },
 
-        userAuth: async (parent, {email, password}) => {
+        userAuth: async (parent, {email, password}, context) => {
+            await dbConnect();
             const user = await Users.findOne({email: email});
 
             if(!user) {
@@ -87,7 +127,19 @@ export const resolvers = {
                 throw new Error('El email o contraseña son incorrectos')
             }
 
-            return {token: createUserToken(user, process.env.SECRET, '1h')}
+            const token = await createUserToken(user, process.env.SECRET, '1h');
+
+            const cookie = await serialize('authToken', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV !== 'development',
+                sameSite: 'strict',
+                maxAge: 3600,
+                path: '/'
+            });
+
+            context.res.setHeader('Set-Cookie', cookie);
+
+            return 'The token has been setup'
         },
 
         addCourse: async (parent, {input}) => {

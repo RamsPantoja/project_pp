@@ -12,18 +12,12 @@ import { CURRENT_USER } from '../../apollo/querys';
 
 const SignIn = () => {
     const router = useRouter();
-    const {data: userData, error: userError, loading: userLoading, refetch: userRefetch} = useQuery(CURRENT_USER);
     const [state, handleOnChange, disable] = useAuthFormValidation(authUserSchema, validationSchema, disableSchema);
     const {email, password} = state;
     const [userAuth, {data, error, loading}] = useMutation(USER_AUTH, {
         variables: {
             email: email.value,
             password: password.value
-        },
-        onCompleted: async (data) => {
-            localStorage.setItem('token', data.userAuth.token);
-            await userRefetch();
-            router.push('/')
         }
     })
 

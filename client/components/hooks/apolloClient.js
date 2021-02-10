@@ -1,38 +1,30 @@
 import { 
-    ApolloClient, 
-    ApolloLink, concat, 
+    ApolloClient,
     InMemoryCache } from '@apollo/client';
-import { createUploadLink } from 'apollo-upload-client';
-import { useEffect, useMemo, useState} from 'react';
+import { useMemo } from 'react';
 import merge from 'deepmerge';
 
 let apolloClient;
 
-const createApolloClient = () => {
-    const isServer = typeof window === 'undefined';
-
-    const httpLink = new createUploadLink({uri: 'http://localhost:4200/graphql'})
-
-    const getToken = (isServer) => {
-        let token;
-        if(!isServer) {
-            token = localStorage.getItem('token');
-        }
-        return token;
+const createIsomorphLink = () => {
+    if (typeof window === 'undefined') {
+        const { SchemaLink } = require('@apollo/client/link/schema');
+        const { schema } = require('../../lib/schema');
+        return new SchemaLink({schema});
+    } else {
+        const { HttpLink } = require('@apollo/client/link/http');
+        return new HttpLink({
+            uri: '/api/graphql',
+            credentials: 'same-origin'
+        });
     }
+}
 
-    const authMiddleware = new ApolloLink((operation, forward) => {
-        operation.setContext({
-            headers: {
-                authorization: getToken(isServer) || null
-            }
-        })
-        return forward(operation);
-    })
+const createApolloClient = () => {
 
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
-        link: concat(authMiddleware, httpLink),
+        link: createIsomorphLink(),
         cache: new InMemoryCache(),
         credentials: 'same-origin'
     })
