@@ -5,10 +5,10 @@ import styles from './styles/Index.module.css';
 import { useQuery } from '@apollo/client';
 import { CURRENT_USER } from '../apollo/querys';
 import { initializeApollo } from '../components/hooks/apolloClient';
-
+1
 const HomePage = () => {
     const {data, error, loading} = useQuery(CURRENT_USER);
-    const {getUserAuth} = data;
+    const {getUserAuth} = data
 
     return (
         <Layout useAuth={getUserAuth}>
@@ -45,17 +45,16 @@ const HomePage = () => {
     )
 }
 
-export async function getStaticProps() {
-    const apolloClient = await initializeApollo();
-    await apolloClient.query({
-        query: CURRENT_USER
-    });
-
+export async function getServerSideProps({req}) {
+    const apolloClient = initializeApollo();
+    await apolloClient.query({query: CURRENT_USER, context: req});
+    
     return {
         props: {
             initialApolloState: apolloClient.cache.extract()
         }
     }
+    
 }
 
 export default HomePage;

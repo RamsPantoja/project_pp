@@ -35,7 +35,7 @@ export const resolvers = {
         },
 
         getUserAuth: async (parent, args, context) => {
-            
+            await dbConnect();
             const token = await getTokenCookie(context.req);
 
             if (!token) return null;
