@@ -3,6 +3,7 @@ import Providers from 'next-auth/providers';
 import dbConnect from '../../../lib/dbConnect';
 import Users from '../../../models/Users';
 import bcrypt from 'bcrypt';
+import { signIn } from 'next-auth/client';
 
 const getUser = async (credentials) => {
     await dbConnect();
@@ -40,6 +41,24 @@ const options = {
             }
         }),
     ],
+    pages: {
+        signIn: '../../app/sign_in'
+    },
+
+    callbacks: {
+        async signIn(user, account, profile) {
+            const isAllowedToSignIn = user ? true : false;
+            if (isAllowedToSignIn) {
+                return true
+            } else {
+                return "/unauthorized"
+            }
+        }
+    },
+    secret: process.env.NEXTAUTH_SECRET,
+    jwt: {
+        secret: process.env.NEXTAUTH_SECRET,
+    }
 }
 
 export default (req, res) => NextAuth(req, res, options);

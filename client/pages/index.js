@@ -43,7 +43,6 @@ const HomePage = ({session}) => {
 
 export async function getServerSideProps({req}) {
     const session = await getSession({req});
-    console.log(session)
     return {
         props: {
             session: session

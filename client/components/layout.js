@@ -8,7 +8,7 @@ import { CURRENT_USER } from '../apollo/querys';
 import { initializeApollo } from '../components/hooks/apolloClient';
 
 const Layout = ({children, session}) => {
-    const isMenu = session ? <DropDownUser userAuthEmail={session.email}/> : <ButtonsInUp/>
+    const isMenu = session ? <DropDownUser userAuthEmail={session.user.email}/> : <ButtonsInUp/>
 
     return (
         <div className={styles.app_container}>
