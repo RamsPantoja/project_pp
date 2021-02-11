@@ -3,9 +3,12 @@ import styles from './styles/Layout.module.css'
 import Link from 'next/link';
 import DropDownUser from './DropdownUser';
 import ButtonsInUp from '../components/ButtonsInUp';
+import { useQuery } from '@apollo/client';
+import { CURRENT_USER } from '../apollo/querys';
+import { initializeApollo } from '../components/hooks/apolloClient';
 
-const Layout = ({children, useAuth}) => {
-    const isMenu = useAuth ? <DropDownUser userAuthEmail={useAuth.email}/> : <ButtonsInUp/>
+const Layout = ({children, session}) => {
+    const isMenu = session ? <DropDownUser userAuthEmail={session.email}/> : <ButtonsInUp/>
 
     return (
         <div className={styles.app_container}>
@@ -27,5 +30,6 @@ const Layout = ({children, useAuth}) => {
         </div>
     )
 }
+
 
 export default Layout;

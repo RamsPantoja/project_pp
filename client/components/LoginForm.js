@@ -1,30 +1,26 @@
 import React, { useState } from 'react';
 import styles from './styles/LoginForm.module.css';
-import Link  from 'next/link';
 import cn from 'classnames';
 
-const LoginForm = ({state, handleOnChange, disable, entityAuth, error}) => {
+const LoginForm = ({state, handleOnChange, disable, csrfToken}) => {
     const {email, password} = state;
     const [disableErrorAlert, setDisableErrorAlert] = useState(false)
 
     const handleOnSubmit = (e) => {
-        e.preventDefault();
         if (disable.status) {
+            e.preventDefault();
             setDisableErrorAlert(true)
         } else {
             setDisableErrorAlert(false);
-            entityAuth();
         }
     }
 
     const isDisableErrorAlert = disableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
-    const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
 
     return (
-        <form className={styles.loginForm} onSubmit={
-            (e) => {handleOnSubmit(e)}
-        }>
-            {isDisableErrorAlert || anyApolloError}
+        <form method='post' className={styles.loginForm} action='/api/auth/callback/credentials' onSubmit={(e) => {handleOnSubmit(e)}}>
+            <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
+            {isDisableErrorAlert}
             <input className={
                 cn({
                     [styles.loginForm_input]: email.errorfield === 'loginForm_input',

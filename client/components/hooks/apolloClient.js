@@ -2,7 +2,6 @@ import {
     ApolloClient,
     InMemoryCache } from '@apollo/client';
 import { useMemo } from 'react';
-import merge from 'deepmerge';
 
 let apolloClient;
 
@@ -36,9 +35,8 @@ const createApolloClient = () => {
     if (initialState) {
         const existingCache = _apolloClient.extract();
 
-        const data = merge(initialState, existingCache);
 
-        _apolloClient.cache.restore(data);
+        _apolloClient.cache.restore({...existingCache, ...initialState});
     }
 
     if (typeof window === 'undefined') {

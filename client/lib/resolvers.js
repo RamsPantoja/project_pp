@@ -34,9 +34,9 @@ export const resolvers = {
             return Users.find({});
         },
 
-        getUserAuth: async (parent, args, context) => {
+        getUserAuth: async (parent, args, {req}) => {
             await dbConnect();
-            const token = await getTokenCookie(context.req);
+            const token = await getTokenCookie(req);
 
             if (!token) return null;
 

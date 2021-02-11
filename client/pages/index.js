@@ -2,16 +2,12 @@ import React, { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/Index.module.css';
-import { useQuery } from '@apollo/client';
-import { CURRENT_USER } from '../apollo/querys';
-import { initializeApollo } from '../components/hooks/apolloClient';
-1
-const HomePage = () => {
-    const {data, error, loading} = useQuery(CURRENT_USER);
-    const {getUserAuth} = data
+import {getSession, useSession} from 'next-auth/client';
 
+const HomePage = ({session}) => {
+    console.log(session)
     return (
-        <Layout useAuth={getUserAuth}>
+        <Layout session={session}>
             <Head>
                 <title>Profe Paco!</title>
             </Head>
@@ -46,15 +42,13 @@ const HomePage = () => {
 }
 
 export async function getServerSideProps({req}) {
-    const apolloClient = initializeApollo();
-    await apolloClient.query({query: CURRENT_USER, context: req});
-    
+    const session = await getSession({req});
+    console.log(session)
     return {
         props: {
-            initialApolloState: apolloClient.cache.extract()
+            session: session
         }
     }
-    
 }
 
 export default HomePage;

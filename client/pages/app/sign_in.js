@@ -5,21 +5,11 @@ import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginForm from '../../components/LoginForm';
 import { useRouter } from 'next/router';
-import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook'
-import { USER_AUTH } from '../../apollo/mutations';
-import { useMutation, useQuery } from '@apollo/client';
-import { CURRENT_USER } from '../../apollo/querys';
+import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook';
+import { csrfToken } from 'next-auth/client'
 
-const SignIn = () => {
-    const router = useRouter();
+const SignIn = ({csrfToken}) => {
     const [state, handleOnChange, disable] = useAuthFormValidation(authUserSchema, validationSchema, disableSchema);
-    const {email, password} = state;
-    const [userAuth, {data, error, loading}] = useMutation(USER_AUTH, {
-        variables: {
-            email: email.value,
-            password: password.value
-        }
-    })
 
     return (
         <Fragment>
@@ -38,8 +28,7 @@ const SignIn = () => {
                             state={state}
                             handleOnChange={handleOnChange}
                             disable={disable}
-                            entityAuth={userAuth}
-                            error={error}/>
+                            csrfToken={csrfToken}/>
                         </div>
                         <span>Aun no tienes una cuenta? <Link href='/app/sign_up'><a className={styles.linkToCreateAccount}>Crear cuenta</a></Link></span>
                     </div>
@@ -48,5 +37,11 @@ const SignIn = () => {
         </Fragment>
     )
 }
+
+SignIn.getInitialProps = async (context) => {
+    return {
+      csrfToken: await csrfToken(context)
+    }
+  }
 
 export default SignIn;
