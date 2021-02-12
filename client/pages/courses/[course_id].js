@@ -89,9 +89,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({params}) {
+    const apolloClient = initializeApollo();
+    await apolloClient.query({
+        query: GET_COURSE_BY_ID,
+        variables: params.course_id
+    })
     return {
         props: {
-            id: params.course_id
+            id: params.course_id,
+            initialApolloState: apolloClient.cache.extract()
         }
     }
 }
