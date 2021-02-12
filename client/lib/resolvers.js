@@ -34,36 +34,6 @@ export const resolvers = {
             return Users.find({});
         },
 
-        getUserAuth: async (parent, args, {req}) => {
-            await dbConnect();
-            const token = await getTokenCookie(req);
-
-            if (!token) return null;
-
-            const userSession = await jwt.verify(token, process.env.SECRET, (err, decoded) => {
-                if(!err && decoded) {
-                    return decoded
-                }
-            });
-
-            const expiresAt = userSession.createdAt + userSession.maxAge * 1000; 
-
-            if (Date.now() > expiresAt) {
-                throw new Error('Session expired');
-            }
-
-            const user = await Users.findOne({email: userSession.email}, (err, data) => {
-                if(err) {
-                    throw new Error('Usuario no encontrado')
-                }
-
-                return data;
-            });
-
-            return user;
-
-        },
-
         getCourses: async (parent) => {
             await dbConnect();
             const courses = await Courses.find((err, data) => {
@@ -110,38 +80,7 @@ export const resolvers = {
 
             return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`
         },
-
-        userAuth: async (parent, {email, password}, context) => {
-            await dbConnect();
-            const user = await Users.findOne({email: email});
-
-            if(!user) {
-                throw new Error('El email o contraseña son incorrectos');
-            } else if (user.isconfirmated === false) {
-                throw new Error('El usuario no ha sido confirmado');
-            }
-
-            const userPassword = await bcrypt.compare(password, user.password);
-
-            if (!userPassword) {
-                throw new Error('El email o contraseña son incorrectos')
-            }
-
-            const token = await createUserToken(user, process.env.SECRET, '1h');
-
-            const cookie = await serialize('authToken', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV !== 'development',
-                sameSite: 'strict',
-                maxAge: 3600,
-                path: '/'
-            });
-
-            context.res.setHeader('Set-Cookie', cookie);
-
-            return 'The token has been setup'
-        },
-
+        
         addCourse: async (parent, {input}) => {
             const newCourse = await new Courses({
                 title: input.title,
@@ -155,22 +94,6 @@ export const resolvers = {
             }).save();
 
             return newCourse;
-        },
-
-        adminAuth: async (parent, {email, password}) => {
-            const user = await Admins.findOne({email: email});
-
-            if(!user) {
-                throw new Error('El email ó contraseña son incorrectos')
-            } else if (!user.isAdmin) {
-                throw new Error('No tienes los permisos para acceder')
-            }
-
-            if (password !== user.password) {
-                throw new Error('El email ó contraseña son incorrectos');
-            }
-
-            return {token: createUserToken(user, process.env.SECRET, '1h')}
         }
     }
 }

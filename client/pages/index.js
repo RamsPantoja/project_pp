@@ -4,10 +4,9 @@ import Head from 'next/head';
 import styles from './styles/Index.module.css';
 import {getSession, useSession} from 'next-auth/client';
 
-const HomePage = ({session}) => {
-    console.log(session)
+const HomePage = () => {
     return (
-        <Layout session={session}>
+        <Layout>
             <Head>
                 <title>Profe Paco!</title>
             </Head>
@@ -39,15 +38,6 @@ const HomePage = ({session}) => {
             </div>
         </Layout>
     )
-}
-
-export async function getServerSideProps({req}) {
-    const session = await getSession({req});
-    return {
-        props: {
-            session: session
-        }
-    }
 }
 
 export default HomePage;

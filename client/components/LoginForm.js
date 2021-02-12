@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles/LoginForm.module.css';
 import cn from 'classnames';
+import { signIn } from 'next-auth/client';
 
 const LoginForm = ({state, handleOnChange, disable, csrfToken}) => {
     const {email, password} = state;

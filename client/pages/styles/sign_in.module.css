@@ -64,3 +64,20 @@
 .linkToCreateAccount:hover {
     color: #1983ff;
 }
+
+.matchError {
+    display: block;
+    font-size: 0.7rem;
+    text-align: center;
+    background-color: #ff5555;
+    color: #ffffff;
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+.linkToSignUp {
+    display: flex;
+    padding: 0.5em;
+    justify-content: center;
+    align-items: center;
+}

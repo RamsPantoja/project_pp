@@ -36,12 +36,8 @@ export const typeDefs = gql `
         img: String
     }
 
-    type Token {
-        token: String!
-    }
     type Query {
         getUsers: [User]
-        getUserAuth: User
         getCourses: [Course]
         getCourseById(id: ID): Course
     }
@@ -64,8 +60,6 @@ export const typeDefs = gql `
 
     type Mutation {
         createUser(input: inputUser) : String
-        userAuth(email: String!, password: String!) : String
-        adminAuth(email: String!, password: String!): Token
         addCourse(input: inputCourse) : Course
     }
 `

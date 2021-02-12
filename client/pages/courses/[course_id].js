@@ -3,12 +3,12 @@ import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/course_id.module.css';
 import {useQuery} from '@apollo/client';
-import { GET_COURSE_BY_ID } from '../../apollo/querys';
+import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getAllCourseIds } from '../../lib/getCoursesIds';
+import { initializeApollo } from '../../components/hooks/apolloClient';
+import { useSession } from 'next-auth/client';
 
 const DescriptionCourse = ({id}) => {
-
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID, {
         variables: {id: id}
     })
@@ -79,13 +79,14 @@ const DescriptionCourse = ({id}) => {
 }
 
 export async function getStaticPaths() {
-    const paths = await getAllCourseIds();
-    return {
-        paths,
-        fallback: false
-    }
-}
+    const apolloClient = initializeApollo();
+    const {data} = await apolloClient.query({query: GET_COURSES});
+    const paths = data.getCourses.map((course) => ({
+        params: { course_id: course.id}
+    }));
 
+    return {paths, fallback: false}
+}
 
 export async function getStaticProps({params}) {
     return {

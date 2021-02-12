@@ -73,6 +73,19 @@
     flex-direction: column;
 }
 
+.loading,
+.loaded {
+  position: relative;
+  top: 0;
+  margin: 0;
+  background-color: rgba(0,0,0,.05);;
+  transition: all 0.2s ease-in;
+}
+
+.loading {
+  opacity: 0;
+}
+
 @media (min-width: 600px) {
     .header_site {
         flex-direction: row;

@@ -3,11 +3,10 @@ import styles from './styles/Layout.module.css'
 import Link from 'next/link';
 import DropDownUser from './DropdownUser';
 import ButtonsInUp from '../components/ButtonsInUp';
-import { useQuery } from '@apollo/client';
-import { CURRENT_USER } from '../apollo/querys';
-import { initializeApollo } from '../components/hooks/apolloClient';
+import { useSession } from 'next-auth/client';
 
-const Layout = ({children, session}) => {
+const Layout = ({children}) => {
+    const [session, loading] = useSession();
     const isMenu = session ? <DropDownUser userAuthEmail={session.user.email}/> : <ButtonsInUp/>
 
     return (
@@ -20,7 +19,9 @@ const Layout = ({children, session}) => {
                         <Link href='/about'><a className={styles.header_linkInf}>Sobre nosotros</a></Link>
                         <Link href='/contact'><a className={styles.header_linkInf}>Contacto</a></Link>
                         <p>|</p>
-                        {isMenu}
+                        <div className={`nojs-show ${(!session && loading) ? styles.loading : styles.loaded}`}>
+                            {isMenu}
+                        </div>
                     </div>
                 </div>
             </header>

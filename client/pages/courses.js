@@ -3,7 +3,6 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/courses.module.css';
 import CourseCard from '../components/CourseCard';
-import { initializeApollo } from '../components/hooks/apolloClient';
 
 const Courses = () => {
     return (
@@ -22,6 +21,5 @@ const Courses = () => {
         </Layout>
     )
 }
-
 
 export default Courses;

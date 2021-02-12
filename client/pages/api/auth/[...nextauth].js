@@ -10,15 +10,15 @@ const getUser = async (credentials) => {
     const user = await Users.findOne({email: credentials.email});
                        
     if(!user) {
-        throw new Error('El email ó contraseña son incorrectos')
+        throw new Error('Email or password is invalid');
     }
-    
+        
     const userPassword = await bcrypt.compare(credentials.password, user.password);
-    
+        
     if(!userPassword) {
-        throw new Error('El email ó contraseña son incorrectos.')
+        throw new Error('Email or password is invalid');
     }
-
+    
     return user;
 }
 
@@ -34,26 +34,16 @@ const options = {
                 const user = await getUser(credentials);
 
                 if (user) {
-                    return user;
+                    return Promise.resolve(user);
                 } else {
-                    throw new Error ('El email ó contraseña son incorrectos')
+                    return Promise.resolve(null);
                 }
             }
         }),
     ],
     pages: {
-        signIn: '../../app/sign_in'
-    },
-
-    callbacks: {
-        async signIn(user, account, profile) {
-            const isAllowedToSignIn = user ? true : false;
-            if (isAllowedToSignIn) {
-                return true
-            } else {
-                return "/unauthorized"
-            }
-        }
+        signIn: '../../app/signin',
+        error: '../../app/signin'
     },
     secret: process.env.NEXTAUTH_SECRET,
     jwt: {
