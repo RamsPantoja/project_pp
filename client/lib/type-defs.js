@@ -8,6 +8,7 @@ export const typeDefs = gql `
         email: String
         password: String
         img: String
+        isAdmin: Boolean
     }
 
     type Course {

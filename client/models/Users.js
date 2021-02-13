@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     lastname: String,
     email: String,
     password: String,
-    img: String
+    img: String,
+    isAdmin: Boolean,
 })
 
 userSchema.pre('save', function (next) {

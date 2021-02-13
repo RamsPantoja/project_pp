@@ -56,9 +56,8 @@ const SignIn = ({csrfToken}) => {
     )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps (context) {
     const session = await getSession({req: context.req});
-
     if(session && !context.req) {
         Router.replace('/');
     }
@@ -70,13 +69,10 @@ export async function getServerSideProps(context) {
                 permanent: false
             }
         }
-
     }
-    
-    context.res?.end();
 
     return {
-        props : {
+        props:{
             csrfToken: await csrfToken(context)
         }
     }

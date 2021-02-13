@@ -41,6 +41,18 @@ const options = {
             }
         }),
     ],
+    callbacks: {
+        async jwt(token, user) {
+            if(user?.isAdmin) {
+                token.isAdmin = user.isAdmin;
+            }
+            return token;
+        },
+
+        async session(session, user) {
+            return {...session, user: { email: user.email, isAdmin: user.isAdmin}}
+        }
+    },
     pages: {
         signIn: '../../app/signin',
         error: '../../app/signin'

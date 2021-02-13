@@ -62,6 +62,8 @@ export const resolvers = {
     },
     Mutation: {
         createUser: async (parent, {input}) => {
+            await dbConnect();
+            
             const emailAlreadyExist = await Users.findOne({
                 email: input.email
             });
@@ -75,7 +77,8 @@ export const resolvers = {
                 lastname: input.lastname,
                 email: input.email,
                 password: input.password,
-                img: ''
+                img: '',
+                isAdmin: false,
             }).save();
 
             return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`
