@@ -1,0 +1,11 @@
+.headerAdminContainer {
+    display: flex;
+    justify-content: space-around;
+    height: 3em;
+    border-bottom: 1px solid #eaeaea;
+    align-items: center;
+    z-index: 1000;
+    position: sticky;
+    padding: 0.5em;
+    background-color: #ffffff;
+}

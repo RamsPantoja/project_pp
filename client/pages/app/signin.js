@@ -4,9 +4,9 @@ import Link from 'next/link';
 import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginForm from '../../components/LoginForm';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook';
-import { csrfToken } from 'next-auth/client'
+import { csrfToken, getSession } from 'next-auth/client'
 
 const SignIn = ({csrfToken}) => {
     const [state, handleOnChange, disable] = useAuthFormValidation(authUserSchema, validationSchema, disableSchema);
@@ -56,9 +56,29 @@ const SignIn = ({csrfToken}) => {
     )
 }
 
-SignIn.getInitialProps = async (context) => {
+export async function getServerSideProps(context) {
+    const session = await getSession({req: context.req});
+
+    if(session && !context.req) {
+        Router.replace('/');
+    }
+
+    if(session && context.req) {
+        return {
+            redirect: {
+                destination: 'http://localhost:3000/',
+                permanent: false
+            }
+        }
+
+    }
+    
+    context.res?.end();
+
     return {
-      csrfToken: await csrfToken(context)
+        props : {
+            csrfToken: await csrfToken(context)
+        }
     }
 }
 

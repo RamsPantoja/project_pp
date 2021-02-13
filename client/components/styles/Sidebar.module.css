@@ -1,0 +1,58 @@
+.sidebarContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 0.2;
+    box-sizing: border-box;
+    height: 100vh;
+    border: 1px solid #eaeaea;
+}
+
+.sidebarContainer_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em;
+    width: 100%;
+    color: #000000;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.sidebarContainer_header > h1 {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em
+}
+
+.navBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1em;
+    width: 100%;
+}
+
+.navBarList {
+    color: #000000;
+    display: grid;
+    gap: 1em;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.navBarLink {
+    display: block;
+    padding: 0.5em;
+    border-radius: 0.3em;
+    background-color: #eaeaea;
+    transition: 0.2s ease;
+    text-decoration: none;
+    color: #000000;
+}
+
+.navBarLink:hover {
+    cursor: pointer;
+    background-color: #b0e5ff;
+}

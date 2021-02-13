@@ -6,7 +6,6 @@ import {useQuery} from '@apollo/client';
 import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { initializeApollo } from '../../components/hooks/apolloClient';
-import { useSession } from 'next-auth/client';
 
 const DescriptionCourse = ({id}) => {
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID, {

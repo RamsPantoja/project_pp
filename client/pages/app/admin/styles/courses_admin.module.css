@@ -1,0 +1,23 @@
+.coursesContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1em;
+}
+
+.header > h3 {
+    font-size: 2rem;
+}
+
+.toPositionFixed {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    overflow: auto;
+}

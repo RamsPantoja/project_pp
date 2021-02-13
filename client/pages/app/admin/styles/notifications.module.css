@@ -1,0 +1,7 @@
+.notificationsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2em;
+    height: 100%;
+}

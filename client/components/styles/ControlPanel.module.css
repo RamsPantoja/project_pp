@@ -1,0 +1,8 @@
+.controlPanelContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 0.8;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    height: 100vh;
+}

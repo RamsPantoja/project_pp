@@ -75,10 +75,11 @@
 
 .loading,
 .loaded {
-  position: relative;
-  top: 0;
-  margin: 0;
-  transition: all 0.2s ease-in;
+    display: flex;
+    position: relative;
+    top: 0;
+    margin: 0;
+    transition: all 0.2s ease-in;
 }
 
 .loading {

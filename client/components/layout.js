@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles/Layout.module.css'
 import Link from 'next/link';
-import DropDownUser from './DropdownUser';
+import DropDownUser from './dropdownUser';
 import ButtonsInUp from '../components/ButtonsInUp';
 import { useSession } from 'next-auth/client';
 
