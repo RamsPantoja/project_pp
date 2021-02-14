@@ -1,7 +1,7 @@
 .sidebarContainer {
     display: flex;
     flex-direction: column;
-    flex: 0.2;
+    flex: 0.1;
     box-sizing: border-box;
     height: 100vh;
     border: 1px solid #eaeaea;
@@ -46,7 +46,7 @@
     display: block;
     padding: 0.5em;
     border-radius: 0.3em;
-    background-color: #eaeaea;
+    border: 1px solid #eaeaea;
     transition: 0.2s ease;
     text-decoration: none;
     color: #000000;
@@ -54,5 +54,14 @@
 
 .navBarLink:hover {
     cursor: pointer;
-    background-color: #b0e5ff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #000000;
+    background-color: #dbf998;
+
+}
+
+@media(max-width: 1000px) {
+    .navBarList {
+        grid-template-columns: repeat(3,1fr);
+    }
 }

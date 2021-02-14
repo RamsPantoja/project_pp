@@ -1,13 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const CURRENT_USER = gql `
-    query getUserAuth {
-        getUserAuth {
-            email
-        }
-    }
-`
-
 export const GET_COURSES = gql `
     query getCourses {
         getCourses {
@@ -31,6 +23,22 @@ export const GET_COURSE_BY_ID = gql `
                 subConceptList
             }
             price
+            enrollmentUsers {
+                firstname
+                lastname
+                email
+            }
+        }
+    }
+`
+
+export const GET_ALL_USERS = gql `
+    query getAllUsers {
+        getUsers {
+            id
+            firstname
+            lastname
+            email
         }
     }
 `

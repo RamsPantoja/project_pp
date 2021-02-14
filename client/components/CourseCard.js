@@ -5,14 +5,14 @@ import { useRouter } from 'next/router';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import styles from './styles/CourseCard.module.css';
 
-const CourseCard = () => {
+const CourseCard = ({baseUrl}) => {
     const {data, error, loading} = useQuery(GET_COURSES);
 
     const router = useRouter();
 
     const handleOnClickCard = (e, id) => {
         e.preventDefault();
-        router.push(`/courses/${id}`)
+        router.push(`${baseUrl}`+`${id}`)
     }
     
     if (loading) {

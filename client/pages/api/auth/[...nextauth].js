@@ -3,7 +3,6 @@ import Providers from 'next-auth/providers';
 import dbConnect from '../../../lib/dbConnect';
 import Users from '../../../models/Users';
 import bcrypt from 'bcrypt';
-import { signIn } from 'next-auth/client';
 
 const getUser = async (credentials) => {
     await dbConnect();
@@ -48,10 +47,10 @@ const options = {
             }
             return token;
         },
-
+        
         async session(session, user) {
             return {...session, user: { email: user.email, isAdmin: user.isAdmin}}
-        }
+        },
     },
     pages: {
         signIn: '../../app/signin',

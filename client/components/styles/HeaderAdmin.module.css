@@ -5,9 +5,15 @@
     border-bottom: 1px solid #eaeaea;
     align-items: center;
     z-index: 1000;
-    position: sticky;
-    padding: 0.5em;
+    padding: 0.3em;
+    box-sizing: border-box;
     background-color: #ffffff;
+}
+
+.headerAdminContainer > h2 {
+  display: inline-block;
+  font-size: 1.1rem;
+  padding: 0 1em;
 }
 
 .loading,

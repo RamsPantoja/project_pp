@@ -4,6 +4,7 @@ import styles from './styles/courses_admin.module.css';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import CourseCard from '../../../components/CourseCard';
+import { getSession } from 'next-auth/client';
 
 const CoursesAdmin = () => {
     return (
@@ -17,12 +18,29 @@ const CoursesAdmin = () => {
                         </Fab>
                     </div>
                     <div className={styles.coursesGrid}>
-                        <CourseCard/>
+                        <CourseCard baseUrl={'/app/admin/courses/'}/>
                     </div>
                 </div>
             </div>
         </LayoutAdmin>
     )
+}
+
+
+export async function getServerSideProps({req}) {
+    const session = await getSession({req});
+    if ((!session || session.user.isAdmin !== true) && req) {
+        return {
+            redirect: {
+                destination:'http://localhost:3000/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
 }
 
 export default CoursesAdmin;

@@ -31,7 +31,9 @@ export const resolvers = {
     Query: {
         getUsers: async (parent) => {
             await dbConnect();
-            return Users.find({});
+            const users = await Users.find({});
+            return users.filter((user) =>  user.isAdmin === false);
+
         },
 
         getCourses: async (parent) => {
@@ -85,6 +87,8 @@ export const resolvers = {
         },
         
         addCourse: async (parent, {input}) => {
+            await dbConnect();
+            
             const newCourse = await new Courses({
                 title: input.title,
                 teacher: input.teacher,

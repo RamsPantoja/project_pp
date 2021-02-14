@@ -40,4 +40,20 @@ const HomePage = () => {
     )
 }
 
+export async function getServerSideProps({req}) {
+    const session = await getSession({req})
+    if ((session && session.user.isAdmin === true) && req) {
+        return {
+            redirect: {
+                destination: 'http://localhost:3000/app/admin/notifications',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}
+
 export default HomePage;

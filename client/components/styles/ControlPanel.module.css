@@ -1,8 +1,13 @@
 .controlPanelContainer {
     display: flex;
     flex-direction: column;
-    flex: 0.8;
+    flex: 0.9;
     background-color: #ffffff;
     box-sizing: border-box;
-    height: 100vh;
+}
+
+@media(min-width: 1000px) {
+    .controlPanelContainer {
+        height: 100vh;
+    }
 }

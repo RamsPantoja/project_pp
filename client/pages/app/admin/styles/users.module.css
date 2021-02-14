@@ -1,7 +1,22 @@
-.usersContainer {
+.usersContainerScroll {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    padding-top: 2em;
+    align-items: center;
+    overflow: auto;
+    flex: 1;
+}
+
+.usersContainerContent {
+    display: grid;
     padding: 2em;
+    gap: 1em;
+}
+
+.usersContainerLoader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 100%;
 }

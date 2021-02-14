@@ -15,7 +15,7 @@ const Courses = () => {
                     <h1>Nuestros Cursos</h1>
                 </div>
                 <div className={styles.coursesContent}>
-                    <CourseCard/>
+                    <CourseCard baseUrl={'/courses/'}/>
                 </div>
             </div>
         </Layout>
