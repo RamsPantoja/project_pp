@@ -4,15 +4,20 @@ export const stateSchemaInfCourse = {
     title: {value: '', errorfield: false},
     description: { value: '', errorfield: false},
     teacher: { value: '', errorfield: false},
-    objectives: []
+    objectives: [],
+    conceptList: []
 }
 
 export const validationSchemaCourse = {
     title: { required: true },
     description: { required: true},
     teacher: { required: true},
-    objective: { required: true }
+    objective: { required: true },
+    concept: { required: true},
+    subConcept: { required: true}
 }
+
+
 
 export const disableSchemaCourse = {
     status: true,
@@ -23,12 +28,13 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
     const [state, setState] = useState(stateSchema);
     const [disable, setDisable] = useState(disableSchemaCourse);
     const [isDirty, setIsDirty] = useState(false);
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0);
+    const [subConceptCount, setSubConceptCount] = useState(0);
 
     const validateState = useCallback(() => {
         const hasErrorInState = Object.keys(validationSchemaCourse).some((key) => {
             const isInputRequired = validationSchemaCourse[key].required;
-            const stateValue = state[key].value
+            const stateValue = state[key].value;
 
             return (isInputRequired && !stateValue)
         })
@@ -60,7 +66,6 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
     }, [validateState, isDirty, disableSchemaCourse]);
 
     const handleOnChange = (e) => {
-        e.preventDefault();
         setIsDirty(true);
         const name = e.target.name;
         const value = e.target.value
@@ -79,7 +84,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
     }
 
     const handleOnChangeObjetiveInput = (e, index) => {
-        e.preventDefault();
+        setIsDirty(true)
         const name = e.target.name;
         const value = e.target.value;
         let errorfield = false;
@@ -103,6 +108,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
     }
 
     const handleAddObjetive = (e) => {
+        e.preventDefault();
         setState((prevState) => ({
             ...prevState,
             objectives: prevState.objectives.concat(count)
@@ -110,7 +116,48 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         setCount(count+1);
     }
 
-    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive]
+    const handleAddConcept = (e) => {
+        e.preventDefault();
+        setState((prevState) => ({
+            ...prevState,
+            conceptList: prevState.conceptList.concat({subConceptList:[]})
+        }));
+    }
+
+    const handleOnChangeConceptInput = (e, index) => {
+        setIsDirty(true);
+        const name = e.target.name;
+        const value = e.target.value;
+        let errorfield = false
+
+        if(validationSchemaCourse[name].required) {
+            if(!value) {
+                errorfield = true;
+            }
+        }
+
+
+    }
+
+    const handleAddSubConcept = (e, index) => {
+        e.preventDefault();
+
+        const subConcept = state.conceptList.map((item, i) => {
+            if (index !== i) return item;
+            
+            return item.subConceptList.push(subConceptCount)
+        })
+        setState((prevState) => ({
+            ...prevState,
+            conceptList: [{
+                subConceptList: subConcept
+            }]
+        }))
+        setSubConceptCount(subConceptCount+1)
+    }
+
+
+    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, handleAddConcept, handleOnChangeConceptInput, handleAddSubConcept]
 }
 
 export default useHandleFormCourse;

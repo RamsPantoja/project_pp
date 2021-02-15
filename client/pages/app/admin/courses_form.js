@@ -8,7 +8,15 @@ import FormAddConcept from '../../../components/FormAddConcept';
 import useHandleFormCourse, { disableSchemaCourse, stateSchemaInfCourse, validationSchemaCourse } from '../../../components/hooks/handleCreateCourseHook';
 
 const CoursesForm = () => {
-    const [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, objectives] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse)
+    const [
+        state, 
+        disable, 
+        handleOnChange, 
+        handleOnChangeObjetiveInput, 
+        handleAddObjetive, 
+        handleAddConcept, 
+        handleOnChangeConceptInput,
+        handleAddSubConcept] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse)
 
     return (
         <LayoutAdmin>
@@ -20,7 +28,7 @@ const CoursesForm = () => {
                             <TextField label='Descripción' rowsMax={5} variant='outlined' multiline={true} name='description' onChange={(e) => {handleOnChange(e)}}/>
                             <TextField label='Profesor' variant='outlined' name='teacher' onChange={(e) => {handleOnChange(e)}}/>
                             <hr></hr>
-                            <p>Objetivos(Minimo 1):</p>
+                            <p>Objetivos(Minimo:1):</p>
                             { state.objectives.map((item, index) => {
                                 return (
                                     <TextField key={index} label='Objetivo' variant='outlined' size='small' name='objective' onChange={(e) => {handleOnChangeObjetiveInput(e, index)}}/>
@@ -29,9 +37,13 @@ const CoursesForm = () => {
                             <Button onClick={(e) => {handleAddObjetive(e)}} color='primary' variant='outlined' startIcon={<AddIcon/>}>Agregar Objetivo</Button>
                         </div>
                         <div className={styles.formConceptInputs}>
-                            <p>Temario:</p>
-                            <FormAddConcept/>
-                            <Button color='primary' variant='outlined' startIcon={<AddIcon/>}>Agregar tema</Button>
+                            <p>Temario(Minimo:1):</p>
+                            { state.conceptList.map((item, index) => {
+                                return (
+                                    <FormAddConcept key={index} handleOnChangeConceptInput={handleOnChangeConceptInput} index={index} handleAddSubConcept={handleAddSubConcept}/>
+                                )
+                            })}
+                            <Button onClick={(e) => {handleAddConcept(e)}} color='primary' variant='outlined' startIcon={<AddIcon/>}>Agregar tema</Button>
                         </div>
                     </form>
                 </div>
