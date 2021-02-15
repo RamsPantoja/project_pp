@@ -65,6 +65,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }
     }, [validateState, isDirty, disableSchemaCourse]);
 
+    //Lee los campos sobrantes que no se repiten y los actualiza con el valor leido.
     const handleOnChange = (e) => {
         setIsDirty(true);
         const name = e.target.name;
@@ -83,6 +84,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }))
     }
 
+    //Lee los campos Objetive del formualrio de crear cursos y actualiza el campo objetive por el valor leido.
     const handleOnChangeObjetiveInput = (e, index) => {
         setIsDirty(true)
         const name = e.target.name;
@@ -107,6 +109,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
 
     }
 
+    //Agrega campos objetivo en el cmapo objectives
     const handleAddObjetive = (e) => {
         e.preventDefault();
         setState((prevState) => ({
@@ -116,6 +119,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         setCount(count+1);
     }
 
+    //Agrega Campos dentro del campo conceptList
     const handleAddConcept = (e) => {
         e.preventDefault();
         setState((prevState) => ({
@@ -124,6 +128,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }));
     }
 
+    //Lee los campos Tema y subTema del formulario de crear Cursos y actualiza los campos concept y subconcept
     const handleOnChangeConceptInput = (e, index) => {
         setIsDirty(true);
         const name = e.target.name;
@@ -136,28 +141,74 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
             }
         }
 
+        const concept = state.conceptList.map((item, i) => {
+            if (index !== i) return item;
+            return {
+                ...item,
+                concept: {value: value, errorfield: errorfield}
+            }
+        })
+
+       setState((prevState) => ({
+           ...prevState,
+           conceptList: concept
+       }))
 
     }
 
+    //Agrega campos dentro el campo subConcepList;
     const handleAddSubConcept = (e, index) => {
         e.preventDefault();
 
         const subConcept = state.conceptList.map((item, i) => {
             if (index !== i) return item;
             
-            return item.subConceptList.push(subConceptCount)
+            return {
+                ...item,
+                subConceptList: state.conceptList[index].subConceptList.concat(subConceptCount)
+            }
         })
+
         setState((prevState) => ({
             ...prevState,
-            conceptList: [{
-                subConceptList: subConcept
-            }]
+            conceptList: subConcept
         }))
         setSubConceptCount(subConceptCount+1)
     }
 
+    const handleOnChangeSubConceptInput = (e, i, indexConcept) => {
+        setIsDirty(true);
+        const name = e.target.name;
+        const value = e.target.value;
+        let errorfield = false;
 
-    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, handleAddConcept, handleOnChangeConceptInput, handleAddSubConcept]
+        if(validationSchemaCourse[name].required) {
+            if(!value) {
+                errorfield = true;
+            }
+        }
+
+        const subConceptValue = state.conceptList[indexConcept].subConceptList.map((item, index) => {
+            if (i !== index) return item;
+            return item = {value: value, errorfield: errorfield}
+        });
+
+        const concept = state.conceptList.map((item, index) => {
+            if(indexConcept !== index) return item;
+            return {
+                ...item,
+                subConceptList: subConceptValue
+            }
+        })
+
+        setState((prevState) => ({
+            ...prevState,
+            conceptList: concept
+        }))
+    }
+
+
+    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, handleAddConcept, handleOnChangeConceptInput, handleAddSubConcept, handleOnChangeSubConceptInput]
 }
 
 export default useHandleFormCourse;

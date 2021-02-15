@@ -16,7 +16,8 @@ const CoursesForm = () => {
         handleAddObjetive, 
         handleAddConcept, 
         handleOnChangeConceptInput,
-        handleAddSubConcept] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse)
+        handleAddSubConcept,
+        handleOnChangeSubConceptInput] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse)
 
     return (
         <LayoutAdmin>
@@ -27,7 +28,6 @@ const CoursesForm = () => {
                             <TextField label='Nombre del curso' variant='outlined' name='title' onChange={(e) => {handleOnChange(e)}}/>
                             <TextField label='Descripción' rowsMax={5} variant='outlined' multiline={true} name='description' onChange={(e) => {handleOnChange(e)}}/>
                             <TextField label='Profesor' variant='outlined' name='teacher' onChange={(e) => {handleOnChange(e)}}/>
-                            <hr></hr>
                             <p>Objetivos(Minimo:1):</p>
                             { state.objectives.map((item, index) => {
                                 return (
@@ -40,7 +40,13 @@ const CoursesForm = () => {
                             <p>Temario(Minimo:1):</p>
                             { state.conceptList.map((item, index) => {
                                 return (
-                                    <FormAddConcept key={index} handleOnChangeConceptInput={handleOnChangeConceptInput} index={index} handleAddSubConcept={handleAddSubConcept}/>
+                                    <FormAddConcept 
+                                    key={index} 
+                                    handleOnChangeConceptInput={handleOnChangeConceptInput} 
+                                    index={index} 
+                                    handleAddSubConcept={handleAddSubConcept} 
+                                    state={state}
+                                    handleOnChangeSubConceptInput={handleOnChangeSubConceptInput}/>
                                 )
                             })}
                             <Button onClick={(e) => {handleAddConcept(e)}} color='primary' variant='outlined' startIcon={<AddIcon/>}>Agregar tema</Button>

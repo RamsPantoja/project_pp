@@ -6,8 +6,9 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import cn from 'classnames';
 import AddIcon from '@material-ui/icons/Add'
 
-const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept}) => {
+const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept, state, handleOnChangeSubConceptInput}) => {
     const [isExpanded, setIsExpanded] = useState(true);
+    console.log(state)
 
     const dropDownInputs = (e) => {
         e.preventDefault();
@@ -32,7 +33,11 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept}
                     [styles.expandLess]: isExpanded === false
                 })
             }>
-                <TextField label='Subtema' size='small' name='subConcept' variant='outlined' onChange={(e) =>{handleOnChangeConceptInput(e)}}/>
+                { state.conceptList[index].subConceptList.map((item, i) => {
+                    return ( 
+                        <TextField key={i} label='Subtema' size='small' name='subConcept' variant='outlined' onChange={(e) =>{handleOnChangeSubConceptInput(e, i, index)}}/>
+                    )
+                })}
                 <Button size='small' startIcon={<AddIcon/>} variant='outlined' color='default' onClick={(e) => {handleAddSubConcept(e, index)}}>Agregar subtema</Button>
             </div>
         </div>

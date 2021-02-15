@@ -35,3 +35,7 @@
     padding: 1em;
     flex: 0.6;
 }
+
+.formConceptInputs > p {
+    padding: 0.5em;
+}
