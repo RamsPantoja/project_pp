@@ -1,0 +1,21 @@
+.formAddConcept {
+    display: grid;
+    gap: 0.5em;
+    padding: 1em;
+}
+
+.formInputConcept {
+    display: flex;
+    align-items: center;
+}
+
+.expandMore {
+    padding-top: 0.5em;
+    display: grid;
+    gap: 0.3em;
+    max-width: 20em;
+}
+
+.expandLess {
+    display: none;
+}
