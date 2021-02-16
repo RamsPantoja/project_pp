@@ -19,7 +19,10 @@ const CoursesForm = () => {
         handleOnChangeConceptInput,
         handleAddSubConcept,
         handleOnChangeSubConceptInput,
-        handleDeleteObjetive] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse);
+        handleDeleteObjetive,
+        handleDeleteConcept,
+        handleDeleteSubConcept
+    ] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse);
     
     
     const isDisableButtonToAddObjectives = state.objectives.length === 9 ? true : false;
@@ -29,9 +32,9 @@ const CoursesForm = () => {
                 <div className={styles.coursesFormContainer}>
                     <form className={styles.formFlex}>
                        <div className={styles.formFirstInputs}>
-                            <TextField label='Nombre del curso' variant='outlined' name='title' onChange={(e) => {handleOnChange(e)}}/>
-                            <TextField label='Descripción' rowsMax={5} variant='outlined' multiline={true} name='description' onChange={(e) => {handleOnChange(e)}}/>
-                            <TextField label='Profesor' variant='outlined' name='teacher' onChange={(e) => {handleOnChange(e)}}/>
+                            <TextField label='Nombre del curso' variant='outlined' name='title' value={state.title.value} onChange={(e) => {handleOnChange(e)}}/>
+                            <TextField label='Descripción' rowsMax={5} variant='outlined' multiline={true} name='description' value={state.description.value} onChange={(e) => {handleOnChange(e)}}/>
+                            <TextField label='Profesor' variant='outlined' name='teacher' value={state.teacher.value} onChange={(e) => {handleOnChange(e)}}/>
                             <p>Objetivos(Minimo:1):</p>
                             { state.objectives.map((item, index) => {
                                 return (
@@ -55,12 +58,14 @@ const CoursesForm = () => {
                                     index={index} 
                                     handleAddSubConcept={handleAddSubConcept} 
                                     state={state}
-                                    handleOnChangeSubConceptInput={handleOnChangeSubConceptInput}/>
+                                    handleOnChangeSubConceptInput={handleOnChangeSubConceptInput}
+                                    handleDeleteConcept={handleDeleteConcept}
+                                    handleDeleteSubConcept={handleDeleteSubConcept}
+                                    item={item.concept}/>
                                 )
                             })}
                             <div className={styles.formFirstIcons}>
                                 <Button onClick={(e) => {handleAddConcept(e)}} size='small'color='primary' variant='contained' startIcon={<AddCircleIcon/>}>Agregar tema</Button>
-                                <Button onClick={(e) => {handleAddConcept(e)}} size='small' color='secondary' variant='contained' startIcon={<DeleteIcon/>}>Eliminar tema</Button>
                             </div>
                         </div>
                     </form>

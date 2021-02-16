@@ -4,8 +4,11 @@ export const stateSchemaInfCourse = {
     title: {value: '', errorfield: false},
     description: { value: '', errorfield: false},
     teacher: { value: '', errorfield: false},
-    objectives: [],
-    conceptList: []
+    objectives: [{value: '', errorfield: false}],
+    conceptList: [{
+        concept: { value: '', errorfield: false},
+        subConceptList: [{value: '', errorfield: false}]
+    }]
 }
 
 export const validationSchemaCourse = {
@@ -14,7 +17,9 @@ export const validationSchemaCourse = {
     teacher: { required: true},
     objective: { required: true },
     concept: { required: true},
-    subConcept: { required: true}
+    subConcept: { required: true},
+    objectives: { required: true},
+    conceptList: { required: true}
 }
 
 
@@ -24,8 +29,8 @@ export const disableSchemaCourse = {
     error: ''
 }
 
-const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSchemaCourse) => {
-    const [state, setState] = useState(stateSchema);
+const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, disableSchemaCourse) => {
+    const [state, setState] = useState(stateSchemaInfCourse);
     const [disable, setDisable] = useState(disableSchemaCourse);
     const [isDirty, setIsDirty] = useState(false);
     const [count, setCount] = useState(0);
@@ -34,9 +39,24 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
     const validateState = useCallback(() => {
         const hasErrorInState = Object.keys(validationSchemaCourse).some((key) => {
             const isInputRequired = validationSchemaCourse[key].required;
-            const stateValue = state[key].value;
+            const titleValue = state.title.value;
+            const descriptionValue = state.description.value;
+            const teacherValue = state.teacher.value;
+            const objectivesValue = Object.keys(state.objectives).some((key) => {
+                const objectiveValue = state.objectives[key].value;
 
-            return (isInputRequired && !stateValue)
+                return objectiveValue;
+            });
+            const conceptListValue = Object.keys(state.conceptList).some((key) => {
+                const conceptValue = state.conceptList[key].concept.value;
+                const subConceptsValue = Object.keys(state.conceptList[key].subConceptList).some((keySubConcept) => {
+                    const subConceptValue = state.conceptList[key].subConceptList[keySubConcept].value;
+                    return subConceptValue;
+                })
+
+                return (concep)
+            })
+            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue || !objectivesValue)) 
         })
 
         return hasErrorInState;
@@ -134,8 +154,17 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         e.preventDefault();
         setState((prevState) => ({
             ...prevState,
-            conceptList: prevState.conceptList.concat({subConceptList:[]})
+            conceptList: prevState.conceptList.concat({concept:'', subConceptList:[]})
         }));
+    }
+
+    //elimina el campo Concept del campo conceptList
+    const handleDeleteConcept = (e, index) => {
+        e.preventDefault();
+        setState((prevState) => ({
+            ...prevState,
+            conceptList: prevState.conceptList.filter((concept, i) => index != i)
+        }))
     }
 
     //Lee los campos Tema del formulario de crear Cursos y actualiza los campos concept y subconcept
@@ -185,6 +214,25 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }))
         setSubConceptCount(subConceptCount+1)
     }
+
+    //Elimina el campo dentro de subConceptList
+    const handleDeleteSubConcept = (e, i, indexConcept) => {
+        console.log(indexConcept)
+        e.preventDefault();
+
+        const subConceptList = state.conceptList.map((item, index) => {
+            if(indexConcept !== index) return item;
+            return {
+                ...item,
+                subConceptList: state.conceptList[indexConcept].subConceptList.filter((subConcept, index) => i !== index)
+            }
+        })
+
+        setState((prevState) => ({
+            ...prevState,
+            conceptList: subConceptList
+        }))
+    }
     
     //Lee el campo Subtema y actualiza el state en base a que campo subtema se esta modificando y en el campo Tema que se esta modificando.
     //Haciendo uso del index de cada campo que ha sido renderizado en los camponentes CourseForm y FormAddConcept con la funcion map.
@@ -220,7 +268,20 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
     }
 
     //Retornamos todos los metodos.
-    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, handleAddConcept, handleOnChangeConceptInput, handleAddSubConcept, handleOnChangeSubConceptInput, handleDeleteObjetive]
+    return [
+        state, 
+        disable, 
+        handleOnChange, 
+        handleOnChangeObjetiveInput, 
+        handleAddObjetive, 
+        handleAddConcept, 
+        handleOnChangeConceptInput, 
+        handleAddSubConcept, 
+        handleOnChangeSubConceptInput, 
+        handleDeleteObjetive,
+        handleDeleteConcept,
+        handleDeleteSubConcept
+    ]
 }
 
 export default useHandleFormCourse;

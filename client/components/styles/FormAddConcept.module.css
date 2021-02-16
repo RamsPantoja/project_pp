@@ -1,7 +1,7 @@
 .formAddConcept {
     display: grid;
     gap: 0.5em;
-    padding: 1em;
+    padding: 1em 0;
 }
 
 .formInputConcept {
@@ -13,9 +13,14 @@
     padding-top: 0.5em;
     display: grid;
     gap: 0.8em;
-    max-width: 20em;
+    max-width: 30em;
 }
 
 .expandLess {
     display: none;
+}
+
+.subConceptContainer {
+    display: flex;
+    align-items: center;
 }
