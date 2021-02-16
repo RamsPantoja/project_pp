@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/course_id.module.css';
-import {useQuery} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { initializeApollo } from '../../components/hooks/apolloClient';
+import { signIn, useSession } from 'next-auth/client';
+import { INSERT_USER_IN_COURSE } from '../../apollo/mutations';
 
 const DescriptionCourse = ({id}) => {
-    const {data, error, loading} = useQuery(GET_COURSE_BY_ID, {
+    const [session, loading] = useSession();
+    
+    const isEmail = loading && !session ? null : session?.user.email;
+    
+    const [insertUserInCourse, {data: dataMutation, error: errorMutation, loading: loadingMutation}] = useMutation(INSERT_USER_IN_COURSE, {
+        variables: {
+            email: isEmail,
+            id: id
+        }
+    })
+
+    const {data, error, loading: loadingCourse} = useQuery(GET_COURSE_BY_ID, {
         variables: {id: id}
     })
 
-
-    if (loading) {
+    if (loadingCourse) {
         return (
             <Layout>
                 <div className={styles.courseDescription_progress}>
@@ -24,6 +36,15 @@ const DescriptionCourse = ({id}) => {
     }
 
     const {title, description, price, objectives, conceptList} = data.getCourseById;
+
+    const handleOnClickSession = (e) => {
+        e.preventDefault();
+        if (session) {
+            insertUserInCourse();
+        } else {
+            signIn();
+        }
+    }
 
     return (
         <Layout>
@@ -43,7 +64,7 @@ const DescriptionCourse = ({id}) => {
                             })}
                         </ul>
                         <span className={styles.price}>{`$ ${price}`}</span>
-                        <button>OBTENER CURSO</button>
+                        <button onClick={(e) => {handleOnClickSession(e)}}>OBTENER CURSO</button>
                     </div>
                     <div className={styles.courseDescription_headerButton}>
                         <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
@@ -88,15 +109,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({params}) {
-    const apolloClient = initializeApollo();
-    await apolloClient.query({
-        query: GET_COURSE_BY_ID,
-        variables: params.course_id
-    })
     return {
         props: {
-            id: params.course_id,
-            initialApolloState: apolloClient.cache.extract()
+            id: params.course_id
         }
     }
 }

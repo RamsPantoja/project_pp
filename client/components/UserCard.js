@@ -14,9 +14,9 @@ const UserCard = ({firstname, lastname, email}) => {
             </div>
             <div className={styles.userCardButtons}>
                 <div className={styles.userCardButtonsMargin}>
-                    <Button color='primary' variant='outlined' startIcon={<UpdateIcon/>}>Actualizar</Button>
+                    <Button color='primary' variant='contained' startIcon={<UpdateIcon/>}>Actualizar</Button>
                 </div>
-                <Button color='secondary' variant='outlined' startIcon={<DeleteIcon/>}>Eliminar</Button>
+                <Button color='secondary' variant='contained' startIcon={<DeleteIcon/>}>Eliminar</Button>
             </div>
         </div>
     )

@@ -16,6 +16,7 @@ export const GET_COURSE_BY_ID = gql `
     query getCourseById($id: ID) {
         getCourseById(id: $id) {
             title
+            teacher
             description
             objectives
             conceptList {

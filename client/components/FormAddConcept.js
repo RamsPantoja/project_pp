@@ -4,7 +4,7 @@ import styles from './styles/FormAddConcept.module.css';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import cn from 'classnames';
-import AddIcon from '@material-ui/icons/Add'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept, state, handleOnChangeSubConceptInput}) => {
     const [isExpanded, setIsExpanded] = useState(true);
@@ -38,7 +38,7 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept,
                         <TextField key={i} label='Subtema' size='small' name='subConcept' variant='outlined' onChange={(e) =>{handleOnChangeSubConceptInput(e, i, index)}}/>
                     )
                 })}
-                <Button size='small' startIcon={<AddIcon/>} variant='outlined' color='default' onClick={(e) => {handleAddSubConcept(e, index)}}>Agregar subtema</Button>
+                <Button size='small' startIcon={<AddCircleIcon/>} variant='outlined' color='primary' onClick={(e) => {handleAddSubConcept(e, index)}}>Agregar subtema</Button>
             </div>
         </div>
     )

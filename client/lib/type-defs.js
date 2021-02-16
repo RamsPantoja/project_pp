@@ -62,5 +62,6 @@ export const typeDefs = gql `
     type Mutation {
         createUser(input: inputUser) : String
         addCourse(input: inputCourse) : Course
+        insertUserInCourse(email: String!, id: ID!): String
     }
 `

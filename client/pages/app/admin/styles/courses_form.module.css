@@ -4,6 +4,7 @@
     height: 100%;
     flex: 1;
     justify-content: space-around;
+    overflow: auto;
 }
 
 
@@ -20,11 +21,13 @@
 .formFlex {
     display: flex;
     padding: 1.5em;
+    overflow: auto;
 }
 
 .formFirstInputs {
     display: grid;
-    gap: 1.5em;
+    flex-direction: column;
+    gap: 1em;
     padding: 1em;
     flex: 0.4;
 }
@@ -34,8 +37,24 @@
     flex-direction: column;
     padding: 1em;
     flex: 0.6;
+    overflow: auto;
 }
 
 .formConceptInputs > p {
     padding: 0.5em;
+}
+
+.formFirstIcons {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.objectiveContainer {
+    display: flex;
+}
+
+@media(max-width: 1300px) {
+    .formFlex {
+        flex-direction: column;
+    }
 }

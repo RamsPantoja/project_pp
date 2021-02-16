@@ -6,16 +6,8 @@ export const CREATE_USER = gql `
     }
 `;
 
-export const USER_AUTH = gql `
-    mutation UserAuth($email: String!, $password: String!) {
-        userAuth(email: $email, password: $password)
-    }
-`
-
-export const ADMIN_AUTH = gql `
-    mutation AdminAuth($email: String!, $password: String!) {
-        adminAuth(email: $email, password: $password) {
-            token
-        }
+export const INSERT_USER_IN_COURSE = gql `
+    mutation InsertUserInCourse($email: String!, $id: ID!) {
+        insertUserInCourse(email: $email, id: $id)
     }
 `

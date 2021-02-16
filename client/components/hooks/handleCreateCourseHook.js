@@ -109,7 +109,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
 
     }
 
-    //Agrega campos objetivo en el cmapo objectives
+    //Agrega campos objetivo en el campo objectives
     const handleAddObjetive = (e) => {
         e.preventDefault();
         setState((prevState) => ({
@@ -117,6 +117,16 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
             objectives: prevState.objectives.concat(count)
         }))
         setCount(count+1);
+    }
+
+    //Elimina el campo objetivo del campo objectives
+    const handleDeleteObjetive = (e, index) => {
+        e.preventDefault();
+        setState((prevState) => ({
+            ...prevState,
+            objectives: state.objectives.filter((objetive, i) => index !== i)
+        }))
+
     }
 
     //Agrega Campos dentro del campo conceptList
@@ -128,7 +138,7 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }));
     }
 
-    //Lee los campos Tema y subTema del formulario de crear Cursos y actualiza los campos concept y subconcept
+    //Lee los campos Tema del formulario de crear Cursos y actualiza los campos concept y subconcept
     const handleOnChangeConceptInput = (e, index) => {
         setIsDirty(true);
         const name = e.target.name;
@@ -175,7 +185,9 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }))
         setSubConceptCount(subConceptCount+1)
     }
-
+    
+    //Lee el campo Subtema y actualiza el state en base a que campo subtema se esta modificando y en el campo Tema que se esta modificando.
+    //Haciendo uso del index de cada campo que ha sido renderizado en los camponentes CourseForm y FormAddConcept con la funcion map.
     const handleOnChangeSubConceptInput = (e, i, indexConcept) => {
         setIsDirty(true);
         const name = e.target.name;
@@ -207,8 +219,8 @@ const useHandleFormCourse = (stateSchema, validationSchemaCourse = {}, disableSc
         }))
     }
 
-
-    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, handleAddConcept, handleOnChangeConceptInput, handleAddSubConcept, handleOnChangeSubConceptInput]
+    //Retornamos todos los metodos.
+    return [state, disable, handleOnChange, handleOnChangeObjetiveInput, handleAddObjetive, handleAddConcept, handleOnChangeConceptInput, handleAddSubConcept, handleOnChangeSubConceptInput, handleDeleteObjetive]
 }
 
 export default useHandleFormCourse;

@@ -3,7 +3,8 @@ import LayoutAdmin from '../../../components/LayoutAdmin';
 import styles from './styles/courses_form.module.css';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add'
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import FormAddConcept from '../../../components/FormAddConcept';
 import useHandleFormCourse, { disableSchemaCourse, stateSchemaInfCourse, validationSchemaCourse } from '../../../components/hooks/handleCreateCourseHook';
 
@@ -17,8 +18,11 @@ const CoursesForm = () => {
         handleAddConcept, 
         handleOnChangeConceptInput,
         handleAddSubConcept,
-        handleOnChangeSubConceptInput] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse)
-
+        handleOnChangeSubConceptInput,
+        handleDeleteObjetive] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse);
+    
+    
+    const isDisableButtonToAddObjectives = state.objectives.length === 9 ? true : false;
     return (
         <LayoutAdmin>
             <div className={styles.coursesFormLayout}>
@@ -31,10 +35,15 @@ const CoursesForm = () => {
                             <p>Objetivos(Minimo:1):</p>
                             { state.objectives.map((item, index) => {
                                 return (
-                                    <TextField key={index} label='Objetivo' variant='outlined' size='small' name='objective' onChange={(e) => {handleOnChangeObjetiveInput(e, index)}}/>
+                                    <div key={index} className={styles.objectiveContainer}>
+                                        <TextField label='Objetivo' variant='outlined' size='small' name='objective' value={item.value} fullWidth onChange={(e) => {handleOnChangeObjetiveInput(e, index)}}/>
+                                        <Button onClick={(e) => {handleDeleteObjetive(e, index)}} size='small' color='secondary'><DeleteIcon/></Button>
+                                    </div>
                                 )
                             })}
-                            <Button onClick={(e) => {handleAddObjetive(e)}} color='primary' variant='outlined' startIcon={<AddIcon/>}>Agregar Objetivo</Button>
+                            <div className={styles.formFirstIcons}>
+                                <Button onClick={(e) => {handleAddObjetive(e)}} size='small' color='primary' variant='contained' disabled={isDisableButtonToAddObjectives} startIcon={<AddCircleIcon/>}>Agregar objetivo</Button>
+                            </div>
                         </div>
                         <div className={styles.formConceptInputs}>
                             <p>Temario(Minimo:1):</p>
@@ -49,7 +58,10 @@ const CoursesForm = () => {
                                     handleOnChangeSubConceptInput={handleOnChangeSubConceptInput}/>
                                 )
                             })}
-                            <Button onClick={(e) => {handleAddConcept(e)}} color='primary' variant='outlined' startIcon={<AddIcon/>}>Agregar tema</Button>
+                            <div className={styles.formFirstIcons}>
+                                <Button onClick={(e) => {handleAddConcept(e)}} size='small'color='primary' variant='contained' startIcon={<AddCircleIcon/>}>Agregar tema</Button>
+                                <Button onClick={(e) => {handleAddConcept(e)}} size='small' color='secondary' variant='contained' startIcon={<DeleteIcon/>}>Eliminar tema</Button>
+                            </div>
                         </div>
                     </form>
                 </div>

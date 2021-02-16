@@ -1,31 +1,7 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
-import Admins from '../models/Admins';
-import {serialize, parse} from 'cookie';
-
-
-//Crea el token para enviarlo a las headers atraves de la cookie.
-const createUserToken = (entity, SECRET, expiresIn) => {
-    const createdAt = Date.now();
-    const {email} = entity
-    const obj = {email, createdAt, maxAge: 3600}
-    return jwt.sign(obj, SECRET, {expiresIn});
-}
-
-export const parseCookies = (req) => {
-    if(req.cookies) return req.cookies
-
-    const cookie = req.headers?.cookie
-    return parse(cookie || '');
-}
-
-export const getTokenCookie = (req) => {
-    const cookies = parseCookies(req);
-    return cookies['authToken']
-}
+import mongoose from 'mongoose';
 
 export const resolvers = {
     Query: {
@@ -96,11 +72,46 @@ export const resolvers = {
                 objectives: input.objectives,
                 conceptList: input.conceptList,
                 enrollmentLimit: input.enrollmentLimit,
-                enrollmentUers: [],
+                enrollmentUsers: [],
                 price: input.price
             }).save();
 
             return newCourse;
+        },
+
+        insertUserInCourse: async (parent, {email, id}) => {
+            await dbConnect();
+
+            const user = await Users.findOne({email: email}, (err, data) => {
+                if (data) {
+                    const user = {
+                        email: data.email,
+                        firstname: data.firstname,
+                        lastname: data.lastname
+                    }
+                    
+                    return user;
+                }
+            })
+
+            if(!user) {
+                throw new Error('User no found')
+            }
+
+            const course = await Courses.findOne({_id: id}, (err, data) => {
+                try {
+                    if (data) {
+                        return data
+                    }
+                } catch (error) {
+                    return error;
+                }
+            })
+
+            course.enrollmentUsers.push(user);
+            course.save();
+
+            return 'Document updated'
         }
     }
 }
