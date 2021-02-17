@@ -11,3 +11,9 @@ export const INSERT_USER_IN_COURSE = gql `
         insertUserInCourse(email: $email, id: $id)
     }
 `
+
+export const ADD_COURSE = gql `
+    mutation createCourse($input: inputCourse) {
+        addCourse(input: $input)
+    }
+`

@@ -8,7 +8,9 @@ export const stateSchemaInfCourse = {
     conceptList: [{
         concept: { value: '', errorfield: false},
         subConceptList: [{value: '', errorfield: false}]
-    }]
+    }],
+    price: {value: '', errorfield: false},
+    enrollmentLimit: {value: '', errorfield: false}
 }
 
 export const validationSchemaCourse = {
@@ -19,7 +21,9 @@ export const validationSchemaCourse = {
     concept: { required: true},
     subConcept: { required: true},
     objectives: { required: true},
-    conceptList: { required: true}
+    conceptList: { required: true},
+    price: { required: true},
+    enrollmentLimit: { required: true}
 }
 
 
@@ -33,8 +37,6 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
     const [state, setState] = useState(stateSchemaInfCourse);
     const [disable, setDisable] = useState(disableSchemaCourse);
     const [isDirty, setIsDirty] = useState(false);
-    const [count, setCount] = useState(0);
-    const [subConceptCount, setSubConceptCount] = useState(0);
 
     const validateState = useCallback(() => {
         const hasErrorInState = Object.keys(validationSchemaCourse).some((key) => {
@@ -42,6 +44,8 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             const titleValue = state.title.value;
             const descriptionValue = state.description.value;
             const teacherValue = state.teacher.value;
+            const priceValue = state.price.value;
+            const enrollmentLimitValue = state.enrollmentLimit.value;
             const hasErrorInObjectives = Object.keys(state.objectives).some((key) => {
                 const objectiveValue = state.objectives[key].value;
 
@@ -59,7 +63,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             })
             const lengthObjetives = state.objectives.length;
             const lengthConceptList = state.conceptList.length;
-            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue)) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0);
+            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue)) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0);
         })
 
         return hasErrorInState;
@@ -137,9 +141,8 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
         e.preventDefault();
         setState((prevState) => ({
             ...prevState,
-            objectives: prevState.objectives.concat(count)
+            objectives: prevState.objectives.concat({value: '', errorfield: false})
         }))
-        setCount(count+1);
     }
 
     //Elimina el campo objetivo del campo objectives
@@ -157,7 +160,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
         e.preventDefault();
         setState((prevState) => ({
             ...prevState,
-            conceptList: prevState.conceptList.concat({concept:'', subConceptList:[{value: '', errorfield: false}]})
+            conceptList: prevState.conceptList.concat({concept: {value: '', errorfield: false}, subConceptList:[{value: '', errorfield: false}]})
         }));
     }
 
@@ -207,7 +210,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             
             return {
                 ...item,
-                subConceptList: state.conceptList[index].subConceptList.concat(subConceptCount)
+                subConceptList: state.conceptList[index].subConceptList.concat({value: '', errorfield: false})
             }
         })
 
@@ -215,7 +218,6 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             ...prevState,
             conceptList: subConcept
         }))
-        setSubConceptCount(subConceptCount+1)
     }
 
     //Elimina el campo dentro de subConceptList

@@ -45,7 +45,7 @@ export const typeDefs = gql `
 
     input inputConcept {
         concept: String!
-        subConceptList: [String!]
+        subConceptList: [String]!
     }
 
     input inputCourse {
@@ -53,15 +53,15 @@ export const typeDefs = gql `
         title: String!
         teacher: String!
         description: String!
-        objectives: [String!]
-        conceptList: [inputConcept!]
+        objectives: [String]!
+        conceptList: [inputConcept]!
         enrollmentLimit: Int!
         price: Int!
     }
 
     type Mutation {
         createUser(input: inputUser) : String
-        addCourse(input: inputCourse) : Course
+        addCourse(input: inputCourse) : String
         insertUserInCourse(email: String!, id: ID!): String
     }
 `

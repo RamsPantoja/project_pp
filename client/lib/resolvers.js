@@ -76,7 +76,7 @@ export const resolvers = {
                 price: input.price
             }).save();
 
-            return newCourse;
+            return 'Curso creado!';
         },
 
         insertUserInCourse: async (parent, {email, id}) => {
