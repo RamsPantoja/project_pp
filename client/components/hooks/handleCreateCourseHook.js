@@ -42,21 +42,24 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             const titleValue = state.title.value;
             const descriptionValue = state.description.value;
             const teacherValue = state.teacher.value;
-            const objectivesValue = Object.keys(state.objectives).some((key) => {
+            const hasErrorInObjectives = Object.keys(state.objectives).some((key) => {
                 const objectiveValue = state.objectives[key].value;
 
-                return objectiveValue;
+                return !objectiveValue;
             });
-            const conceptListValue = Object.keys(state.conceptList).some((key) => {
+            const hasErrorInConceptList = Object.keys(state.conceptList).some((key) => {
+                const lengthSubConceptList = state.conceptList[key].subConceptList.length;
                 const conceptValue = state.conceptList[key].concept.value;
-                const subConceptsValue = Object.keys(state.conceptList[key].subConceptList).some((keySubConcept) => {
+                const hasErrorInSubConceptList = Object.keys(state.conceptList[key].subConceptList).some((keySubConcept) => {
                     const subConceptValue = state.conceptList[key].subConceptList[keySubConcept].value;
-                    return subConceptValue;
+                    return !subConceptValue;
                 })
 
-                return (concep)
+                return (!conceptValue || hasErrorInSubConceptList || lengthSubConceptList === 0);
             })
-            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue || !objectivesValue)) 
+            const lengthObjetives = state.objectives.length;
+            const lengthConceptList = state.conceptList.length;
+            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue)) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0);
         })
 
         return hasErrorInState;
@@ -154,7 +157,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
         e.preventDefault();
         setState((prevState) => ({
             ...prevState,
-            conceptList: prevState.conceptList.concat({concept:'', subConceptList:[]})
+            conceptList: prevState.conceptList.concat({concept:'', subConceptList:[{value: '', errorfield: false}]})
         }));
     }
 
