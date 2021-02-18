@@ -1,7 +1,6 @@
 import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
-import mongoose from 'mongoose';
 
 export const resolvers = {
     Query: {
@@ -82,17 +81,7 @@ export const resolvers = {
         insertUserInCourse: async (parent, {email, id}) => {
             await dbConnect();
 
-            const user = await Users.findOne({email: email}, (err, data) => {
-                if (data) {
-                    const user = {
-                        email: data.email,
-                        firstname: data.firstname,
-                        lastname: data.lastname
-                    }
-                    
-                    return user;
-                }
-            })
+            const user = await Users.findOne({email: email});
 
             if(!user) {
                 throw new Error('User no found')
@@ -112,6 +101,31 @@ export const resolvers = {
             course.save();
 
             return 'Document updated'
+        },
+
+        deleteCourseByTitle: async (parent, {title}) => {
+            await dbConnect();
+            
+            return new Promise((resolve, rejects) => {
+                Courses.findOneAndRemove({title: title}, (error, doc) => {
+                    if(error || !doc) {
+                        rejects('No se puede eliminar ó no se encuentra el curso');
+                    } else {
+                        resolve('Se eliminó correctamente')
+                    }
+                });
+            });
+        },
+
+        deleteUserInCourse: async (parent, {id, userEmail}) => {
+            await dbConnect();
+
+            return new Promise((resolve, rejects) => {
+                Courses.findOneAndUpdate({_id: id}, {$pull: {enrollmentUsers: {email: userEmail}}}, (err, doc) => {
+                    if(err) rejects(err)
+                    else resolve('Usuario eliminadó')
+                })
+            })
         }
     }
 }

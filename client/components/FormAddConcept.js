@@ -24,9 +24,9 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept,
     return (
         <div className={styles.formAddConcept}>
             <div className={styles.formInputConcept}>
-                <TextField label='Tema' variant='outlined' name='concept' fullWidth={true} value={item.value} onChange={(e) => {handleOnChangeConceptInput(e, index)}}/>
+                <TextField label='Tema' variant='outlined' name='concept' fullWidth={true} error={item.errorfield} value={item.value} onChange={(e) => {handleOnChangeConceptInput(e, index)}}/>
                 {iconArrow}
-                <Button onClick={(e) => {handleDeleteConcept(e, index)}} size='small' color='secondary'><DeleteIcon/></Button>
+                <Button onClick={(e) => {handleDeleteConcept(e, index)}} size='small' style={{color:'#ff5555'}}><DeleteIcon/></Button>
             </div>
             <div className={
                 cn({
@@ -37,8 +37,8 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept,
                 { state.conceptList[index].subConceptList.map((item, i) => {
                     return (
                         <div key={i} className={styles.subConceptContainer}>
-                            <TextField label='Subtema' size='small' fullWidth={true} name='subConcept' value={item.value} variant='outlined' onChange={(e) =>{handleOnChangeSubConceptInput(e, i, index)}}/>
-                            <Button onClick={(e) => {handleDeleteSubConcept(e, i, index)}} size='small' color='secondary'><DeleteIcon/></Button>
+                            <TextField label='Subtema' size='small' fullWidth={true} name='subConcept' error={item.errorfield} value={item.value} variant='outlined' onChange={(e) =>{handleOnChangeSubConceptInput(e, i, index)}}/>
+                            <Button onClick={(e) => {handleDeleteSubConcept(e, i, index)}} size='small' style={{color:'#ff5555'}}><DeleteIcon/></Button>
                         </div> 
                     )
                 })}

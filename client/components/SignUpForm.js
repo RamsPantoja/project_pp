@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import styles from './styles/SignUpForm.module.css';
 import cn from 'classnames';
+import { CircularProgress } from '@material-ui/core';
 
-const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser, error}) => {
+const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser, error, loading}) => {
     const {firstname, lastname, email, password, confirmpassword} = state;
     const isPasswordMatch = passwordNoMatch || confirmpassword.errorfield === 'SignUpForm_inputError' ? 'SignUpForm_inputError' : 'SignUpForm_input';
     const [disableErrorAlert, setDisableErrorAlert] = useState(false);
@@ -28,6 +29,7 @@ const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser
     const isDisableErrorAlert = disableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
     const isMinimumLenghtPassword = password.error ? <span className={styles.disableErrorAlert}>{password.error}</span> : null;
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
+    const isMutationLoading = loading ? <CircularProgress/> : <button type='submit'>Crear</button>
     
     return (
         <Fragment>
@@ -67,7 +69,7 @@ const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser
                         [styles.SignUpForm_input]: isPasswordMatch === 'SignUpForm_input'
                     })
                 } type='password' placeholder='Confirmar contraseña' name='confirmpassword' onChange={handleOnChange} value={confirmpassword.value}/>
-                <button type='submit'>Crear</button>
+                {isMutationLoading}
             </form>
         </Fragment>
     )

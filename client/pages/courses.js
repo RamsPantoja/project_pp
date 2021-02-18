@@ -3,8 +3,11 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/courses.module.css';
 import CourseCard from '../components/CourseCard';
+import { GET_COURSES } from '../apollo/querys';
+import { useQuery } from '@apollo/client';
 
 const Courses = () => {
+    const {data, error, loading} = useQuery(GET_COURSES, {fetchPolicy: 'cache-and-network'})
     return (
         <Layout>
             <Head>
@@ -15,7 +18,7 @@ const Courses = () => {
                     <h1>Nuestros Cursos</h1>
                 </div>
                 <div className={styles.coursesContent}>
-                    <CourseCard baseUrl={'/courses/'}/>
+                    <CourseCard baseUrl={'/courses/'} data={data} error={error} loading={loading}/>
                 </div>
             </div>
         </Layout>

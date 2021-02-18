@@ -1,0 +1,56 @@
+.backgroundContainer {
+    background-color: rgb(0, 0, 0);
+    z-index: 1001;
+    transform: translateZ(0px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.85;
+}
+
+.displayForm {
+    display: flex;
+    flex-direction: row;
+    z-index: 1002;
+    box-sizing: border-box;
+    top: 0;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    position: fixed;
+    padding: 0.5em;
+    opacity: 1;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.form {
+    background: #ffffff;
+    display: flex;
+    padding: 2em;
+    flex: 1;
+    border-radius: 0.5em;
+    max-width: 30em;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.form > div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row-reverse;
+    margin-top: 1em;
+}
+
+.disableErrorAlert {
+    display: block;
+    font-size: 0.7rem;
+    text-align: center;
+    background-color: #ff5555;
+    color: #ffffff;
+    padding: 1em;
+    border-radius: 0.5em;
+}

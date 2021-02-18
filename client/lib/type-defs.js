@@ -63,5 +63,7 @@ export const typeDefs = gql `
         createUser(input: inputUser) : String
         addCourse(input: inputCourse) : String
         insertUserInCourse(email: String!, id: ID!): String
+        deleteCourseByTitle(title: String!): String
+        deleteUserInCourse(id: ID!, userEmail: String!): String
     }
 `

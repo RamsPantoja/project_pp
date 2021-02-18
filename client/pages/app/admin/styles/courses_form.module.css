@@ -53,6 +53,22 @@
     display: flex;
 }
 
+.disableErrorAlert {
+    display: block;
+    font-size: 0.7rem;
+    text-align: center;
+    background-color: #ff5555;
+    color: #ffffff;
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+.mutationLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media(max-width: 1300px) {
     .formFlex {
         flex-direction: column;

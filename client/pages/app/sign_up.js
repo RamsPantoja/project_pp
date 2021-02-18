@@ -8,8 +8,10 @@ import { stateSchemaInfUser, validationSchema, disableSchema } from '../../compo
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER } from '../../apollo/mutations';
 import { CURRENT_USER } from '../../apollo/querys';
+import { useRouter } from 'next/router';
 
 const SignUp = () => {
+    const router = useRouter();
     const [state, disable, handleOnChange, passwordNoMatch] = useFormValidation(stateSchemaInfUser, validationSchema, disableSchema);
     const { firstname, lastname, email, password } = state;
     const [createUser, {data, error, loading }] = useMutation(CREATE_USER, {
@@ -18,7 +20,12 @@ const SignUp = () => {
             lastname: lastname.value,
             email: email.value,
             password: password.value
-        }}
+            }
+        },
+        onCompleted: async (data) => {
+            router.push('/');
+        }
+
     })
     
 
@@ -41,7 +48,8 @@ const SignUp = () => {
                             disable={disable}
                             passwordNoMatch={passwordNoMatch}
                             createUser={createUser}
-                            error={error}/>
+                            error={error}
+                            loading={loading}/>
                         </div>
                     </div>
                 </div>

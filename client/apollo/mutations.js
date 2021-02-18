@@ -17,3 +17,9 @@ export const ADD_COURSE = gql `
         addCourse(input: $input)
     }
 `
+
+export const DELETE_COURSE = gql `
+    mutation DeleteCourseByTitle($title: String!) {
+        deleteCourseByTitle(title: $title)
+    }
+`

@@ -8,6 +8,9 @@ export const GET_COURSES = gql `
             price
             enrollmentLimit
             teacher
+            enrollmentUsers {
+                id
+            }
         }
     }
 `

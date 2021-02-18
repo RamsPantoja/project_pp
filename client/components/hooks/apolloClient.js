@@ -2,6 +2,7 @@ import {
     ApolloClient,
     InMemoryCache } from '@apollo/client';
 import { useMemo } from 'react';
+import merge from 'deepmerge';
 
 let apolloClient;
 
@@ -24,7 +25,17 @@ const createApolloClient = () => {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: createIsomorphLink(),
-        cache: new InMemoryCache(),
+        cache: new InMemoryCache({
+            typePolicies: {
+                Query: {
+                    fields: {
+                        getCourses: {
+                            merge: false
+                        }
+                    }
+                }
+            }
+        }),
         credentials: 'same-origin'
     })
 }
