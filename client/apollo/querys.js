@@ -16,7 +16,7 @@ export const GET_COURSES = gql `
 `
 
 export const GET_COURSE_BY_ID = gql `
-    query getCourseById($id: ID) {
+    query getCourseById($id: ID!) {
         getCourseById(id: $id) {
             title
             teacher
@@ -37,8 +37,8 @@ export const GET_COURSE_BY_ID = gql `
 `
 
 export const GET_ALL_USERS = gql `
-    query getAllUsers {
-        getUsers {
+    query getAllUsers($limit: Int!, $after: ID) {
+        getUsers(limit: $limit, after: $after) {
             id
             firstname
             lastname

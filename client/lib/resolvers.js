@@ -2,13 +2,47 @@ import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
 
+const paginateResults = ({
+    after: cursor,
+    limit,
+    results,
+    getCursor = () => null,
+}) => {
+
+    if(limit < 1) return [];
+
+    if(!cursor) return results.slice(0, limit);
+
+    const cursorIndex = results.findIndex(item => {
+        let itemCursor = item.id ? item.id : getCursor(item);
+
+        return itemCursor ? cursor === itemCursor : false;
+
+    });
+
+
+    return cursorIndex >= 0 
+        ? cursorIndex === results.length -1
+            ? []
+            : results.slice(cursorIndex + 1, Math.min(results.length, cursorIndex + 1 + limit))
+        : results.slice(0, limit)
+}
+
+
 export const resolvers = {
     Query: {
-        getUsers: async (parent) => {
+        getUsers: async (parent, {limit, after}) => {
             await dbConnect();
-            const users = await Users.find({});
-            return users.filter((user) =>  user.isAdmin === false);
+            const allUsers = await Users.find({isAdmin: false});
+            allUsers.reverse();
 
+            const users = paginateResults({
+                after,
+                limit: limit,
+                results: allUsers
+            })
+
+            return users;
         },
 
         getCourses: async (parent) => {

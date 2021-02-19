@@ -8,7 +8,7 @@ import { Fragment } from 'react';
 import { useMutation } from '@apollo/client';
 import { DELETE_COURSE } from '../apollo/mutations';
 
-const CourseFormDelete = ({handleOnClickToDeleteCourse, refetch}) => { 
+const CourseFormDelete = ({handleOnClickToDeleteCourse}) => { 
     const [state, setState] = useState({
         title: {value: '', errorfield: false, required: true}
     });
@@ -24,6 +24,7 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse, refetch}) => {
     })
 
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
+
 
     const handleOnChange = (e) => {
         const name = e.target.name;
@@ -53,7 +54,7 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse, refetch}) => {
             <div className={styles.displayForm}>
                 <form className={styles.form}>
                     {anyApolloError}
-                    <TextField label='Nombre del Curso' fullWidth={true} size='small' name='title' error={state.title.errorfield} variant='outlined' value={state.title.value} onChange={(e) => {handleOnChange(e)}}/>
+                    <TextField label='Confirma el nombre del curso' fullWidth={true} size='small' name='title' error={state.title.errorfield} variant='outlined' value={state.title.value} onChange={(e) => {handleOnChange(e)}}/>
                     <div>
                         <Button variant='contained' style={{background: '#ff5555', color:'#ffffff'}} startIcon={<DeleteIcon/>} onClick={(e) => {deleteCourse(e)}}>Eliminar</Button>
                         <Button color='default' variant='outlined' startIcon={<CancelIcon/>} onClick={(e) => {handleOnClickToDeleteCourse(e)}}>Cancelar</Button>

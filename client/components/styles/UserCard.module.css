@@ -13,9 +13,9 @@
 
 .userCardInf {
     display: flex;
-    grid-template-columns: repeat(3, 1fr);
     flex: 0.8;
-    justify-content: center;
+    gap: 0.2em;
+    justify-content: space-between;
 }
 
 .userCardInf > p {

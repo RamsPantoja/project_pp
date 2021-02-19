@@ -1,8 +1,7 @@
 .usersContainerScroll {
     display: flex;
     flex-direction: column;
-    padding-top: 2em;
-    align-items: center;
+    padding: 1em;
     overflow: auto;
     flex: 1;
 }

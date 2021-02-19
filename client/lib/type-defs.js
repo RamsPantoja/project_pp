@@ -38,9 +38,9 @@ export const typeDefs = gql `
     }
 
     type Query {
-        getUsers: [User]
+        getUsers(limit: Int!, after: ID): [User!]
         getCourses: [Course]
-        getCourseById(id: ID): Course
+        getCourseById(id: ID!): Course
     }
 
     input inputConcept {

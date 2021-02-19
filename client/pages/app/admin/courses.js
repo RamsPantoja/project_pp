@@ -10,7 +10,6 @@ import { useQuery } from '@apollo/client';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Button } from '@material-ui/core';
 import CourseFormDelete from '../../../components/CourseFormDelete';
-import { initializeApollo } from '../../../components/hooks/apolloClient';
 
 const CoursesAdmin = () => {
     const router = useRouter();

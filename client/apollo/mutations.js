@@ -23,3 +23,9 @@ export const DELETE_COURSE = gql `
         deleteCourseByTitle(title: $title)
     }
 `
+
+export const DELETE_USER_IN_COURSE = gql `
+    mutation DeleteUserInCourse($id: ID!, $userEmail: String!) {
+        deleteUserInCourse(id: $id, userEmail: $userEmail)
+    }
+`

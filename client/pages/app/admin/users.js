@@ -6,9 +6,14 @@ import UserCard from '../../../components/UserCard';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useQuery } from '@apollo/client'
 import { GET_ALL_USERS } from '../../../apollo/querys';
+import { Button } from '@material-ui/core';
 
 const Users = () => {
-    const {data, error, loading} = useQuery(GET_ALL_USERS);
+    const {data, error, loading, fetchMore} = useQuery(GET_ALL_USERS, {
+        variables: {
+            limit: 2,
+        }
+    })
 
     if (loading) {
         return (
@@ -33,6 +38,13 @@ const Users = () => {
                             email={item.email}/>
                         )
                     })}
+                    <Button onClick={ async () => {
+                        await fetchMore({
+                            variables: {
+                                after: data.getUsers[data.getUsers.length - 1].id
+                            }
+                        })
+                    }}>More</Button>
                 </div>
             </div>
         </LayoutAdmin>

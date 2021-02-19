@@ -54,3 +54,10 @@
     padding: 1em;
     border-radius: 0.5em;
 }
+
+.userEmailToConfirm {
+    text-align: center;
+    padding: 0.5em;
+    font-weight: bold;
+    color: #ff5555;
+}

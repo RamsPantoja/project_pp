@@ -2,15 +2,19 @@ import React from 'react';
 import LayoutAdmin from '../../../../components/LayoutAdmin';
 import styles from '../styles/coursesbyid.module.css';
 import UserCard from '../../../../components/UserCard';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_COURSES, GET_COURSE_BY_ID } from '../../../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { initializeApollo } from '../../../../components/hooks/apolloClient';
+import { DELETE_USER_IN_COURSE } from '../../../../apollo/mutations';
 
 const CoursesById = ({id}) => {
-    const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}});
+    const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}, pollInterval: 1000});
+    const [deleteUserInCourse, {data: dataDeleteUserInCourse, error: errorDeleteUserInCourse, loading: loadingDeleteUserInCourse}] = useMutation(DELETE_USER_IN_COURSE);
 
-    const circularProgress = !data && loading ? <CircularProgress/> : data.getCourseById.enrollmentUsers.map((item, index) => { return (<UserCard key={index} firstname={item.firstname} lastname={item.lastname} email={item.email}/>)});
+
+    const circularProgress = !data && loading ? <CircularProgress/> : data.getCourseById.enrollmentUsers.map((item, index) => { return (<UserCard error={errorDeleteUserInCourse} key={index} firstname={item.firstname} id={id} mutation={deleteUserInCourse} lastname={item.lastname} email={item.email}/>)});
+    
     if (loading) {
         return (
             <LayoutAdmin>

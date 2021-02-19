@@ -104,7 +104,7 @@ const CoursesForm = () => {
                                 )
                             })}
                             <div className={styles.formFirstIcons}>
-                                <Button onClick={(e) => {handleAddObjetive(e)}} size='small' style={{background: '#15639d', color:'#ffffff'}} variant='contained' disabled={isDisableButtonToAddObjectives} startIcon={<AddCircleIcon/>}>Agregar objetivo</Button>
+                                <Button onClick={(e) => {handleAddObjetive(e)}} size='small' color='primary' variant='outlined' disabled={isDisableButtonToAddObjectives} startIcon={<AddCircleIcon/>}>Agregar objetivo</Button>
                             </div>
                             {isMessageAlertError || anyApolloError}
                             <div className={styles.mutationLoading}>
