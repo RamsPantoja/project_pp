@@ -41,6 +41,7 @@ export const typeDefs = gql `
         getUsers(limit: Int!, after: ID): [User!]
         getCourses: [Course]
         getCourseById(id: ID!): Course
+        getUserByEmail(email: String!): User
     }
 
     input inputConcept {
@@ -65,5 +66,6 @@ export const typeDefs = gql `
         insertUserInCourse(email: String!, id: ID!): String
         deleteCourseByTitle(title: String!): String
         deleteUserInCourse(id: ID!, userEmail: String!): String
+        deleteUserByEmail(userEmail: String!): String
     }
 `

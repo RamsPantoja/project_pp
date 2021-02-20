@@ -69,6 +69,16 @@ export const resolvers = {
             });
 
             return course;
+        },
+        
+        getUserByEmail: async (parent, {email}) => {
+            await dbConnect();
+            return new Promise((resolve, rejects) => {
+                Users.findOne({email: email}, (err, user) => {
+                    if(err || !user) rejects('No se encuentra el usuario');
+                    else resolve(user)
+                })
+            })
         }
     },
     Mutation: {
@@ -160,6 +170,18 @@ export const resolvers = {
                     else resolve('Usuario eliminadó')
                 })
             })
+        },
+
+        deleteUserByEmail: async (parent, {userEmail}) => {
+            await dbConnect();
+
+            return new Promise((resolve, rejects) => {
+                Users.findOneAndRemove({email: userEmail}, (error, user) => {
+                    if(error || !user) rejects('No se cuentra el usuario');
+                    else resolve('Se eliminó correctamente')
+                })
+            })
+
         }
     }
 }

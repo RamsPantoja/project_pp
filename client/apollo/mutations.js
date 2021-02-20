@@ -29,3 +29,9 @@ export const DELETE_USER_IN_COURSE = gql `
         deleteUserInCourse(id: $id, userEmail: $userEmail)
     }
 `
+
+export const DELETE_USER_BY_EMAIL = gql `
+    mutation DeleteUserByEmail($userEmail: String!) {
+        deleteUserByEmail(userEmail: $userEmail)
+    }
+`

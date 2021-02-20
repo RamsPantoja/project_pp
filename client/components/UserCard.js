@@ -6,7 +6,7 @@ import UpdateIcon from '@material-ui/icons/Update';
 import UserFormDelete from './UserFormDelete';
 import { Fragment } from 'react';
 
-const UserCard = ({firstname, lastname, email, mutation, id, error}) => {
+const UserCard = ({firstname, lastname, email, mutation, id, error, userId}) => {
     const [isUserFormDelete, setIsUserFormDelete] = useState(false);
 
     const handleOnClickDeleteUserInCourse = (e) => {
@@ -18,7 +18,7 @@ const UserCard = ({firstname, lastname, email, mutation, id, error}) => {
         }
     }
 
-    const userFormDelete = isUserFormDelete ? <UserFormDelete error={error} handleOnClickDeleteUserInCourse={handleOnClickDeleteUserInCourse} emailToDelete={email} mutation={mutation} id={id}/> : null;
+    const userFormDelete = isUserFormDelete ? <UserFormDelete userId={userId} error={error} handleOnClickDeleteUserInCourse={handleOnClickDeleteUserInCourse} emailToDelete={email} mutation={mutation} id={id}/> : null;
 
     return (
         <Fragment>
