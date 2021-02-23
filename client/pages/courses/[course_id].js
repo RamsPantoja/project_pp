@@ -2,24 +2,18 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/course_id.module.css';
-import {useMutation, useQuery} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { initializeApollo } from '../../components/hooks/apolloClient';
 import { signIn, useSession } from 'next-auth/client';
-import { INSERT_USER_IN_COURSE } from '../../apollo/mutations';
+import { useRouter } from 'next/router';
 
 const DescriptionCourse = ({id}) => {
     const [session, loading] = useSession();
+    const router = useRouter();
     
     const isEmail = loading && !session ? null : session?.user.email;
-    
-    const [insertUserInCourse, {data: dataMutation, error: errorMutation, loading: loadingMutation}] = useMutation(INSERT_USER_IN_COURSE, {
-        variables: {
-            email: isEmail,
-            id: id
-        }
-    })
 
     const {data, error, loading: loadingCourse} = useQuery(GET_COURSE_BY_ID, {
         variables: {id: id}
@@ -40,7 +34,7 @@ const DescriptionCourse = ({id}) => {
     const handleOnClickSession = (e) => {
         e.preventDefault();
         if (session) {
-            insertUserInCourse();
+            router.push(`/shopping_cart/${id}`)
         } else {
             signIn();
         }

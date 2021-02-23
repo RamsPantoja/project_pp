@@ -15,7 +15,11 @@ const Users = () => {
         email: {value: '', errorfield: false, required: true}
     });
 
-    const [deleteUserByEmail, {data: dataDeleteUserByEmail, error: errorDeleteUserByEmail, loading: loadingDeleteUserByEmail}] = useMutation(DELETE_USER_BY_EMAIL);
+    const [deleteUserByEmail, {data: dataDeleteUserByEmail, error: errorDeleteUserByEmail, loading: loadingDeleteUserByEmail}] = useMutation(DELETE_USER_BY_EMAIL, {
+        onCompleted: async (dataDeleteUserByEmail) => {
+            alert(dataDeleteUserByEmail.deleteUserByEmail);
+        }
+    });
 
     const [ getUserByEmail, {data: dataUserByEmail, loading: loadingUserByEmail, error: errorUserByEmail}] = useLazyQuery(GET_USER_BY_EMAIL);
 
@@ -68,6 +72,7 @@ const Users = () => {
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null
     const errorUserByEmailApollo = errorUserByEmail ? <span className={styles.disableErrorAlert}>{errorUserByEmail.message}</span> : null
     const buttonToLoadMore = data.getUsers.length >= 1 ? <Button onClick={ async () => {await fetchMore({variables: {after: data.getUsers[data.getUsers.length - 1].id}})}}>Mas...</Button> : null;
+    
     return (
         <LayoutAdmin>
             <div className={styles.usersContainerScroll}>

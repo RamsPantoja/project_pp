@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles/Layout.module.css'
 import Link from 'next/link';
 import DropDownUser from './dropdownUser';
-import ButtonsInUp from '../components/ButtonsInUp';
+import ButtonsInUp from './ButtonsInUp';
 import { useSession } from 'next-auth/client';
 
 const Layout = ({children}) => {
