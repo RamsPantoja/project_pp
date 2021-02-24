@@ -1,6 +1,12 @@
 import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
+import mercadopago from 'mercadopago';
+
+
+mercadopago.configure({
+    access_token: 'TEST-1193723074873676-022320-3c22664d42476d6800e40c37b0a2437c-719492528'
+});
 
 const paginateResults = ({
     after: cursor,
@@ -27,6 +33,8 @@ const paginateResults = ({
             : results.slice(cursorIndex + 1, Math.min(results.length, cursorIndex + 1 + limit))
         : results.slice(0, limit)
 }
+
+
 
 
 export const resolvers = {
@@ -166,8 +174,13 @@ export const resolvers = {
 
             return new Promise((resolve, rejects) => {
                 Courses.findOneAndUpdate({_id: id}, {$pull: {enrollmentUsers: {email: userEmail}}}, (err, doc) => {
-                    if(err) rejects(err)
-                    else resolve('Usuario eliminadó')
+                    if(err) {
+                        rejects(err)
+                    } else if(!doc) {
+                        rejects('No se encuentra el usuario')
+                    } else {
+                        resolve('Usuario Eliminadó');
+                    }
                 })
             })
         },
@@ -181,6 +194,41 @@ export const resolvers = {
                     else resolve('Se eliminó correctamente')
                 })
             })
+
+        },
+
+        createPreferenceMercadoPago: async (parent, {title, price, firstname, lastname, email}) => {
+            let payer = {
+                name: firstname,
+                surname: lastname,
+                email: email
+            }
+
+            let preference = {
+                items: [
+                    {
+                        title: title,
+                        unit_price: parseInt(price),
+                        quantity: 1,
+                        category_id: 'learnings',
+                        currency_id: 'MXN'
+                    }
+                ],
+                payer: payer,
+                payment_methods: {
+                    installments: 3
+                },
+                statement_descriptor: 'PROFE/PACO'
+            }
+
+            const preferenceItem = await mercadopago.preferences.create(preference, payer)
+            .then(function(response) {
+                return response.body.init_point
+            }).catch(function(error) {
+                return error
+            })
+
+            return (preferenceItem);
 
         }
     }

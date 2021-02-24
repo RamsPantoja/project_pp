@@ -6,17 +6,28 @@ import Head from 'next/head';
 import styles from '../styles/shopping_id.module.css';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button, RadioGroup } from '@material-ui/core';
+import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client';
 
 const ShoppingCart = ({id}) => {
+    const router = useRouter();
+    const [session] = useSession();
 
     const { data, error, loading } = useQuery(GET_COURSE_BY_ID, {
         variables: {
             id: id
         }
     })
+
+    const [createPreferenceMercadoPago, {data: dataCreatePreferenceMercadoPago, error: errorCreatePreferenceMercadoPago, loading: loadingCreatePreferenceMercadoPago}] = useMutation(CREATE_PREFERENCE_MERCADO_PAGO, {
+        onCompleted: async (dataCreatePreferenceMercadoPago) => {
+            router.push(dataCreatePreferenceMercadoPago.createPreferenceMercadoPago);
+        }
+    });
 
     const [totalOption, setTotalOption] = useState(1);
     
@@ -48,7 +59,21 @@ const ShoppingCart = ({id}) => {
 
     const transformPrice = totalOption === 1 ? price : totalOption === 2 ? price/totalOption : null;
 
-    console.log(transformPrice)
+    const handleCreatePreferenceMutation = (e) => {
+        e.preventDefault();
+        createPreferenceMercadoPago({
+            variables: {
+                title: title,
+                price: transformPrice,
+                firstname: session.user.firstname,
+                lastname: session.user.lastname,
+                email: session.user.email
+            }
+        })
+    }
+
+    const isCreatePreferenceLoading = loadingCreatePreferenceMercadoPago ? <div className={styles.loadingMutation}><CircularProgress/></div> : <Button style={{background: '#dbf998', color:'#15639d', fontWeight: 'bold'}} onClick={(e) => {handleCreatePreferenceMutation(e)}}>Comprar</Button>
+
     return (
         <Layout>
             <Head>
@@ -78,7 +103,8 @@ const ShoppingCart = ({id}) => {
                         <p>Total: </p>
                         <p>${price/totalOption}</p>
                     </div>
-                    <Button style={{background: '#dbf998', color:'#15639d', fontWeight: 'bold'}}>Comprar</Button>
+                    <script src="https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js" data-preference-id='<%= global.id %>' type='text/javascript'></script>
+                    {isCreatePreferenceLoading}
                 </div>
             </div>
         </Layout>

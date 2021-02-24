@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/course_id.module.css';
-import {useQuery} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { initializeApollo } from '../../components/hooks/apolloClient';
 import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 
 const DescriptionCourse = ({id}) => {
     const [session, loading] = useSession();
     const router = useRouter();
-    
-    const isEmail = loading && !session ? null : session?.user.email;
+    //const isEmail = loading && !session ? null : session?.user.email;
 
     const {data, error, loading: loadingCourse} = useQuery(GET_COURSE_BY_ID, {
         variables: {id: id}

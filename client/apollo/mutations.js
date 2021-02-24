@@ -35,3 +35,9 @@ export const DELETE_USER_BY_EMAIL = gql `
         deleteUserByEmail(userEmail: $userEmail)
     }
 `
+
+export const CREATE_PREFERENCE_MERCADO_PAGO = gql `
+    mutation CreatePreferenceMercadoPago($title: String!, $price: Int!, $firstname: String!, $lastname: String!, $email: String!) {
+        createPreferenceMercadoPago(title: $title, price: $price, firstname: $firstname, lastname: $lastname, email: $email)
+    }
+`
