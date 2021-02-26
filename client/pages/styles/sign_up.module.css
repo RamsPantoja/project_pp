@@ -54,3 +54,50 @@
     flex-direction: column;
     padding: 2em 1em;
 }
+
+
+.signUp_userCreated {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    padding: 2em;
+    background-color: #ffffff;
+    font-weight: bold;
+    border-radius: 1em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.linkToHome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #16649e;
+    color: #ffffff;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.2s ease;
+}
+
+
+.linkToHome:hover {
+    transform: scale(1.01);
+    background-color: #1983ff;
+}
+
+.buttonToBack {
+    top: 1em;
+    left: 2em;
+    margin: 1em 0;
+}
+
+
+@media(min-height: 900px) {
+    .buttonToBack {
+        position: absolute;
+        z-index: 1000;
+    }
+}

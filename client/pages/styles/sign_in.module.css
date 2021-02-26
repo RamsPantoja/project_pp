@@ -81,3 +81,20 @@
     justify-content: center;
     align-items: center;
 }
+
+.buttonToBack {
+    margin: 0.5em auto;
+    z-index: 1000;
+    position: relative;
+
+}
+
+
+@media(min-height: 900px) {
+    .buttonToBack {
+        position: absolute;
+        top: 1em;
+        left: 2em;
+        margin: 1em 0;
+    }
+}

@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     img: String,
     isAdmin: Boolean,
+    isConfirmated: Boolean
 })
 
 userSchema.pre('save', function (next) {

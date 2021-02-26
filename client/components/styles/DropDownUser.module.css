@@ -1,4 +1,18 @@
-.button {
-    background-color: aqua;
-    color: #ffffff;
+.displayButtonNoMovil {
+    display: none;
 }
+
+.displayButtonInMovil {
+    display: block;
+}
+
+
+@media(min-width: 768px) {
+    .displayButtonNoMovil {
+        display: block;
+    }
+    .displayButtonInMovil {
+        display: none;
+    }
+}
+

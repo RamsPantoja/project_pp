@@ -2,11 +2,38 @@ import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
+import sgMail from '@sendgrid/mail';
+import jwt from 'jsonwebtoken';
 
 
 mercadopago.configure({
-    access_token: 'TEST-1193723074873676-022320-3c22664d42476d6800e40c37b0a2437c-719492528'
+    access_token: process.env.ACCESS_TOKEN_MP
 });
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const createEmailToken = (user, SECRET, expiresIn, sgMail) => {
+    const {_id, email, firstname} = user;
+    jwt.sign({_id}, SECRET, {expiresIn}, (err, emailToken) => {
+        if (emailToken) {
+            const url = `http://localhost:3000/api/confirmation_email/${emailToken}`;
+            const msg = {
+                to: email,
+                from: 'worddraco1@gmail.com',
+                subject: 'Confirmation email PROFEPACO',
+                text: `Hola ${firstname}, haz click en el siguiente enlace para confirmar tu cuenta de PROFEPACO, gracias.`,
+                html: `Por favor, haz click aqui para confirmar tu cuenta: <a href="${url}">${url}</a> `
+            }
+            sgMail.send(msg)
+            .then(() => {
+                return 'Email sent'
+            })
+            .catch((error) => {
+                return error;
+            })
+        }
+    });
+}
 
 const paginateResults = ({
     after: cursor,
@@ -108,9 +135,12 @@ export const resolvers = {
                 password: input.password,
                 img: '',
                 isAdmin: false,
+                isConfirmated: false
             }).save();
 
-            return `Gracias por registrarte ${input.firstname}, ya puedes iniciar sesion con tu nueva cuenta.`
+            createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail);
+
+            return `Gracias por registrarte ${input.firstname}, se te ha enviado un correo de confirmación para que actives tu cuenta de PROFEPACO.`;
         },
         
         addCourse: async (parent, {input}) => {
@@ -218,7 +248,8 @@ export const resolvers = {
                 payment_methods: {
                     installments: 3
                 },
-                statement_descriptor: 'PROFE/PACO'
+                notification_url: 'http://localhost:3000/api/webhook',
+                statement_descriptor: 'PROFEPACO',
             }
 
             const preferenceItem = await mercadopago.preferences.create(preference, payer)

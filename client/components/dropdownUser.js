@@ -4,8 +4,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { signOut } from 'next-auth/client'
+import styles from './styles/DropDownUser.module.css';
+import MenuIcon from '@material-ui/icons/Menu';
+import { useRouter } from 'next/router';
 
 const DropDownUser = ({userAuthEmail}) => {
+    const router = useRouter();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -23,19 +27,30 @@ const DropDownUser = ({userAuthEmail}) => {
 
     return (
         <div>
-            <Button 
-            aria-controls='simple-menu' 
-            aria-haspopup='true' 
-            size='small'
-            startIcon={<AccountCircle/>}
-            onClick={handleClick}>{userAuthEmail}</Button>
+            <div className={styles.displayButtonNoMovil}>
+                <Button 
+                aria-controls='simple-menu' 
+                aria-haspopup='true' 
+                size='small'
+                startIcon={<AccountCircle/>}
+                onClick={handleClick}>{userAuthEmail}</Button>
+            </div>
+            <div className={styles.displayButtonInMovil}>
+                <Button 
+                aria-controls='simple-menu' 
+                aria-haspopup='true' 
+                size='small'
+                startIcon={<MenuIcon/>}
+                className={styles.displayButton}
+                onClick={handleClick}>Menu</Button>
+            </div>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
-                <MenuItem>Cuenta</MenuItem>
+                <MenuItem onClick={() => router.push(`/account/?profile=${userAuthEmail}`, undefined, {shallow: true})}>Cuenta</MenuItem>
                 <MenuItem onClick={handleSignOut}>Cerrar sesión</MenuItem>
             </Menu>
         </div>

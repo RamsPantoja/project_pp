@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './styles/LoginForm.module.css';
 import cn from 'classnames';
 import { signIn } from 'next-auth/client';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 
 const LoginForm = ({state, handleOnChange, disable, csrfToken}) => {
     const {email, password} = state;
@@ -26,7 +26,7 @@ const LoginForm = ({state, handleOnChange, disable, csrfToken}) => {
     }
 
     const isDisableErrorAlert = disableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
-    const isLoginLoading = isLoading ? <CircularProgress/> : <button type='submit'>Iniciar sesión</button>
+    const isLoginLoading = isLoading ? <CircularProgress/> : <Button type='submit' variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff', padding:'0.5em 2em'}}>Iniciar sesión</Button>
 
     return (
         <form method='post' className={styles.loginForm} action='/api/auth/callback/credentials' onSubmit={(e) => {handleOnSubmit(e)}}>

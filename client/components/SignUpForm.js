@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import styles from './styles/SignUpForm.module.css';
 import cn from 'classnames';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser, error, loading}) => {
     const {firstname, lastname, email, password, confirmpassword} = state;
@@ -29,7 +30,7 @@ const SignUpForm = ({state, handleOnChange, disable, passwordNoMatch, createUser
     const isDisableErrorAlert = disableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
     const isMinimumLenghtPassword = password.error ? <span className={styles.disableErrorAlert}>{password.error}</span> : null;
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
-    const isMutationLoading = loading ? <CircularProgress/> : <button type='submit'>Crear</button>
+    const isMutationLoading = loading ? <CircularProgress/> : <Button type='submit' variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff', padding:'0.5em 2em'}}>Crear</Button>
     
     return (
         <Fragment>

@@ -7,7 +7,7 @@
 .loginForm_input {
     display: block;
     padding: 15px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     outline: none;
     border: none;
     width: 100%;
@@ -35,19 +35,11 @@
 }
 
 .loginForm > button {
-    outline: none;
-    padding: 1em;
-    border: none;
-    margin: 0 4em;
-    border-radius: 1em;
-    background-color: #1983ff;
-    color: #ffffff;
     transition: 0.1s ease;
 }
 
 .loginForm > button:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+    transform: scale(1.05);
 }
 
 .disableErrorAlert {

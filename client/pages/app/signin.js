@@ -4,9 +4,11 @@ import Link from 'next/link';
 import styles from '../styles/sign_in.module.css';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LoginForm from '../../components/LoginForm';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook';
 import { csrfToken, getSession } from 'next-auth/client'
+import { Button } from '@material-ui/core';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const SignIn = ({csrfToken}) => {
     const [state, handleOnChange, disable] = useAuthFormValidation(authUserSchema, validationSchema, disableSchema);
@@ -34,6 +36,9 @@ const SignIn = ({csrfToken}) => {
                 <title>Sign in</title>
             </Head>
             <div className={styles.sign_in}>
+                <div className={styles.buttonToBack}>
+                    <Button style={{color: '#ffffff'}} startIcon={<ArrowBackIosIcon/>} onClick={() => router.back()}>Volver</Button>
+                </div>
                 <div className={styles.sign_in_center}>
                     <div className={styles.sign_in_card}>
                         <div className={styles.sign_inTitle}>

@@ -8,7 +8,7 @@
 .SignUpForm_input {
     display: flex;
     padding: 15px 30px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     outline: none;
     width: 100%;
     border: none;
@@ -19,7 +19,7 @@
 .SignUpForm_inputError {
     display: flex;
     padding: 14px 29px;
-    border-radius: 1em;
+    border-radius: 0.5em;
     width: 100%;
     outline: none;
     max-width: 20em;
@@ -34,19 +34,11 @@
 }
 
 .SignUpForm > button {
-    outline: none;
-    padding: 1em 4em;
-    border: none;
-    margin: 0 1em;
-    border-radius: 1em;
-    background-color: #1983ff;
-    color: #ffffff;
     transition: 0.1s ease;
 }
 
 .SignUpForm > button:hover {
-    transform: scale(1.1);
-    cursor: pointer;
+    transform: scale(1.05);
 }
 
 .disableErrorAlert {
