@@ -8,7 +8,7 @@ import { Fragment } from 'react';
 import { useApolloClient } from '@apollo/client';
 
 
-const UserFormDelete = ({handleOnClickDeleteUserInCourse, emailToDelete, mutation, id, error, userId}) => {
+const UserFormDelete = ({handleOnClickDeleteUserInCourse, emailToDelete, mutation, id}) => {
     const client = useApolloClient();
     const [state, setState] = useState({
         email: {value: '', errorfield: false, required: true}
@@ -55,29 +55,27 @@ const UserFormDelete = ({handleOnClickDeleteUserInCourse, emailToDelete, mutatio
 
         client.cache.modify({
             fields: {
-                getUsers(existingGetUserRefs, {readField}) {
-                    return existingGetUserRefs.filter((getUserRef) => userId !== readField('id', getUserRef));
+                getUsers(existingGetUserRefs, {isReference}) {
+                    isReference(existingGetUserRefs.users)
                 },
                 getUserByEmail(existingGteUserByEmailRer, { DELETE }) {
                     return DELETE;
                 }
             }
-        })
-    }
+        });
 
-    //cualquier error en la base de datos aparece aqui.
-    const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
+        handleOnClickDeleteUserInCourse(e);
+    }
 
     return (
         <Fragment>
             <div className={styles.backgroundContainer}></div>
             <div className={styles.displayForm}>
                 <form className={styles.form}>
-                    {anyApolloError}
                     <span className={styles.userEmailToConfirm}>{emailToDelete}</span>
                     <TextField label='Confirma el e-mail' fullWidth={true} size='small' name='email' error={state.email.errorfield} value={state.email.value} variant='outlined' onChange={(e) => {handleOnChange(e)}}/>
                     <div>
-                        <Button variant='contained' color='secondary' disabled={disable} startIcon={<DeleteIcon/>} onClick={(e) => {handleDeleteUser(e)}}>Eliminar</Button>
+                        <Button variant='contained' style={{backgroundColor: '#ff5555', color:'#ffffff'}} disabled={disable} startIcon={<DeleteIcon/>} onClick={(e) => {handleDeleteUser(e)}}>Eliminar</Button>
                         <Button color='default' variant='outlined' startIcon={<CancelIcon/>} onClick={(e) => {handleOnClickDeleteUserInCourse(e)}}>Cancelar</Button>
                     </div>
                 </form>

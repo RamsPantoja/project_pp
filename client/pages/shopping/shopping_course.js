@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button, RadioGroup } from '@material-ui/core';
 import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/client';
+import { getSession, useSession } from 'next-auth/client';
 
 const ShoppingCart = ({id}) => {
     const router = useRouter();
@@ -103,7 +103,6 @@ const ShoppingCart = ({id}) => {
                         <p>Total: </p>
                         <p>${price/totalOption}</p>
                     </div>
-                    <script src="https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js" data-preference-id='<%= global.id %>' type='text/javascript'></script>
                     {isCreatePreferenceLoading}
                 </div>
             </div>
@@ -111,24 +110,22 @@ const ShoppingCart = ({id}) => {
     )
 }
 
+export async function getServerSideProps({query, req}) {
+    const session = await getSession({req})
 
-export async function getStaticPaths() {
-    const apolloClient = initializeApollo();
-    const {data} = await apolloClient.query({query: GET_COURSES});
-    const paths = data.getCourses.map((course) => ({
-        params: {
-            shopping_id: course.id
+    if (!session && req) {
+        return {
+            redirect: {
+                destination: '/app/signin',
+                permanent: false
+            }
         }
-    }))
-    
-    return { paths, fallback: false}
-}
+    }
 
-
-export async function getStaticProps({params}) {
+    const id = query.id;
     return {
         props: {
-            id: params.shopping_id
+            id: id
         }
     }
 }

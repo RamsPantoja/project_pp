@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles/UserCard.module.css';
 import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete'
-import UpdateIcon from '@material-ui/icons/Update';
+import DeleteIcon from '@material-ui/icons/Delete';
 import UserFormDelete from './UserFormDelete';
 import { Fragment } from 'react';
 

@@ -1,7 +1,6 @@
 .layoutCoursesById {
     display: flex;
     padding: 1em;
-    flex: 1;
     height: 100%;
     overflow: auto;
 }
@@ -56,6 +55,14 @@
 .courseEnrollmentGrid {
     display: grid;
     gap: 0.5em;
+}
+
+.centerCircularProgress {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 

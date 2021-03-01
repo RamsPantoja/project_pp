@@ -21,3 +21,32 @@
     flex-direction: column;
     overflow: auto;
 }
+
+.coursesGrid {
+    display: grid;
+    gap: 2em;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.errorMessageApollo {
+    color: #ff5555;
+}
+
+.centerCircularProgress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+@media(max-width: 1024px) {
+    .coursesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 540px) {
+    .coursesGrid {
+        grid-template-columns: auto;
+    }
+}

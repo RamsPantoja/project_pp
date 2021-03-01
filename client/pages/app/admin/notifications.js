@@ -19,7 +19,7 @@ export async function getServerSideProps({req}) {
     if ((!session || session.user.isAdmin !== true) && req) {
         return {
             redirect: {
-                destination: 'http://localhost:3000/',
+                destination: '/',
                 permanent: false
             }
         }

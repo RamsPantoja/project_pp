@@ -7,8 +7,10 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { Fragment } from 'react';
 import { useMutation } from '@apollo/client';
 import { DELETE_COURSE } from '../apollo/mutations';
+import { useSnackbar } from 'notistack';
 
-const CourseFormDelete = ({handleOnClickToDeleteCourse}) => { 
+const CourseFormDelete = ({handleOnClickToDeleteCourse, title}) => { 
+    const { enqueueSnackbar } = useSnackbar();
     const [state, setState] = useState({
         title: {value: '', errorfield: false, required: true}
     });
@@ -19,11 +21,12 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse}) => {
         },
         onCompleted: async (data) => {
             handleOnClickToDeleteCourse();
-            alert(data.deleteCourseByTitle);
+            enqueueSnackbar(data.deleteCourseByTitle, {variant: 'success', anchorOrigin:{ vertical: 'top', horizontal: 'center'}})
+        },
+        onError: async (error) => {
+            enqueueSnackbar(error.message, { variant: 'error', anchorOrigin: {vertical: 'top', horizontal: 'center'}});
         }
     })
-
-    const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
 
 
     const handleOnChange = (e) => {
@@ -53,7 +56,7 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse}) => {
             <div className={styles.backgroundContainer}></div>
             <div className={styles.displayForm}>
                 <form className={styles.form}>
-                    {anyApolloError}
+                    <span className={styles.userEmailToConfirm}>{title}</span>
                     <TextField label='Confirma el nombre del curso' fullWidth={true} size='small' name='title' error={state.title.errorfield} variant='outlined' value={state.title.value} onChange={(e) => {handleOnChange(e)}}/>
                     <div>
                         <Button variant='contained' style={{background: '#ff5555', color:'#ffffff'}} startIcon={<DeleteIcon/>} onClick={(e) => {deleteCourse(e)}}>Eliminar</Button>

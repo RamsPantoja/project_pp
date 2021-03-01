@@ -7,46 +7,60 @@ import { getSession } from 'next-auth/client';
 import { useRouter }from 'next/router';
 import { GET_COURSES } from '../../../apollo/querys';
 import { useQuery } from '@apollo/client';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Button } from '@material-ui/core';
-import CourseFormDelete from '../../../components/CourseFormDelete';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const CoursesAdmin = () => {
     const router = useRouter();
     const {data, error, loading} = useQuery(GET_COURSES, {pollInterval: 1000})
-    const [isCourseFormDelete, setIsCourseFormDelete] = useState(false);
+
+    if (loading) {
+        return (
+            <LayoutAdmin>
+                <div className={styles.toPositionFixed}>
+                    <div className={styles.centerCircularProgress}>
+                        <CircularProgress/>
+                    </div>
+                </div>
+            </LayoutAdmin>
+        )
+    }
+
+    if (error) {
+        return (
+            <LayoutAdmin>
+                <span className={styles.errorMessageApollo}>{error.message}</span>
+            </LayoutAdmin>
+        )
+    }
 
     const handleOnClickToAddCourse = (e) => {
         e.preventDefault();
         router.push('/app/admin/courses_form');
     }
 
-    const handleOnClickToDeleteCourse = () => {
-        if(isCourseFormDelete) {
-            setIsCourseFormDelete(false)
-        } else {
-            setIsCourseFormDelete(true)
-        }
-    }   
-
-    const courseFormDelete = isCourseFormDelete ? <CourseFormDelete handleOnClickToDeleteCourse={handleOnClickToDeleteCourse}/> : null;
-
     return (
         <LayoutAdmin>
             <div className={styles.toPositionFixed}>
-                {courseFormDelete}
                 <div className={styles.coursesContainer}>
                     <div className={styles.header}>
                         <h3>Cursos</h3>
                         <Button variant='contained' style={{background: '#15639d', color: '#ffffff'}} onClick={(e) => {handleOnClickToAddCourse(e)}}>
                             <AddIcon/>
                         </Button>
-                        <Button style={{background: '#ff5555', color: '#ffffff'}}  variant='contained' onClick={handleOnClickToDeleteCourse}>
-                            <DeleteIcon/>
-                        </Button>
                     </div>
                     <div className={styles.coursesGrid}>
-                        <CourseCard baseUrl={'/app/admin/courses/'} data={data} error={error} loading={loading}/>
+                        {data.getCourses.map((course) => {
+                            return (
+                                <CourseCard key={course.id} baseUrl={'/app/admin/courses/course/?id='}
+                                deleteCourseComponent={true}
+                                title={course.title}
+                                teacher={course.teacher}
+                                id={course.id}
+                                enrollmentLimit={course.enrollmentLimit}
+                                enrollmentUsers={course.enrollmentUsers.length}/>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
@@ -60,7 +74,7 @@ export async function getServerSideProps({req}) {
     if ((!session || session.user.isAdmin !== true) && req) {
         return {
             redirect: {
-                destination:'http://localhost:3000/',
+                destination:'/',
                 permanent: false
             }
         }

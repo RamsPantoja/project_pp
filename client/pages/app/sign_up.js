@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Button } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/client';
 
 const SignUp = () => {
     const router = useRouter();
@@ -79,6 +80,28 @@ const SignUp = () => {
             </div>
         </Fragment>
     )
+}
+
+export async function getServerSideProps (context) {
+    const session = await getSession({req: context.req});
+    if(session && !context.req) {
+        Router.replace('/');
+    }
+
+    if(session && context.req) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props:{
+            
+        }
+    }
 }
 
 export default SignUp;

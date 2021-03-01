@@ -1,0 +1,30 @@
+.profileContainer {
+    display: grid;
+    padding: 2em;
+    gap: 1em;
+    border-radius: 0.2em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;
+}
+
+.inputAccount {
+    display: flex;
+    padding: 1em;
+    outline: none;
+    border-radius: 0.2em;
+    border: 1px solid #eaeaea;
+}
+
+.profileContainer > form {
+    display: grid;
+    gap: 1em;
+}
+
+.disableErrorAlert {
+    display: block;
+    font-size: 0.7rem;
+    text-align: center;
+    background-color: #ff5555;
+    color: #ffffff;
+    padding: 1em;
+    border-radius: 0.5em;
+}

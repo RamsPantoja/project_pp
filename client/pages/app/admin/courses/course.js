@@ -3,10 +3,10 @@ import LayoutAdmin from '../../../../components/LayoutAdmin';
 import styles from '../styles/coursesbyid.module.css';
 import UserCard from '../../../../components/UserCard';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_COURSES, GET_COURSE_BY_ID } from '../../../../apollo/querys';
+import { GET_COURSE_BY_ID } from '../../../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { initializeApollo } from '../../../../components/hooks/apolloClient';
 import { DELETE_USER_IN_COURSE } from '../../../../apollo/mutations';
+import { getSession } from 'next-auth/client';
 
 const CoursesById = ({id}) => {
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}, pollInterval: 1000});
@@ -19,7 +19,9 @@ const CoursesById = ({id}) => {
         return (
             <LayoutAdmin>
                 <div className={styles.layoutCoursesById}>
-                    <CircularProgress/>
+                    <div className={styles.centerCircularProgress}>
+                        <CircularProgress/>
+                    </div>
                 </div>
             </LayoutAdmin>
         )
@@ -47,24 +49,22 @@ const CoursesById = ({id}) => {
     )
 }
 
+export async function getServerSideProps({query, req}) {
+    const id = query.id;
+    const session = await getSession({req});
 
-export async function getStaticPaths() {
-    const apolloClient = initializeApollo();
-    const {data} = await apolloClient.query({query: GET_COURSES})
-
-    const paths = data.getCourses.map((course) => ({
-        params: {
-            coursesbyid: course.id
+    if ((!session || session.user.isAdmin !== true) && req ) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
         }
-    }));
+    }
 
-    return {paths, fallback: false}
-}
-
-export async function getStaticProps({params}) {
     return {
         props: {
-            id: params.coursesbyid
+            id: id
         }
     }
 }

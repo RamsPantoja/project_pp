@@ -70,7 +70,7 @@ export async function getServerSideProps (context) {
     if(session && context.req) {
         return {
             redirect: {
-                destination: 'http://localhost:3000/',
+                destination: '/',
                 permanent: false
             }
         }

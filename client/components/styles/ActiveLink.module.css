@@ -1,0 +1,31 @@
+.sectionAccount {
+    display: flex;
+    text-decoration: none;
+    padding: 0.5em;
+    background-color: #ffffff;
+    border-radius: 0.2em;
+    color: #000000;
+    font-weight: bold;
+    border: 1px solid #eaeaea;
+    transition: 0.2s ease;
+    align-items: center;
+}
+
+.sectionAccountActived {
+    display: flex;
+    text-decoration: none;
+    padding: 0.5em;
+    border-radius: 0.2em;
+    color: #000000;
+    font-weight: bold;
+    border: 1px solid #eaeaea;
+    transition: 0.2s ease;
+    align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #dbf998;
+}
+
+.sectionAccount:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #dbf998;
+}

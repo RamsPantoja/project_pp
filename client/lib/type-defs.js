@@ -37,8 +37,13 @@ export const typeDefs = gql `
         img: String
     }
 
+    type PaginationInf {
+        users: [User]!
+        totalUsers: Int
+    }
+    
     type Query {
-        getUsers(limit: Int!, after: ID): [User!]
+        getUsers(limit: Int!, after: ID): PaginationInf!
         getCourses: [Course]
         getCourseById(id: ID!): Course
         getUserByEmail(email: String!): User

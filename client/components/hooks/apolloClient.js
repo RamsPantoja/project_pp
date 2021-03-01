@@ -33,9 +33,25 @@ const createApolloClient = () => {
                         },
                         getUsers: {
                             keyArgs: false,
-                            merge(existing = [], incoming) {
-                                return [...existing,...incoming]
-                            }    
+                            merge(existing, incoming, {readField}) {
+                                const users = existing ? {...existing.users} : {};
+                                incoming.users.forEach(user => {
+                                    users[readField('id', user)] = user;
+                                });
+                                return {
+                                    totalUsers: incoming.totalUsers,
+                                    users
+                                }
+                            },
+
+                            read(existing) {
+                                if(existing) {
+                                    return {
+                                        totalUsers: existing.totalUsers,
+                                        users: Object.values(existing.users)
+                                    }
+                                }
+                            }
                         }
                     }
                 },

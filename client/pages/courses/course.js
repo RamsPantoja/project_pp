@@ -8,12 +8,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { initializeApollo } from '../../components/hooks/apolloClient';
 import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 
 const DescriptionCourse = ({id}) => {
     const [session, loading] = useSession();
     const router = useRouter();
     //const isEmail = loading && !session ? null : session?.user.email;
+
 
     const {data, error, loading: loadingCourse} = useQuery(GET_COURSE_BY_ID, {
         variables: {id: id}
@@ -34,7 +34,7 @@ const DescriptionCourse = ({id}) => {
     const handleOnClickSession = (e) => {
         e.preventDefault();
         if (session) {
-            router.push(`/shopping_cart/${id}`)
+            router.push(`/shopping/shopping_course/?id=${id}`)
         } else {
             signIn();
         }
@@ -92,22 +92,16 @@ const DescriptionCourse = ({id}) => {
     )
 }
 
-export async function getStaticPaths() {
-    const apolloClient = initializeApollo();
-    const {data} = await apolloClient.query({query: GET_COURSES});
-    const paths = data.getCourses.map((course) => ({
-        params: { course_id: course.id}
-    }));
 
-    return {paths, fallback: false}
-}
+export async function getServerSideProps({query}) {
+    const id = query.id
 
-export async function getStaticProps({params}) {
     return {
         props: {
-            id: params.course_id
+            id: id
         }
     }
+
 }
 
 export default DescriptionCourse;

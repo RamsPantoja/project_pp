@@ -39,10 +39,13 @@ export const GET_COURSE_BY_ID = gql `
 export const GET_ALL_USERS = gql `
     query getAllUsers($limit: Int!, $after: ID) {
         getUsers(limit: $limit, after: $after) {
-            id
-            firstname
-            lastname
-            email
+            users {
+                id
+                firstname
+                lastname
+                email
+            }
+            totalUsers
         }
     }
 `

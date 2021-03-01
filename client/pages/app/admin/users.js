@@ -9,15 +9,20 @@ import { GET_ALL_USERS, GET_USER_BY_EMAIL } from '../../../apollo/querys';
 import { Button, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { DELETE_USER_BY_EMAIL } from '../../../apollo/mutations';
+import { useSnackbar } from 'notistack';
 
 const Users = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const [state, setState] = useState({
         email: {value: '', errorfield: false, required: true}
     });
 
     const [deleteUserByEmail, {data: dataDeleteUserByEmail, error: errorDeleteUserByEmail, loading: loadingDeleteUserByEmail}] = useMutation(DELETE_USER_BY_EMAIL, {
         onCompleted: async (dataDeleteUserByEmail) => {
-            alert(dataDeleteUserByEmail.deleteUserByEmail);
+            enqueueSnackbar(dataDeleteUserByEmail.deleteUserByEmail, {variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'center'}});
+        },
+        onError: async (errorDeleteUserByEmail) => {
+            enqueueSnackbar(errorDeleteUserByEmail.message, {variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center'}})
         }
     });
 
@@ -25,7 +30,7 @@ const Users = () => {
 
     const {data, error, loading, fetchMore} = useQuery(GET_ALL_USERS, {
         variables: {
-            limit: 2
+            limit: 3
         }
     })
 
@@ -70,8 +75,8 @@ const Users = () => {
 
     const userCardByEmail = dataUserByEmail && !loadingUserByEmail? <UserCard mutation={deleteUserByEmail} firstname={dataUserByEmail.getUserByEmail.firstname} lastname={dataUserByEmail.getUserByEmail.lastname} email={dataUserByEmail.getUserByEmail.email} userId={dataUserByEmail.getUserByEmail.id}/> : null
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null
-    const errorUserByEmailApollo = errorUserByEmail ? <span className={styles.disableErrorAlert}>{errorUserByEmail.message}</span> : null
-    const buttonToLoadMore = data.getUsers.length >= 1 ? <Button onClick={ async () => {await fetchMore({variables: {after: data.getUsers[data.getUsers.length - 1].id}})}}>Mas...</Button> : null;
+    const errorUserByEmailApollo = errorUserByEmail && !dataUserByEmail ? <span className={styles.disableErrorAlert}>{errorUserByEmail.message}</span> : null
+    const buttonToLoadMore = data.getUsers.users.length >= 1 ? <Button variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={ async () => {await fetchMore({variables: {after: data.getUsers.users[data.getUsers.users.length - 1].id}})}}>Cargar mas...</Button> : null;
     
     return (
         <LayoutAdmin>
@@ -80,18 +85,18 @@ const Users = () => {
                     <form className={styles.userSearchField} onSubmit={(e) => {handleGetUserByEmail(e)}}>
                         <TextField label='Buscar Alumno' value={state.email.value}  size='small' name='email' error={state.email.errorfield} variant='outlined' onChange={(e) => {handleOnChange(e)}}/>
                         <Button style={{color: '#15639d'}} type='submit'><SearchIcon/></Button>
+                        <span>Alumnos: {data.getUsers.users.length}/{data.getUsers.totalUsers}</span>
                     </form>
                     {userCardByEmail || errorUserByEmailApollo}
                     <hr></hr>
                     {anyApolloError}
-                    { data.getUsers.map((item) => {
+                    { data.getUsers.users.map((item) => {
                         return(
                             <UserCard key={item.id}
                             firstname={item.firstname}
                             lastname={item.lastname}
                             email={item.email}
                             mutation={deleteUserByEmail}
-                            error={errorDeleteUserByEmail}
                             userId={item.id}/>
                         )
                     })}
@@ -108,7 +113,7 @@ export async function getServerSideProps({req}) {
     if ((!session || session.user.isAdmin !== true) && req) {
         return {
             redirect: {
-                destination: 'http://localhost:3000/',
+                destination: '/',
                 permanent: false,
             }
         }

@@ -50,7 +50,7 @@ const DropDownUser = ({userAuthEmail}) => {
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
-                <MenuItem onClick={() => router.push(`/account/?profile=${userAuthEmail}`, undefined, {shallow: true})}>Cuenta</MenuItem>
+                <MenuItem onClick={() => router.push(`/account/profile`, undefined, {shallow: true})}>Cuenta</MenuItem>
                 <MenuItem onClick={handleSignOut}>Cerrar sesión</MenuItem>
             </Menu>
         </div>

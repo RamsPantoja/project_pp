@@ -14,6 +14,7 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/client';
 
 const CoursesForm = () => {
     const router = useRouter()
@@ -137,6 +138,19 @@ const CoursesForm = () => {
         </LayoutAdmin>
 
     )
+}
+
+export async function getServerSideProps({req}) {
+    const session = await getSession({req});
+
+    if ((!session || session.user.isAdmin !== true) && req) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
 }
 
 export default CoursesForm;

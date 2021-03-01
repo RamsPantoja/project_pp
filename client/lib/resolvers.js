@@ -70,14 +70,18 @@ export const resolvers = {
             await dbConnect();
             const allUsers = await Users.find({isAdmin: false});
             allUsers.reverse();
-
             const users = paginateResults({
                 after,
                 limit: limit,
                 results: allUsers
             })
 
-            return users;
+            const paginationInf = {
+                users,
+                totalUsers: allUsers.length
+            }
+
+            return paginationInf;
         },
 
         getCourses: async (parent) => {
