@@ -41,3 +41,9 @@ export const CREATE_PREFERENCE_MERCADO_PAGO = gql `
         createPreferenceMercadoPago(title: $title, price: $price, firstname: $firstname, lastname: $lastname, email: $email)
     }
 `
+
+export const SEND_EMAIL_CONFIRMATION = gql `
+    mutation SendEmailConfirmation($email: String!) {
+        sendEmailConfirmation(email: $email)
+    }
+`

@@ -6,15 +6,26 @@ const useFormValidation = (stateSchema, validationSchema = {}, disableSchema, us
     const [disable, setDisable] = useState(disableSchema);
     const [isDirty, setIsDirty] = useState(false);
 
-
+    //Actualiza el state dependiendo de la entrada del user.
     useEffect(() => {
-        setState(() => ({
-            ...stateSchema,
-            firstname: {value: user.firstname, errorfield: false},
-            lastname: {value: user.lastname, errorfield: false},
-            email: {value: user.email, errorfield: false}
-        }))
-    }, [stateSchema]);
+        if(user.id) {
+            setState(() => ({
+                ...stateSchema,
+                firstname: {value: user.firstname, errorfield: false},
+                lastname: {value: user.lastname, errorfield: false},
+                email: {value: user.email, errorfield: false}
+            }));
+        } else if (typeof(user) === 'string') {
+            setState(() => ({
+                ...stateSchema,
+                email: {value: user, errorfield: false}
+            }));
+        } else {
+            setState(() => ({
+                ...stateSchema,
+            }))
+        }
+    }, [stateSchema, user]);
 
     const validateState = useCallback(() => {
         const hasErrorInState = Object.keys(validationSchema).some((key) => {
@@ -26,8 +37,6 @@ const useFormValidation = (stateSchema, validationSchema = {}, disableSchema, us
 
         return hasErrorInState;
     }, [validationSchema, state]);
-
-    console.log(validateState())
 
     useEffect(() => {
         setDisable(() => ({
@@ -43,7 +52,7 @@ const useFormValidation = (stateSchema, validationSchema = {}, disableSchema, us
                 status: validateState()
             }));
         }
-
+        //Actualiza el status en disableSchema para validar el formulario.
         if (validateState()) {
             setDisable(() => ({
                 ...disableSchema,
@@ -63,16 +72,18 @@ const useFormValidation = (stateSchema, validationSchema = {}, disableSchema, us
         const name = e.target.name;
         const value = e.target.value;
         let errorfield = false;
+        let error = ''
 
         if (validationSchema[name].required) {
             if(!value) {
                 errorfield = true;
+                error = 'Campo obligatorio'
             }
         }
 
         setState((prevState) => ({
             ...prevState,
-            [name]: {value, errorfield}
+            [name]: {value, error, errorfield}
         }));
     });
 

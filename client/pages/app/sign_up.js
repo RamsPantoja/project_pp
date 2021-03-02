@@ -41,6 +41,7 @@ const SignUp = () => {
                 <div className={styles.signUp}>
                     <div className={styles.signUp_userCreated}>
                         <div className={styles.signUp_card}>
+                            <h2>¡Success!</h2>
                             <p>{data.createUser}</p>
                             <Link href='/'><a className={styles.linkToHome}>Home</a></Link>
                         </div>

@@ -13,7 +13,7 @@ const confirmationEmail = async (req, res) => {
         res.send(error);
     }
     
-    return res.status(200).redirect('http://localhost:3000/app/signin?callbackUrl=http://localhost:3000/');
+    return res.status(200).redirect('/app/confirmation_success');
 }
 
 export default confirmationEmail;

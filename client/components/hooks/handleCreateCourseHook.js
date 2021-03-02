@@ -253,11 +253,13 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             }
         }
 
+        //Mapea los items dentro de subConceptList y solo edita el campo donde escribimos es exactamente igual al index mapeado.
         const subConceptValue = state.conceptList[indexConcept].subConceptList.map((item, index) => {
             if (i !== index) return item;
             return item = {value: value, errorfield: errorfield}
         });
 
+        //Mapea conceptList y remplazada el campo subConceptList con el nuevo subConceptValue.
         const concept = state.conceptList.map((item, index) => {
             if(indexConcept !== index) return item;
             return {

@@ -4,37 +4,45 @@ import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
-
+//Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN_MP
 });
 
+//Configuracion de SendGrid para conectarse a su API.
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const createEmailToken = (user, SECRET, expiresIn, sgMail) => {
+
+//Crea un token que sera enviado por email al usuario que se ha registrado ó para confirmar el email en la sección /account/acoount del lado del cliente.
+const createEmailToken = async (user, SECRET, expiresIn, sgMail) => {
     const {_id, email, firstname} = user;
-    jwt.sign({_id}, SECRET, {expiresIn}, (err, emailToken) => {
-        if (emailToken) {
-            const url = `http://localhost:3000/api/confirmation_email/${emailToken}`;
-            const msg = {
-                to: email,
-                from: 'worddraco1@gmail.com',
-                subject: 'Confirmation email PROFEPACO',
-                text: `Hola ${firstname}, haz click en el siguiente enlace para confirmar tu cuenta de PROFEPACO, gracias.`,
-                html: `Por favor, haz click aqui para confirmar tu cuenta: <a href="${url}">${url}</a> `
-            }
-            sgMail.send(msg)
-            .then(() => {
-                return 'Email sent'
-            })
-            .catch((error) => {
-                return error;
-            })
+    //Se firma el token.
+    const emailToken = jwt.sign({_id}, SECRET, {expiresIn});
+
+    //Si el token existe, se crear el constructor con los datos del email que sera enviado al usuario registrado.
+    if (emailToken) {
+        const url = `http://localhost:3000/api/confirmation_email/${emailToken}`;
+        const msg = {
+            to: email,
+            from: 'worddraco1@gmail.com',
+            subject: 'Confirmation email PROFEPACO',
+            text: `Hola ${firstname}, haz click en el siguiente enlace para confirmar tu cuenta de PROFEPACO, gracias.`,
+            html: `Por favor, haz click aqui para confirmar tu cuenta: <a href="${url}">${url}</a> `
         }
-    });
+        
+        try {
+            await sgMail.send(msg);
+            return 'Se te ha enviado un correo de confirmación.'
+        } catch (error) {
+            return error
+        }
+    }
 }
 
+
+//Pagina los resultados del query getUsers en base la cursor(ID) proporcionado por prop del lado del cliente y limit.
 const paginateResults = ({
     after: cursor,
     limit,
@@ -46,6 +54,7 @@ const paginateResults = ({
 
     if(!cursor) return results.slice(0, limit);
 
+    //Encuentra el index de los resultados devueltos de la base de datos que hace match con el cursor(ID) proporcionado y lo retorna.
     const cursorIndex = results.findIndex(item => {
         let itemCursor = item.id ? item.id : getCursor(item);
 
@@ -53,7 +62,7 @@ const paginateResults = ({
 
     });
 
-
+    //Pagina los resultados...
     return cursorIndex >= 0 
         ? cursorIndex === results.length -1
             ? []
@@ -66,6 +75,7 @@ const paginateResults = ({
 
 export const resolvers = {
     Query: {
+        //Obtiene todos los usuarios y los pagina en base a las props Limit y After.
         getUsers: async (parent, {limit, after}) => {
             await dbConnect();
             const allUsers = await Users.find({isAdmin: false});
@@ -84,6 +94,7 @@ export const resolvers = {
             return paginationInf;
         },
 
+        //Obtiene todos los cursos.
         getCourses: async (parent) => {
             await dbConnect();
             const courses = await Courses.find((err, data) => {
@@ -97,6 +108,7 @@ export const resolvers = {
             return courses
         },
         
+        //Obtiene el curso por ID
         getCourseById: async (parent, args) => {
             await dbConnect();
             const course = await Courses.findOne({_id: args.id}, (err, data) => {
@@ -110,6 +122,7 @@ export const resolvers = {
             return course;
         },
         
+        //Obtiene el usuario por Email.
         getUserByEmail: async (parent, {email}) => {
             await dbConnect();
             return new Promise((resolve, rejects) => {
@@ -121,9 +134,12 @@ export const resolvers = {
         }
     },
     Mutation: {
+        //Crea un Usuario en base al input proporcionado desde el lado del cliente.
         createUser: async (parent, {input}) => {
+            //Esta funcion hace la conexion a la base de datos...
             await dbConnect();
             
+            //Busca en la base de datos si el email ya existe.
             const emailAlreadyExist = await Users.findOne({
                 email: input.email
             });
@@ -132,6 +148,7 @@ export const resolvers = {
                 throw new Error('El email ya existe!')
             }
 
+            //Crea un nuevo objeto User y lo guarda en la coleccion Users de la base de datos.
             const newUser = await new Users({
                 firstname: input.firstname,
                 lastname: input.lastname,
@@ -142,14 +159,17 @@ export const resolvers = {
                 isConfirmated: false
             }).save();
 
+            //Se crea el token con el email que sera enviado al usuario registrado por correo.
             createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail);
 
             return `Gracias por registrarte ${input.firstname}, se te ha enviado un correo de confirmación para que actives tu cuenta de PROFEPACO.`;
         },
         
+        //Agrega un curso.
         addCourse: async (parent, {input}) => {
             await dbConnect();
             
+            //Crea un nuevo objeto Curso y lo guarda en la base de datos.
             const newCourse = await new Courses({
                 title: input.title,
                 teacher: input.teacher,
@@ -164,9 +184,11 @@ export const resolvers = {
             return 'Curso creado!';
         },
 
+        //Inserta el usuario que compro el curso especifico.
         insertUserInCourse: async (parent, {email, id}) => {
             await dbConnect();
 
+            //Se obtiene el usuario de la base de datos.
             const user = await Users.findOne({email: email});
 
             if(!user) {
@@ -183,12 +205,14 @@ export const resolvers = {
                 }
             })
 
+            //Se inserta el usuario en el curso.
             course.enrollmentUsers.push(user);
             course.save();
 
             return 'Document updated'
         },
 
+        //Elimina un curso con el titulo del curso especificado.
         deleteCourseByTitle: async (parent, {title}) => {
             await dbConnect();
             
@@ -203,6 +227,7 @@ export const resolvers = {
             });
         },
 
+        //Elimina el usuario del curso especificado.
         deleteUserInCourse: async (parent, {id, userEmail}) => {
             await dbConnect();
 
@@ -219,6 +244,7 @@ export const resolvers = {
             })
         },
 
+        //Elimina un Usuario por Email
         deleteUserByEmail: async (parent, {userEmail}) => {
             await dbConnect();
 
@@ -231,13 +257,16 @@ export const resolvers = {
 
         },
 
+        //Este resolver se encarga de crear una preferencia de mercado pago en base a los datos proporcionados por el cliente.
         createPreferenceMercadoPago: async (parent, {title, price, firstname, lastname, email}) => {
+            //Datos del comprador del curso
             let payer = {
                 name: firstname,
                 surname: lastname,
                 email: email
             }
 
+            //La preferencia del curso a vender
             let preference = {
                 items: [
                     {
@@ -256,8 +285,10 @@ export const resolvers = {
                 statement_descriptor: 'PROFEPACO',
             }
 
+            //Se creo un item con todos los datos de la preferencia necesarios para proceder con el pago.
             const preferenceItem = await mercadopago.preferences.create(preference, payer)
             .then(function(response) {
+                //Retorna el link para pagar hacia el cliente.
                 return response.body.init_point
             }).catch(function(error) {
                 return error
@@ -265,6 +296,48 @@ export const resolvers = {
 
             return (preferenceItem);
 
+        },
+
+        //Envia un correo de confirmacion al Usuario para que valide su cuenta de profepaco.
+        sendEmailConfirmation: async (parent, {email}) => {
+            await dbConnect();
+            
+            return new Promise((resolve, rejects) => {
+                Users.findOne({email: email}, (err, user) => {
+                    if (err || !user) {
+                        rejects('Verifica el correo ingresado.')
+                    } else {
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail);
+                        resolve(result);
+                    }
+                })
+            })
+        },
+
+        //Este resolver se encargara de actualizar la contraseña proporcionado por el cliente en /account/account.
+        resetPassword: async (parent, {email, currentPassword, newPassword}) => {
+            await dbConnect();
+
+            const user = await Users.findOne({email: email});
+
+            if (!user) {
+                throw new Error('Error, revise sus datos.');
+            }
+            return new Promise((resolve, rejects) => {
+                bcrypt.compare(currentPassword, user.password).then((result) => {
+                    if (result) {
+                        Users.findOneAndUpdate({email: email}, {password: newPassword}, (err, user) => {
+                            if(err || !user) {
+                                rejects('Algo no salió bien al actualizar la contraseña.');
+                            } else {
+                                resolve('Se actualizo correctamente la contraseña.')
+                            }
+                        })
+                    } else {
+                        rejects('Contraseña anterior: incorrecta.')
+                    }
+                })
+            })
         }
     }
 }
