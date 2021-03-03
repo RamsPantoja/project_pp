@@ -75,5 +75,6 @@ export const typeDefs = gql `
         createPreferenceMercadoPago(title: String!, price: Int!, firstname: String!, lastname: String!, email: String!): String
         sendEmailConfirmation(email: String!): String
         resetPassword(email: String!, currentPassword: String!, newPassword: String!): String
+        updateUserProfile(id: ID!, email: String!, firstname: String!, lastname: String!): String
     }
 `

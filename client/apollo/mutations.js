@@ -47,3 +47,15 @@ export const SEND_EMAIL_CONFIRMATION = gql `
         sendEmailConfirmation(email: $email)
     }
 `
+
+export const RESET_PASSWORD_ACCOUNT = gql `
+    mutation ResetPasswordAccount($email: String!, $currentPassword: String!, $newPassword: String!) {
+        resetPassword(email: $email, currentPassword: $currentPassword, newPassword: $newPassword)
+    }
+`
+
+export const UPDATE_USER_PROFILE = gql `
+    mutation UpdateUserProfile($id: ID!, $email: String!, $firstname: String!, $lastname: String!) {
+        updateUserProfile(id: $id, email: $email, firstname: $firstname, lastname: $lastname)
+    }
+`

@@ -7,3 +7,14 @@
     padding: 1em;
     border-radius: 0.5em;
 }
+
+.centerCircularProgress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gridForm {
+    display: grid;
+    gap: 1em;
+}

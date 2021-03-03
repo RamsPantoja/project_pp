@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
-import useFormValidation from './hooks/handleFormHook';
-import { Button, TextField } from '@material-ui/core';
-import { Fragment } from 'react';
-import styles from './styles/DisableErrorAlert.module.css';
+import { Button, CircularProgress, TextField } from '@material-ui/core';
+import styles from './styles/EditAccount.module.css';
+import useFormValidationAccountPassword from './hooks/handleEditAccountFormPasswordHook';
+import { useMutation } from '@apollo/client';
+import { RESET_PASSWORD_ACCOUNT } from '../apollo/mutations';
+import { useSnackbar } from 'notistack';
 
 
 const EditPasswordAccount = ({validationSchema, disableSchema, user, stateSchema}) => {
-    const [state, handleOnChange, disable] = useFormValidation(stateSchema, validationSchema, disableSchema, user);
+    const {enqueueSnackbar} = useSnackbar();
+    const [state, handleOnChange, disable] = useFormValidationAccountPassword(stateSchema, validationSchema, disableSchema);
     const {currentPassword, newPassword, confirmNewPassword} = state;
     const [isDisableErrorAlert, setIsDisableErrorAlert] = useState(false);
+
+    const [resetPassword, {data, error, loading}] = useMutation(RESET_PASSWORD_ACCOUNT, {
+        variables: {
+            email: user,
+            currentPassword: currentPassword.value,
+            newPassword: newPassword.value
+        },
+        onCompleted: (data) => {
+            enqueueSnackbar(data.resetPassword, {variant: 'success', anchorOrigin: {vertical: 'bottom', horizontal: 'left'}});
+        },
+        onError: (error) => {
+            enqueueSnackbar(error.message, {variant: 'error', anchorOrigin: {vertical: 'bottom', horizontal: 'left'}});
+        }
+    })
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -16,19 +33,22 @@ const EditPasswordAccount = ({validationSchema, disableSchema, user, stateSchema
             setIsDisableErrorAlert(true)
         } else {
             setIsDisableErrorAlert(false)
+            resetPassword();
         }
     }
 
     const disableErrorAlert = isDisableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
+    const errorAlertPassword = isDisableErrorAlert && newPassword.error ? <span className={styles.disableErrorAlert}>{newPassword.error}</span> : null;
+    const isLoadingMutation = loading ? <div className={styles.centerCircularProgress}><CircularProgress/></div> : <Button size='small' type='submit' variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}}>Restablecer contraseña</Button>
 
     return (
-        <Fragment>
-            {disableErrorAlert}
-            <TextField variant='outlined' value={currentPassword.value} error={currentPassword.errorfield} label='Contraseña anterior' size='small' name='currentPassword' onChange={(e) => {handleOnChange(e)}}/>
-            <TextField variant='outlined' value={newPassword.value} error={newPassword.errorfield} label='Nueva contraseña' size='small' name='newPassword' onChange={(e) => {handleOnChange(e)}}/>
-            <TextField variant='outlined' value={confirmNewPassword.value} error={confirmNewPassword.errorfield} label='Confirmar nueva contraseña' size='small' name='confirmNewPassword' onChange={(e) => {handleOnChange(e)}}/>
-            <Button size='small' variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={(e) => {handleOnSubmit(e)}}>Restablecer contraseña</Button>
-        </Fragment>
+        <form onSubmit={(e) => {handleOnSubmit(e)}} className={styles.gridForm}>
+            {disableErrorAlert || errorAlertPassword}
+            <TextField type='password' variant='outlined' value={currentPassword.value} error={currentPassword.errorfield} label='Contraseña actual' size='small' name='currentPassword' onChange={(e) => {handleOnChange(e)}}/>
+            <TextField type='password' variant='outlined' value={newPassword.value} error={newPassword.errorfield} label='Nueva contraseña: (mínimo 6 digitos)' size='small' name='newPassword' onChange={(e) => {handleOnChange(e)}}/>
+            <TextField type='password' variant='outlined' value={confirmNewPassword.value} error={confirmNewPassword.errorfield} label='Confirmar nueva contraseña' size='small' name='confirmNewPassword' onChange={(e) => {handleOnChange(e)}}/>
+            {isLoadingMutation}
+        </form>
     )
 }
 

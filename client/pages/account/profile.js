@@ -1,6 +1,5 @@
 import { getSession } from 'next-auth/client';
 import React from 'react';
-import useFormValidation from '../../components/hooks/handleFormHook';
 import Layout from '../../components/Layout';
 import LayoutAccount from '../../components/LayoutAccount';
 import styles from './styles/profile.module.css';
@@ -42,6 +41,7 @@ const Profile = ({userEmail}) => {
                 <div className={styles.profileContainer}>
                     <h3>Perfil</h3>
                     <p>Tu información de perfil, es la información que veran los administradores para identificarte.</p>
+                    <p style={{color: '#ff9800'}}>Nota: Al actualizar tu perfil, se cerrará la sesión actual.</p>
                     <EditProfile
                     validationSchema={validationSchema}
                     disableSchema={disableSchema}

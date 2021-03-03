@@ -71,6 +71,7 @@ const useFormValidation = (stateSchema, validationSchema = {}, disableSchema) =>
         }
     }, [isDirty, disableSchema, validateState])
 
+    //Confirma que las password sean iguales.
     useEffect(() => {
         if (state.confirmpassword.value !== state.password.value) {
             setPasswordNoMatch(true);
@@ -92,7 +93,8 @@ const useFormValidation = (stateSchema, validationSchema = {}, disableSchema) =>
             }
         }
 
-        if (validationSchema.password.validator !== null && typeof validationSchema.password.validator === 'object') {
+        //Valida la expresion regular de la propiedad password en el objeto de validacion.
+        if (validationSchema.password.validator !== null && typeof(validationSchema.password.validator) === 'object') {
             if ( name === 'password' && value && !validationSchema.password.validator.regEx.test(value)) {
                 error = validationSchema.password.validator.error;
                 errorfield = 'SignUpForm_inputError';

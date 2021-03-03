@@ -4,7 +4,7 @@ import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 
 //Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
@@ -314,7 +314,7 @@ export const resolvers = {
             })
         },
 
-        //Este resolver se encargara de actualizar la contraseña proporcionado por el cliente en /account/account.
+        //Este resolver se encargara de actualizar la contraseña proporcionada por el cliente en /account/account.
         resetPassword: async (parent, {email, currentPassword, newPassword}) => {
             await dbConnect();
 
@@ -323,18 +323,43 @@ export const resolvers = {
             if (!user) {
                 throw new Error('Error, revise sus datos.');
             }
+
+            const newPasswordHash = await bcrypt.hash(newPassword, 10);
+            
+            if(!newPasswordHash) {
+                throw new Error('Algo salio mal al actualizar la contraseña.')
+            }
+
             return new Promise((resolve, rejects) => {
                 bcrypt.compare(currentPassword, user.password).then((result) => {
                     if (result) {
-                        Users.findOneAndUpdate({email: email}, {password: newPassword}, (err, user) => {
+                        Users.findOneAndUpdate({email: email}, {password: newPasswordHash}, (err, user) => {
                             if(err || !user) {
-                                rejects('Algo no salió bien al actualizar la contraseña.');
+                                rejects('Algo no salió mal al actualizar la contraseña.');
                             } else {
                                 resolve('Se actualizo correctamente la contraseña.')
                             }
                         })
                     } else {
-                        rejects('Contraseña anterior: incorrecta.')
+                        rejects('Contraseña actual: incorrecta.')
+                    }
+                })
+            })
+        },
+
+        updateUserProfile: async (parent, {email, firstname, lastname, id}) => {
+            await dbConnect();
+
+            return new Promise((resolve, rejects) => {
+                Users.findOneAndUpdate({_id: id}, {
+                    email: email,
+                    firstname: firstname,
+                    lastname: lastname
+                }, (err, user) => {
+                    if(err || !user) {
+                        rejects('Algo salio mal al actualizar el perfil.')
+                    } else {
+                        resolve('Se actualizó correctamente el perfil.');
                     }
                 })
             })

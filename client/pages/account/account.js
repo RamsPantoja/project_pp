@@ -5,31 +5,8 @@ import LayoutAccount from '../../components/LayoutAccount';
 import styles from './styles/account.module.css';
 import EditEmailAccount from '../../components/EditEmailAccount';
 import EditPasswordAccount from '../../components/EditPasswordAccount';
-
-const stateSchemaEmail = {
-    email: {value: '', error: '' , errorfield: false}
-}
-
-const stateSchemaPassword = {
-    currentPassword: {value: '', errorfield: false},
-    newPassword: {value: '', errorfield: false},
-    confirmNewPassword: {value: '', errorfield: false}
-}
-
-const validationSchemaEmail = {
-    email: {required: true}
-}
-
-const validationSchemaPassword = {
-    currentPassword: {required: true},
-    newPassword: {required: true},
-    confirmNewPassword: {required: true}
-}
-
-const disableSchema = {
-    status: true,
-    error: ''
-}
+import { stateSchemaEmail, validationSchemaEmail } from '../../components/hooks/handleEditAccountFormEmailHook';
+import { disableSchema, stateSchemaPassword, validationSchemaPassword } from '../../components/hooks/handleEditAccountFormPasswordHook';
 
 const Account = ({userEmail}) => {
     return (
