@@ -44,7 +44,9 @@ const Courses = () => {
                                     id={course.id}
                                     deleteCourseComponent={false}
                                     enrollmentLimit={course.enrollmentLimit}
-                                    enrollmentUsers={course.enrollmentUsers.length}/>
+                                    enrollmentUsers={course.enrollmentUsers.length}
+                                    urlImg={course.coverImg.url}
+                                    filename={course.coverImg.filename}/>
                                 )
                             })}
                         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createRef, useState } from 'react';
 import LayoutAdmin from '../../../components/LayoutAdmin';
 import styles from './styles/courses_form.module.css';
 import TextField from '@material-ui/core/TextField';
@@ -15,9 +15,11 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/client';
+import ImageIcon from '@material-ui/icons/Image';
 
 const CoursesForm = () => {
     const router = useRouter()
+    const ref = createRef();
     const [messageError, setMessageError] = useState(false);
     const [
         state, 
@@ -31,10 +33,11 @@ const CoursesForm = () => {
         handleOnChangeSubConceptInput,
         handleDeleteObjetive,
         handleDeleteConcept,
-        handleDeleteSubConcept
+        handleDeleteSubConcept,
+        handleOnChangeImg
     ] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourse, disableSchemaCourse);
 
-    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList} = state;
+    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList, img} = state;
 
     const objectivesValue = objectives.map((item, i) => {
         if (item.value !== 'undefined') return item.value;
@@ -61,7 +64,8 @@ const CoursesForm = () => {
                 enrollmentLimit: enrollmentValue,
                 objectives: objectivesValue,
                 conceptList: conceptListValue
-            }
+            },
+            img: img.file
         },
         onCompleted: async (data) => {
             router.push('http://localhost:3000/app/admin/courses');
@@ -74,11 +78,22 @@ const CoursesForm = () => {
         e.preventDefault();
         if (disable.status) {
             setMessageError(true);
+            if(img.file === '' || img.file === undefined) {
+                img.errorfield = true;
+            }
         } else {
             setMessageError(false)
             addCourse();
         }
     }
+
+    const handleOnClickSelectFile = (e) => {
+        e.preventDefault();
+        const inputFile = ref.current;
+        inputFile.click();
+    }
+
+
 
     const isMessageAlertError = messageError && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
@@ -95,7 +110,12 @@ const CoursesForm = () => {
                             <TextField label='Profesor' size='small' error={state.teacher.errorfield} variant='outlined' name='teacher' value={state.teacher.value} onChange={(e) => {handleOnChange(e)}}/>
                             <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={(e) => {handleOnChange(e)}} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
                             <TextField label='Limit de alumnos' type='number' error={state.enrollmentLimit.errorfield} size='small' variant='outlined' name='enrollmentLimit' value={state.enrollmentLimit.value} onChange={(e) => {handleOnChange(e)}}/>
-                            <p>Objetivos(Minimo:1):</p>
+                            <div className={styles.buttonToUpload}>
+                                <Button startIcon={<ImageIcon/>} onClick={(e) => {handleOnClickSelectFile(e)}} component='span'>Seleccionar imagen</Button>
+                                <TextField variant='standard' placeholder='Imagen no seleccionada' value={img.filename} error={img.errorfield}/>
+                            </div>
+                            <input ref={ref} name='img' id='contained-button-file' type='file' hidden onChange={(e) => {handleOnChangeImg(e)}}/>
+                            <p>Objetivos(Mínimo:1):</p>
                             { state.objectives.map((item, index) => {
                                 return (
                                     <div key={index} className={styles.objectiveContainer}>
@@ -107,13 +127,9 @@ const CoursesForm = () => {
                             <div className={styles.formFirstIcons}>
                                 <Button onClick={(e) => {handleAddObjetive(e)}} size='small' color='primary' variant='outlined' disabled={isDisableButtonToAddObjectives} startIcon={<AddCircleIcon/>}>Agregar objetivo</Button>
                             </div>
-                            {isMessageAlertError || anyApolloError}
-                            <div className={styles.mutationLoading}>
-                                {isLoadingMutation}
-                            </div>
                         </div>
                         <div className={styles.formConceptInputs}>
-                            <p>Temario(Minimo:1):</p>
+                            <p>Temario(Mínimo:1):</p>
                             { state.conceptList.map((item, index) => {
                                 return (
                                     <FormAddConcept 
@@ -128,8 +144,12 @@ const CoursesForm = () => {
                                     item={item.concept}/>
                                 )
                             })}
-                            <div className={styles.formFirstIcons}>
+                            <div className={styles.formAddConcept}>
                                 <Button onClick={(e) => {handleAddConcept(e)}} size='small' style={{background: '#15639d', color:'#ffffff'}} variant='contained' startIcon={<AddCircleIcon/>}>Agregar tema</Button>
+                            </div>
+                            <div className={styles.mutationLoading}>
+                                {isMessageAlertError || anyApolloError}
+                                {isLoadingMutation}
                             </div>
                         </div>
                     </form>
@@ -150,6 +170,10 @@ export async function getServerSideProps({req}) {
                 permanent: false
             }
         }
+    }
+
+    return {
+        props: {}
     }
 }
 

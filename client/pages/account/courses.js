@@ -15,7 +15,6 @@ const Courses = () => {
                         <p>Bertha Alicia</p>
                         <p>Pagado:750/1500</p>
                         <Button variant='contained' size='small' style={{background: '#15639d', color: '#ffffff'}}>Pagar</Button>
-
                     </div>
                 </div>
             </LayoutAccount>

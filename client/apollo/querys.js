@@ -11,6 +11,10 @@ export const GET_COURSES = gql `
             enrollmentUsers {
                 id
             }
+            coverImg {
+                filename
+                url
+            }
         }
     }
 `
@@ -31,6 +35,10 @@ export const GET_COURSE_BY_ID = gql `
                 firstname
                 lastname
                 email
+            }
+            coverImg {
+                filename
+                url
             }
         }
     }

@@ -11,8 +11,8 @@ const createIsomorphLink = () => {
         const { schema } = require('../../lib/schema');
         return new SchemaLink({schema});
     } else {
-        const { HttpLink } = require('@apollo/client/link/http');
-        return new HttpLink({
+        const { createUploadLink } = require('apollo-upload-client');
+        return new createUploadLink({
             uri: '/api/graphql',
             credentials: 'same-origin'
         });

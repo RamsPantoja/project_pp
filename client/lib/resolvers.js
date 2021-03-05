@@ -4,7 +4,9 @@ import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
+import shortid from 'shortid';
+import { createWriteStream } from 'fs';
 
 //Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
@@ -42,7 +44,7 @@ const createEmailToken = async (user, SECRET, expiresIn, sgMail) => {
 }
 
 
-//Pagina los resultados del query getUsers en base la cursor(ID) proporcionado por prop del lado del cliente y limit.
+//Pagina los resultados del query getUsers en base al cursor(ID) proporcionado por prop del lado del cliente y limit.
 const paginateResults = ({
     after: cursor,
     limit,
@@ -70,6 +72,26 @@ const paginateResults = ({
         : results.slice(0, limit)
 }
 
+//Esta funcion guarda la img subida desde el ciente en la carpeta public/img para ser streameadas desde la app.
+const storeUpload = ({stream, filename, mimetype}) => {
+    const id = shortid.generate();
+    const path = `/images/${id}-${filename}`;
+    return new Promise((resolve, rejects) => 
+        stream.pipe(createWriteStream(`public${path}`))
+        .on("finish", () => resolve({path, filename, mimetype}))
+        .on("error", rejects)
+    );
+};
+
+//Procesa la img subida desdel el cliente.
+const imgMimetypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg'];
+const processUpload = async (createReadStream, mimetype, filename) => {
+    const stream = createReadStream();
+    if(filename !== null && imgMimetypes.includes(mimetype)) {
+        const file = await storeUpload({stream, filename, mimetype});
+        return file;
+    }
+}
 
 
 
@@ -166,10 +188,23 @@ export const resolvers = {
         },
         
         //Agrega un curso.
-        addCourse: async (parent, {input}) => {
+        addCourse: async (parent, {input, img}) => {
+            const {createReadStream, filename, mimetype} = await img;
             await dbConnect();
             
-            //Crea un nuevo objeto Curso y lo guarda en la base de datos.
+            const courseAlreadyExist = await Courses.findOne({title: input.title});
+
+            if(courseAlreadyExist) {
+                throw new Error('El curso ya existe');
+            }
+            
+            //ProcessUpload() retorna un objeto que contiene los datos de la img subida desde el cliente.
+            const file = await processUpload(createReadStream, mimetype, filename);
+        
+            if(!file) {
+                throw new Error('La imagen debe ser .jpg/.png/.svg/.gif');
+            }
+
             const newCourse = await new Courses({
                 title: input.title,
                 teacher: input.teacher,
@@ -178,10 +213,25 @@ export const resolvers = {
                 conceptList: input.conceptList,
                 enrollmentLimit: input.enrollmentLimit,
                 enrollmentUsers: [],
-                price: input.price
-            }).save();
+                price: input.price,
+                coverImg: {
+                    filename: file.filename,
+                    mimetype: file.mimetype,
+                    url: file.path
+                }
+            });
 
-            return 'Curso creado!';
+            console.log(newCourse)
+
+            return new Promise((resolve, rejects) => {
+                if(newCourse) {
+                    newCourse.save();
+                    resolve('Se ha creado el curso correctamente.')
+                } else {
+                    rejects('No se puede crear el curso, revise los datos.')
+                }
+            })
+        
         },
 
         //Inserta el usuario que compro el curso especifico.

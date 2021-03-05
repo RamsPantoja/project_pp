@@ -8,6 +8,7 @@
     justify-content: space-around;
     flex: 1;
     padding: 3em 1em;
+    align-items: center;
     background-color: #ffffff;
 }
 
@@ -62,17 +63,17 @@
     padding: 0.2em;
 }
 
-.courseDescription_headerButton {
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    flex: 0.4;
+.courseDescription_headerImg {
+    position: relative;
     padding: 1em;
-}
-
-.courseDescription_headerButton > img {
+    height: 300px;
+    width: 40%;
     border-radius: 1em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.borderImgRadius {
+    border-radius: 1em;
 }
 
 .price {    
@@ -155,11 +156,6 @@
 }
 
 @media(max-width: 1200px) {
-    .courseDescription_headerButton > img {
-        object-fit: contain;
-        height: 15em;
-    }
-
     .conceptBlock {
         width: 100%;
     }
@@ -168,5 +164,10 @@
 @media(max-width: 768px) {
     .courseDescription_header {
         flex-direction: column-reverse;
+    }
+
+    .courseDescription_headerImg {
+        flex: none;
+        width: 90%;
     }
 }

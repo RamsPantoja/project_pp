@@ -29,12 +29,6 @@
     text-decoration: underline;
 }
 
-.courseCard > img {
-    border-radius: 0.5em;
-    width: 100%;
-    height: 60%;
-}
-
 .courseCardButton > p {
     font-weight: bold;
     padding: 1em;
@@ -46,6 +40,16 @@
     justify-content: space-between;
     padding: 0.5em 1em;
     align-items: center;
+}
+
+.imgContainer {
+    position: relative;
+    height: 200px;
+}
+
+.imgBorderRadius {
+    border-top-right-radius: 0.5em;
+    border-top-left-radius: 0.5em;
 }
 
 @media(max-width: 1024px) {

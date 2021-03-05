@@ -2,7 +2,6 @@
     display: flex;
     padding: 1em;
     height: 100%;
-    flex: 1;
     justify-content: space-around;
     overflow: auto;
 }
@@ -37,7 +36,6 @@
     flex-direction: column;
     padding: 1em;
     flex: 0.6;
-    overflow: auto;
 }
 
 .formConceptInputs > p {
@@ -64,8 +62,23 @@
 }
 
 .mutationLoading {
+    display: grid;
+    align-items: center;
+    gap: 1em;
+    padding-bottom: 1em;
+    flex-direction: column;
+}
+
+
+.formAddConcept {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-bottom: 1em;
+}
+
+.buttonToUpload {
+    display: flex;
+    justify-content: space-around;
     align-items: center;
 }
 

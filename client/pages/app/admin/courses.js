@@ -58,7 +58,9 @@ const CoursesAdmin = () => {
                                 teacher={course.teacher}
                                 id={course.id}
                                 enrollmentLimit={course.enrollmentLimit}
-                                enrollmentUsers={course.enrollmentUsers.length}/>
+                                enrollmentUsers={course.enrollmentUsers.length}
+                                filename={course.coverImg.filename}
+                                urlImg={course.coverImg.url}/>
                             )
                         })}
                     </div>

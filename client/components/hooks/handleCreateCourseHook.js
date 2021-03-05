@@ -10,7 +10,8 @@ export const stateSchemaInfCourse = {
         subConceptList: [{value: '', errorfield: false}]
     }],
     price: {value: '', errorfield: false},
-    enrollmentLimit: {value: '', errorfield: false}
+    enrollmentLimit: {value: '', errorfield: false},
+    img: {filename: '', errorfield: false, file: ''}
 }
 
 export const validationSchemaCourse = {
@@ -23,7 +24,8 @@ export const validationSchemaCourse = {
     objectives: { required: true},
     conceptList: { required: true},
     price: { required: true},
-    enrollmentLimit: { required: true}
+    enrollmentLimit: { required: true},
+    img: { required: true}
 }
 
 
@@ -45,7 +47,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             const descriptionValue = state.description.value;
             const teacherValue = state.teacher.value;
             const priceValue = state.price.value;
+            const imgValue = state.img.filename;
             const enrollmentLimitValue = state.enrollmentLimit.value;
+
+            //Retorna un True si no hay valor en alguno de los campos objective
             const hasErrorInObjectives = Object.keys(state.objectives).some((key) => {
                 const objectiveValue = state.objectives[key].value;
 
@@ -63,7 +68,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             })
             const lengthObjetives = state.objectives.length;
             const lengthConceptList = state.conceptList.length;
-            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue)) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0);
+            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue || !imgValue)) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0);
         })
 
         return hasErrorInState;
@@ -108,7 +113,33 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
         setState((prevState) => ({
             ...prevState,
             [name]: { value, errorfield}
+        }));
+    }
+
+    //Lee el campo img y extrae el nombre de la imagen seleccionada con la expresion regular /[\/\\]([\w\d\s\.\-\(\)]+)$/
+    const handleOnChangeImg = (e) => {
+        setIsDirty(true);
+        const name = e.target.name;
+        const file = e.target.files[0];
+        const value = e.target.value;
+        let errorfield = false;
+        let filename = ''
+
+        if (validationSchemaCourse[name].required) {
+            if(!value) {
+                errorfield= true
+            }
+        }
+
+        if(value) {
+            filename = value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+        }
+
+        setState((prevState) => ({
+            ...prevState,
+            [name]: {filename, errorfield, file}
         }))
+
     }
 
     //Lee los campos Objetive del formualrio de crear cursos y actualiza el campo objetive por el valor leido.
@@ -222,7 +253,6 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
 
     //Elimina el campo dentro de subConceptList
     const handleDeleteSubConcept = (e, i, indexConcept) => {
-        console.log(indexConcept)
         e.preventDefault();
 
         const subConceptList = state.conceptList.map((item, index) => {
@@ -287,7 +317,8 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
         handleOnChangeSubConceptInput, 
         handleDeleteObjetive,
         handleDeleteConcept,
-        handleDeleteSubConcept
+        handleDeleteSubConcept,
+        handleOnChangeImg
     ]
 }
 

@@ -2,18 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/course_id.module.css';
-import {useMutation, useQuery} from '@apollo/client';
-import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
+import { useQuery } from '@apollo/client';
+import { GET_COURSE_BY_ID } from '../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { initializeApollo } from '../../components/hooks/apolloClient';
 import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const DescriptionCourse = ({id}) => {
     const [session, loading] = useSession();
     const router = useRouter();
-    //const isEmail = loading && !session ? null : session?.user.email;
-
 
     const {data, error, loading: loadingCourse} = useQuery(GET_COURSE_BY_ID, {
         variables: {id: id}
@@ -29,7 +27,7 @@ const DescriptionCourse = ({id}) => {
         )
     }
 
-    const {title, description, price, objectives, conceptList} = data.getCourseById;
+    const {title, description, price, objectives, conceptList, coverImg} = data.getCourseById;
 
     const handleOnClickSession = (e) => {
         e.preventDefault();
@@ -60,8 +58,8 @@ const DescriptionCourse = ({id}) => {
                         <span className={styles.price}>{`$ ${price}`}</span>
                         <button onClick={(e) => {handleOnClickSession(e)}}>OBTENER CURSO</button>
                     </div>
-                    <div className={styles.courseDescription_headerButton}>
-                        <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
+                    <div className={styles.courseDescription_headerImg}>
+                        <Image className={styles.borderImgRadius} src={coverImg.url} quality={100} layout='fill' objectFit='cover'/>
                     </div>
                 </div>
                 <div className={styles.conceptContent}>

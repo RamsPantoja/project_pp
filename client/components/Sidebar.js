@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './styles/Sidebar.module.css';
 import Link from 'next/link'
+import ActiveLink from './ActiveLink';
 
 const Sidebar = () => {
     return (
@@ -10,9 +11,9 @@ const Sidebar = () => {
             </div>
             <nav className={styles.navBar}>
                 <ul className={styles.navBarList}>
-                    <Link href='/app/admin/notifications'><a className={styles.navBarLink}>Notificaciones</a></Link>
-                    <Link href='/app/admin/courses'><a className={styles.navBarLink}>Cursos</a></Link>
-                    <Link href='/app/admin/users'><a className={styles.navBarLink}>Alumnos</a></Link>
+                    <Link href='/app/admin/notifications' passHref><ActiveLink name={'Notificaciones'}/></Link>
+                    <Link href='/app/admin/courses' passHref><ActiveLink name={'Cursos'}/></Link>
+                    <Link href='/app/admin/users' passHref><ActiveLink name={'Alumnos'}/></Link>
                 </ul>
             </nav>
         </div>

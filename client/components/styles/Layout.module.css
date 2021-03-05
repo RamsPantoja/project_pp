@@ -46,6 +46,14 @@
     text-align: center;
 }
 
+.header_linkInfActived {
+    text-decoration: none;
+    color: #009ee3;
+    transition: 0.1s ease;
+    padding: 0.5em 0.5em;
+    text-align: center;
+}
+
 .header_linkInf:hover {
     color:#009ee3;
 }
