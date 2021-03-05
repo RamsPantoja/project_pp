@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { GET_COURSES, GET_COURSE_BY_ID } from '../../apollo/querys';
-import { initializeApollo } from '../../components/hooks/apolloClient';
+import React, { useState } from 'react';
+import { GET_COURSE_BY_ID } from '../../apollo/querys';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/shopping_id.module.css';
@@ -12,6 +11,7 @@ import { Button, RadioGroup } from '@material-ui/core';
 import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 import { useRouter } from 'next/router'
 import { getSession, useSession } from 'next-auth/client';
+import Image from 'next/image';
 
 const ShoppingCart = ({id}) => {
     const router = useRouter();
@@ -45,7 +45,7 @@ const ShoppingCart = ({id}) => {
         return error.message
     }
 
-    const {title, teacher, price} = data.getCourseById
+    const {title, teacher, price, coverImg} = data.getCourseById
 
     const handleOnChangeInputRadio = (e) => {
         e.preventDefault();
@@ -81,7 +81,9 @@ const ShoppingCart = ({id}) => {
             </Head>
             <div className={styles.shoppingContainer}>
                 <div className={styles.shoppingCourseInf}>
-                    <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
+                    <div className={styles.imageContainer}>
+                        <Image className={styles.imageBorderRadius} alt={coverImg.filename} src={coverImg.url} layout='fill' objectFit='cover' objectPosition='50 50'/>
+                    </div>
                     <div className={styles.shoppingDescription}>
                         <h3>Curso</h3>
                         <ul className={styles.shoppingDescription_grid}>

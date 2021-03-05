@@ -59,7 +59,7 @@ const DescriptionCourse = ({id}) => {
                         <button onClick={(e) => {handleOnClickSession(e)}}>OBTENER CURSO</button>
                     </div>
                     <div className={styles.courseDescription_headerImg}>
-                        <Image className={styles.borderImgRadius} src={coverImg.url} quality={100} layout='fill' objectFit='cover'/>
+                        <Image className={styles.borderImgRadius} src={coverImg.url} alt={coverImg.filename} quality={100} layout='fill' objectFit='cover'/>
                     </div>
                 </div>
                 <div className={styles.conceptContent}>

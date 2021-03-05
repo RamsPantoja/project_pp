@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 import styles from './styles/Index.module.css';
-import {getSession, useSession} from 'next-auth/client';
+import {getSession} from 'next-auth/client';
+import Image from 'next/image';
 
 const HomePage = () => {
     return (
@@ -13,7 +14,7 @@ const HomePage = () => {
             <div className={styles.home_container}>
                 <div className={styles.home_containerHeader}>
                     <div className={styles.imgContainer}>
-                        <img src='https://static.platzi.com/static/images/landing/default/foro.png'></img>
+                        <Image className={styles.objectFit} src='/images/foro.webp' layout='fill' />
                     </div>
                     <div className={styles.home_title}>
                         <h1>Fórmate online como profesional en tecnología</h1>
@@ -29,7 +30,7 @@ const HomePage = () => {
                 </div>
                 <div className={styles.featureList2_container}>
                     <div className={styles.imgContainer}>
-                        <img src='https://static.platzi.com/static/images/landing/default/core.png'></img>
+                        <Image className={styles.objectFit} src='/images/core.webp' layout='fill'/>
                     </div>
                     <div className={styles.featureList2_right}>
                         <h2>La mejor experiencia de aprendizaje</h2>

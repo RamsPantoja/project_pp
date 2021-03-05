@@ -7,6 +7,7 @@ import { GET_COURSE_BY_ID } from '../../../../apollo/querys';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { DELETE_USER_IN_COURSE } from '../../../../apollo/mutations';
 import { getSession } from 'next-auth/client';
+import Image from 'next/image';
 
 const CoursesById = ({id}) => {
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}, pollInterval: 1000});
@@ -27,13 +28,15 @@ const CoursesById = ({id}) => {
         )
     }
 
-    const { title, description, teacher} = data.getCourseById;
+    const { title, description, teacher, coverImg} = data.getCourseById;
 
     return (
         <LayoutAdmin>
             <div className={styles.layoutCoursesById}>
                 <div className={styles.courseInf}>
-                    <img src='https://static.platzi.com/media/achievements/badge-basico-python-bdcc67b3-031d-4dce-8e78-5699fb243149.png'></img>
+                    <div className={styles.imageContainer}>
+                        <Image src={coverImg.url} className={styles.imageBorderRadius} layout='fill' objectFit='cover'/>
+                    </div>
                     <h2>{title}</h2>
                     <p>{description}</p>
                     <span>{teacher}</span>
