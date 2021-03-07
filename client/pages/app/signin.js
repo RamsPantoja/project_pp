@@ -7,7 +7,7 @@ import LoginForm from '../../components/LoginForm';
 import { useRouter } from 'next/router';
 import useAuthFormValidation, { authUserSchema, disableSchema, validationSchema } from '../../components/hooks/handleAuthUserHook';
 import { csrfToken, getSession } from 'next-auth/client'
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const SignIn = ({csrfToken}) => {

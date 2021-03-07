@@ -20,7 +20,7 @@ const Layout = ({children}) => {
                         <Link href='/about' passHref><ActiveLinkLayout name={'Sobre nosotros'}/></Link>
                         <Link href='/contact' passHref><ActiveLinkLayout name={'Contacto'}/></Link>
                         <p>|</p>
-                        <div className={`nojs-show ${(!session && loading) ? styles.loading : styles.loaded}`}>
+                        <div className={`${(!session && loading) ? styles.loading : styles.loaded}`}>
                             {isMenu}
                         </div>
                     </div>

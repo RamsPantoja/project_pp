@@ -80,16 +80,17 @@
 
 .loading,
 .loaded {
-    display: flex;
     position: relative;
     top: 0;
-    margin: 0;
+    opacity: 1;
+    overflow: hidden;
+    display: flex;
     transition: all 0.2s ease-in;
 }
 
 .loading {
   opacity: 0;
-  top: -2em;
+  top: -3em;
 }
 
 @media (min-width: 600px) {
