@@ -14,3 +14,19 @@
 .header_link:hover {
     background-color: #15639d;
 }
+
+.loaded {
+    position: relative;
+    top: 0;
+    opacity: 1;
+    overflow: hidden;
+    display: flex;
+    transition: all 0.2s ease-in;
+}
+
+.loading {
+    opacity: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+}

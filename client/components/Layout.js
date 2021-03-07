@@ -8,7 +8,7 @@ import ActiveLinkLayout from './ActiveLinkLayout';
 
 const Layout = ({children}) => {
     const [session, loading] = useSession();
-    const isMenu = session ? <DropDownUser userAuthEmail={session.user.email}/> : <ButtonsInUp/>
+    const isMenu = session && !loading ? <DropDownUser userAuthEmail={session.user.email}/> : <ButtonsInUp session={session} loading={loading}/>
 
     return (
         <div className={styles.app_container}>
