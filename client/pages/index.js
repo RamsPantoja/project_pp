@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout'
 import styles from './styles/index.module.css';
 import {getSession} from 'next-auth/client';
 import Image from 'next/image';
