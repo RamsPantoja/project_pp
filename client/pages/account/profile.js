@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/client';
 import React from 'react';
 import Layout from '../../components/Layout';
 import LayoutAccount from '../../components/LayoutAccount';
@@ -6,6 +5,10 @@ import styles from './styles/profile.module.css';
 import { useQuery } from '@apollo/client';
 import { GET_USER_BY_EMAIL } from '../../apollo/querys';
 import EditProfile from '../../components/EditProfile';
+import { getSession, useSession } from 'next-auth/client';
+import { useRouter } from 'next/router'
+import Head from 'next/head';
+import { CircularProgress } from '@material-ui/core';
 
 const stateSchema = {
     firstname: { value: '', errorfield: false},
@@ -32,12 +35,28 @@ const Profile = ({userEmail}) => {
     })
 
     if(loading) {
-        return 'loading...'
+        return (
+            <Layout>
+                <Head>
+                    <title>Perfil | Profe Paco</title>
+                </Head>
+                <div className={styles.centerCircularProgress}>
+                    <CircularProgress/>
+                </div>
+            </Layout>
+        )
     }
+
+    const {firstname} = data.getUserByEmail;
+
+    
 
     return (
         <Layout>
-            <LayoutAccount>
+            <Head>
+                <title>Perfil | Profe Paco</title>
+            </Head>
+            <LayoutAccount userName={firstname}>
                 <div className={styles.profileContainer}>
                     <h3>Perfil</h3>
                     <p>Tu información de perfil, es la información que veran los administradores para identificarte.</p>

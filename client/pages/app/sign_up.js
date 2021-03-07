@@ -36,7 +36,7 @@ const SignUp = () => {
         return (
             <Fragment>
                 <Head>
-                    <title>Sign Up</title>
+                    <title>Sign Up | Profe Paco</title>
                 </Head>
                 <div className={styles.signUp}>
                     <div className={styles.signUp_userCreated}>
@@ -54,7 +54,7 @@ const SignUp = () => {
     return (
         <Fragment>
             <Head>
-                <title>Sign Up</title>
+                <title>Sign Up | Profe Paco</title>
             </Head>
             <div className={styles.signUp}>
                 <div className={styles.buttonToBack}>

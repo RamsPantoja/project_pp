@@ -33,7 +33,7 @@ const SignIn = ({csrfToken}) => {
     return (
         <Fragment>
             <Head>
-                <title>Sign in</title>
+                <title>Sign In | Profe Paco</title>
             </Head>
             <div className={styles.sign_in}>
                 <div className={styles.buttonToBack}>
@@ -54,6 +54,7 @@ const SignIn = ({csrfToken}) => {
                             csrfToken={csrfToken}/>
                         </div>
                         <span className={styles.linkToSignUp}>Aun no tienes una cuenta? <Link href='/app/sign_up'><a className={styles.linkToCreateAccount}>Crear cuenta</a></Link></span>
+                        <span className={styles.linkToRecoveryPassword}>Olvidaste tu contraseña? <Link href='/app/recovery_password'><a className={styles.linkToCreateAccount}>Click aquí</a></Link></span>
                     </div>
                 </div>
             </div>  

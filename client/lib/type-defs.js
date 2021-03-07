@@ -11,6 +11,7 @@ export const typeDefs = gql `
         password: String
         img: String
         isAdmin: Boolean
+        isConfirmated: Boolean
     }
 
     type Course {
@@ -75,15 +76,18 @@ export const typeDefs = gql `
     }
 
     type Mutation {
-        createUser(input: inputUser) : String
-        addCourse(input: inputCourse, img: Upload!) : String
+        createUser(input: inputUser!) : String
+        addCourse(input: inputCourse!, img: Upload!) : String
         insertUserInCourse(email: String!, id: ID!): String
-        deleteCourseByTitle(title: String!): String
+        deleteCourseByTitle(title: String!, id: ID!): String
         deleteUserInCourse(id: ID!, userEmail: String!): String
         deleteUserByEmail(userEmail: String!): String
         createPreferenceMercadoPago(title: String!, price: Int!, firstname: String!, lastname: String!, email: String!): String
         sendEmailConfirmation(email: String!): String
         resetPassword(email: String!, currentPassword: String!, newPassword: String!): String
         updateUserProfile(id: ID!, email: String!, firstname: String!, lastname: String!): String
+        updateCourse(input: inputCourse!, id: ID!): String
+        recoveryPassword(email: String!): String
+        resetPasswordRecovery(id: ID!, newPassword: String!): String
     }
 `

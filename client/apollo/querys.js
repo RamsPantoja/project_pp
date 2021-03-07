@@ -31,6 +31,7 @@ export const GET_COURSE_BY_ID = gql `
                 subConceptList
             }
             price
+            enrollmentLimit
             enrollmentUsers {
                 firstname
                 lastname
@@ -65,6 +66,7 @@ export const GET_USER_BY_EMAIL = gql `
             email
             firstname
             lastname
+            isConfirmated
         }
     }
 `

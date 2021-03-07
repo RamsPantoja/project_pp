@@ -4,7 +4,7 @@ import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 import shortid from 'shortid';
 import { createWriteStream } from 'fs';
 
@@ -18,14 +18,14 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 //Crea un token que sera enviado por email al usuario que se ha registrado ó para confirmar el email en la sección /account/acoount del lado del cliente.
-const createEmailToken = async (user, SECRET, expiresIn, sgMail) => {
+const createEmailToken = async (user, SECRET, expiresIn, sgMail, baseUrl) => {
     const {_id, email, firstname} = user;
     //Se firma el token.
     const emailToken = jwt.sign({_id}, SECRET, {expiresIn});
 
     //Si el token existe, se crear el constructor con los datos del email que sera enviado al usuario registrado.
     if (emailToken) {
-        const url = `http://localhost:3000/api/confirmation_email/${emailToken}`;
+        const url = `${baseUrl}${emailToken}`;
         const msg = {
             to: email,
             from: 'worddraco1@gmail.com',
@@ -263,11 +263,11 @@ export const resolvers = {
         },
 
         //Elimina un curso con el titulo del curso especificado.
-        deleteCourseByTitle: async (parent, {title}) => {
+        deleteCourseByTitle: async (parent, {title, id}) => {
             await dbConnect();
             
             return new Promise((resolve, rejects) => {
-                Courses.findOneAndRemove({title: title}, (error, doc) => {
+                Courses.findOneAndRemove({title: title, _id: id}, (error, doc) => {
                     if(error || !doc) {
                         rejects('No se puede eliminar ó no se encuentra el curso');
                     } else {
@@ -357,7 +357,7 @@ export const resolvers = {
                     if (err || !user) {
                         rejects('Verifica el correo ingresado.')
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail);
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'http://localhost:3000/api/confirmation_email/');
                         resolve(result);
                     }
                 })
@@ -397,6 +397,7 @@ export const resolvers = {
             })
         },
 
+        //Actualiza la informacion de perfil del Usuario
         updateUserProfile: async (parent, {email, firstname, lastname, id}) => {
             await dbConnect();
 
@@ -410,6 +411,55 @@ export const resolvers = {
                         rejects('Algo salio mal al actualizar el perfil.')
                     } else {
                         resolve('Se actualizó correctamente el perfil.');
+                    }
+                })
+            })
+        },
+
+        //Actualiza el curso que se desea editar desde el cliente.
+        updateCourse: async (parent, {input, id}) => {
+            return new Promise((resolve, rejects) => {
+                Courses.findOneAndUpdate({_id: id}, input, (err, course) => {
+                    if(err || !course) {
+                        rejects('Hubo un error al actualizar el curso.');
+                    } else {
+                        resolve('Se actualizó correctamente.')
+                    }
+                })
+            })
+        },
+
+        //Envia un email al email proporcionado por el usuario que desea recuperar su contraseña.
+        recoveryPassword: async (parent, {email}) => {
+            await dbConnect();
+
+            return new Promise((resolve, rejects) => {
+                Users.findOne({email: email}, (err, user) => {
+                    if( err || !user) {
+                        rejects('Hubo un error al enviar el email');
+                    } else {
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'http://localhost:3000/app/recovery_password/');
+                        resolve(result)
+                    }
+                })
+            })
+        },
+
+        resetPasswordRecovery: async (parent, {id, newPassword}) => {
+            await dbConnect();
+
+            return new Promise((resolve, rejects) => {
+                bcrypt.hash(newPassword, 10).then((hash) => {
+                    if (hash) {
+                        Users.findOneAndUpdate({_id: id}, {password: hash}, (err, user) => {
+                            if(err || !user) {
+                                rejects('No se puede resetear la contraseña, intentalo de nuevo.');
+                            } else {
+                                resolve('Se ha restablecido la contraseña correctamente.');
+                            }
+                        })
+                    } else {
+                        rejects ('No se puede resetear la contraseña, intentalo de nuevo.')
                     }
                 })
             })

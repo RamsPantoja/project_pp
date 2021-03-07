@@ -1,0 +1,13 @@
+.centerCircularProgress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.toPositionFixed {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    overflow: auto;
+}

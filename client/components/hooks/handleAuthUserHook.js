@@ -72,7 +72,7 @@ const useAuthFormValidation = (stateSchema, validationSchema = {}, disableSchema
             ...prevState,
             [name]: {value, errorfield}
         }));
-    });
+    }, [validationSchema]);
 
     return [state, handleOnChange, disable]
 

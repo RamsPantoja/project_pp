@@ -16,6 +16,7 @@
     margin: 1em;
     flex-direction: column;
     padding: 0.5em;
+    flex: 1;
 }
 
 .courseCard_inf > p {

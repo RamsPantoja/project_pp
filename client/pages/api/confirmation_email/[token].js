@@ -7,7 +7,7 @@ const confirmationEmail = async (req, res) => {
     const {query: {token}} = req;
 
     try {
-        const userId = await jtw.verify(token, process.env.SECRET_EMAIL_TOKEN);
+        const userId = jtw.verify(token, process.env.SECRET_EMAIL_TOKEN);
         await Users.findOneAndUpdate({_id: userId._id}, {isConfirmated: true});
     } catch (error) {
         res.send(error);

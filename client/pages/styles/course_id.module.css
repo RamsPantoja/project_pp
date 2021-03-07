@@ -171,3 +171,11 @@
         width: 90%;
     }
 }
+
+
+@media(min-width: 1024px) {
+    .conceptContent {
+        flex: none;
+        height: 100vh;
+    }
+}

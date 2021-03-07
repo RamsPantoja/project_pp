@@ -7,21 +7,52 @@ import EditEmailAccount from '../../components/EditEmailAccount';
 import EditPasswordAccount from '../../components/EditPasswordAccount';
 import { stateSchemaEmail, validationSchemaEmail } from '../../components/hooks/handleEditAccountFormEmailHook';
 import { disableSchema, stateSchemaPassword, validationSchemaPassword } from '../../components/hooks/handleEditAccountFormPasswordHook';
+import { useQuery } from '@apollo/client';
+import { GET_USER_BY_EMAIL } from '../../apollo/querys';
+import Head from 'next/head';
+import { CircularProgress } from '@material-ui/core';
+import IsConfirmated from '../../components/IsConfirmated';
 
 const Account = ({userEmail}) => {
+    const {data, loading, error} = useQuery(GET_USER_BY_EMAIL, {
+        variables: {
+            email: userEmail
+        }
+    })
+
+    if(loading) {
+        return (
+            <Layout>
+                <Head>
+                    <title>Cuenta | Profe Paco</title>
+                </Head>
+                <div className={styles.centerCircularProgress}>
+                    <CircularProgress/>
+                </div>
+            </Layout>
+        )
+    }
+
+    const {firstname, isConfirmated} = data.getUserByEmail;
+
+    const componentIsConfirmated = isConfirmated ? <IsConfirmated/> :  <div className={styles.confirmationEmailAccount}>
+                                                                            <h4>Confirmación de email</h4>
+                                                                            <p>Al presionar el boton de "Confirmar email", se te enviara un correo a tu dirección de correo electrónico con el link para confirmar tu correo.</p>
+                                                                            <EditEmailAccount 
+                                                                            stateSchema={stateSchemaEmail}
+                                                                            validationSchema={validationSchemaEmail}
+                                                                            disableSchema={disableSchema}
+                                                                            user={userEmail}/>
+                                                                        </div>;
+
     return (
         <Layout>
-            <LayoutAccount>
+            <Head>
+                <title>Cuenta | Profe Paco</title>
+            </Head>
+            <LayoutAccount userName={firstname}>
                 <div className={styles.accountContainer}>
-                    <div className={styles.confirmationEmailAccount}>
-                        <h4>Confirmación de email</h4>
-                        <p>Al presionar el boton de "Confirmar email", se te enviara un correo a tu dirección de correo electrónico con el link para confirmar tu correo.</p>
-                        <EditEmailAccount 
-                        stateSchema={stateSchemaEmail}
-                        validationSchema={validationSchemaEmail}
-                        disableSchema={disableSchema}
-                        user={userEmail}/>
-                    </div>
+                    {componentIsConfirmated}
                     <div className={styles.resetPassword}>
                         <h4>Restablecer contraseña</h4>
                         <p>Al restablecer tu contraseña, tendras que iniciar sesión con tu nueva contraseña, por lo tanto, no olvides tu nueva contraseña.</p>

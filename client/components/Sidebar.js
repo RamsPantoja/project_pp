@@ -2,6 +2,9 @@ import React from 'react';
 import styles from './styles/Sidebar.module.css';
 import Link from 'next/link'
 import ActiveLink from './ActiveLink';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ListRoundedIcon from '@material-ui/icons/ListRounded';
+import PeopleIcon from '@material-ui/icons/People';
 
 const Sidebar = () => {
     return (

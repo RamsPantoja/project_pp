@@ -6,28 +6,37 @@ import CourseFormDelete from './CourseFormDelete';
 import { Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Image from 'next/image';
+import EditIcon from '@material-ui/icons/Edit';
 
-const CourseCard = ({baseUrl, deleteCourseComponent, title, teacher, id, enrollmentLimit, enrollmentUsers, urlImg, filename}) => {
+const CourseCard = ({baseUrl, deleteCourseComponent, title, teacher, id, enrollmentLimit, enrollmentUsers, urlImg, filename, editCourseComponent, baseUrlToEditCourse}) => {
     const router = useRouter();
     const [isCourseFormDelete, setIsCourseFormDelete] = useState(false);
 
+    //Redirige a la ruta especificado con el id como objeto query.
     const handleOnClickCard = (e, id) => {
         e.preventDefault();
         router.push(`${baseUrl}`+`${id}`)
     }
 
+    //Muestra el modal DeleteCourseComponent para eliminar el curso.
     const handleOnClickToDeleteCourse = () => {
         if(isCourseFormDelete) {
             setIsCourseFormDelete(false)
         } else {
             setIsCourseFormDelete(true)
         }
-    } 
+    }
+    
+    //Redirige a la ruta especificado con el id como objeto query.
+    const handleOnClickButtonToEditCourse = (e, id) => {
+        e.preventDefault();
+        router.push(`${baseUrlToEditCourse}`+`${id}`);
+    }
 
     
-    const courseFormDelete = isCourseFormDelete ? <CourseFormDelete title={title} handleOnClickToDeleteCourse={handleOnClickToDeleteCourse}/> : null;
+    const courseFormDelete = isCourseFormDelete ? <CourseFormDelete title={title} id={id} handleOnClickToDeleteCourse={handleOnClickToDeleteCourse}/> : null;
     const buttonToDeleteCourse = deleteCourseComponent ? <Button style={{background: '#ff5555', color: '#ffffff'}}  variant='contained' onClick={(e) => {handleOnClickToDeleteCourse(e)}}><DeleteIcon/></Button> : null;
-
+    const buttonToEditCourse = editCourseComponent ? <Button variant='contained' style={{background: '#15639d', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonToEditCourse(e, id)}}><EditIcon/></Button> : null;
     return (
         <Fragment>
             {courseFormDelete}
@@ -42,6 +51,7 @@ const CourseCard = ({baseUrl, deleteCourseComponent, title, teacher, id, enrollm
                 <div className={styles.courseCardButton}>
                     <p>Integrantes: {enrollmentUsers}/{enrollmentLimit}</p>
                     {buttonToDeleteCourse}
+                    {buttonToEditCourse}
                 </div>
             </div>       
         </Fragment>

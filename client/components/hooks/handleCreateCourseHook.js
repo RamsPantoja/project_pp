@@ -14,7 +14,7 @@ export const stateSchemaInfCourse = {
     img: {filename: '', errorfield: false, file: ''}
 }
 
-export const validationSchemaCourse = {
+export const validationSchemaCourseAdd = {
     title: { required: true },
     description: { required: true},
     teacher: { required: true},
@@ -29,16 +29,56 @@ export const validationSchemaCourse = {
 }
 
 
+export const validationSchemaCourseEdit = {
+    title: { required: true },
+    description: { required: true},
+    teacher: { required: true},
+    objective: { required: true },
+    concept: { required: true},
+    subConcept: { required: true},
+    objectives: { required: true},
+    conceptList: { required: true},
+    price: { required: true},
+    enrollmentLimit: { required: true},
+    img: { required: false}
+}
+
+
+
 
 export const disableSchemaCourse = {
     status: true,
     error: ''
 }
 
-const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, disableSchemaCourse) => {
+const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, disableSchemaCourse, courseData) => {
     const [state, setState] = useState(stateSchemaInfCourse);
     const [disable, setDisable] = useState(disableSchemaCourse);
     const [isDirty, setIsDirty] = useState(false);
+
+    useEffect(() => {
+        if(courseData) {
+            setState(() => ({
+                ...stateSchemaInfCourse,
+                title: {value: courseData.title, errorfield: false},
+                description: {value: courseData.description, errorfield: false},
+                teacher: {value: courseData.teacher, errorfield: false},
+                price: {value: courseData.price, errorfield: false},
+                enrollmentLimit: {value: courseData.enrollmentLimit, errorfield: false},
+                objectives: courseData.objectives.map((item) => {
+                    return item = {value: item, errorfield: false}
+                }),
+                conceptList: courseData.conceptList.map((concept) => {
+                    return concept = {
+                        concept: {value: concept.concept, errorfield: false},
+                        subConceptList: concept.subConceptList.map((subConcept) => {
+                            return subConcept = {value: subConcept, errorfield: false}
+                        })
+                    }
+                })
+            }))
+        }
+    }, [courseData, stateSchemaInfCourse]);
 
     const validateState = useCallback(() => {
         const hasErrorInState = Object.keys(validationSchemaCourse).some((key) => {
@@ -48,6 +88,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             const teacherValue = state.teacher.value;
             const priceValue = state.price.value;
             const imgValue = state.img.filename;
+            const isInputRequiredImg = validationSchemaCourse.img.required;
             const enrollmentLimitValue = state.enrollmentLimit.value;
 
             //Retorna un True si no hay valor en alguno de los campos objective
@@ -68,7 +109,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             })
             const lengthObjetives = state.objectives.length;
             const lengthConceptList = state.conceptList.length;
-            return (isInputRequired && (!titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue || !imgValue)) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0);
+            return (isInputRequired && !titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0) || (isInputRequiredImg && !imgValue);
         })
 
         return hasErrorInState;
@@ -94,11 +135,17 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
                 ...disableSchemaCourse,
                 error: 'Todos los campos son obligatorios'
             }))
+        } else if (validateState() === false ) {
+            setDisable(() => ({
+                ...disableSchemaCourse,
+                status: validateState(),
+                error: ''
+            }))
         }
     }, [validateState, isDirty, disableSchemaCourse]);
 
     //Lee los campos sobrantes que no se repiten y los actualiza con el valor leido.
-    const handleOnChange = (e) => {
+    const handleOnChange = useCallback((e) => {
         setIsDirty(true);
         const name = e.target.name;
         const value = e.target.value
@@ -114,10 +161,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             ...prevState,
             [name]: { value, errorfield}
         }));
-    }
+    }, [validationSchemaCourse]);
 
     //Lee el campo img y extrae el nombre de la imagen seleccionada con la expresion regular /[\/\\]([\w\d\s\.\-\(\)]+)$/
-    const handleOnChangeImg = (e) => {
+    const handleOnChangeImg = useCallback((e) => {
         setIsDirty(true);
         const name = e.target.name;
         const file = e.target.files[0];
@@ -140,10 +187,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             [name]: {filename, errorfield, file}
         }))
 
-    }
+    }, [validationSchemaCourse]);
 
     //Lee los campos Objetive del formualrio de crear cursos y actualiza el campo objetive por el valor leido.
-    const handleOnChangeObjetiveInput = (e, index) => {
+    const handleOnChangeObjetiveInput = useCallback((e, index) => {
         setIsDirty(true)
         const name = e.target.name;
         const value = e.target.value;
@@ -165,7 +212,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             objectives: objective
         }))
 
-    }
+    },[validationSchemaCourse, state]);
 
     //Agrega campos objetivo en el campo objectives
     const handleAddObjetive = (e) => {
@@ -205,7 +252,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
     }
 
     //Lee los campos Tema del formulario de crear Cursos y actualiza los campos concept y subconcept
-    const handleOnChangeConceptInput = (e, index) => {
+    const handleOnChangeConceptInput = useCallback((e, index) => {
         setIsDirty(true);
         const name = e.target.name;
         const value = e.target.value;
@@ -230,10 +277,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
            conceptList: concept
        }))
 
-    }
+    },[validationSchemaCourse, state]);
 
     //Agrega campos dentro el campo subConcepList;
-    const handleAddSubConcept = (e, index) => {
+    const handleAddSubConcept = useCallback((e, index) => {
         e.preventDefault();
 
         const subConcept = state.conceptList.map((item, i) => {
@@ -249,10 +296,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             ...prevState,
             conceptList: subConcept
         }))
-    }
+    }, [state])
 
     //Elimina el campo dentro de subConceptList
-    const handleDeleteSubConcept = (e, i, indexConcept) => {
+    const handleDeleteSubConcept = useCallback((e, i, indexConcept) => {
         e.preventDefault();
 
         const subConceptList = state.conceptList.map((item, index) => {
@@ -267,11 +314,11 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             ...prevState,
             conceptList: subConceptList
         }))
-    }
+    },[state])
     
     //Lee el campo Subtema y actualiza el state en base a que campo subtema se esta modificando y en el campo Tema que se esta modificando.
     //Haciendo uso del index de cada campo que ha sido renderizado en los camponentes CourseForm y FormAddConcept con la funcion map.
-    const handleOnChangeSubConceptInput = (e, i, indexConcept) => {
+    const handleOnChangeSubConceptInput = useCallback((e, i, indexConcept) => {
         setIsDirty(true);
         const name = e.target.name;
         const value = e.target.value;
@@ -302,7 +349,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             ...prevState,
             conceptList: concept
         }))
-    }
+    }, [validationSchemaCourse, state]);
 
     //Retornamos todos los metodos.
     return [

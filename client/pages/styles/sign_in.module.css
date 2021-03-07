@@ -82,6 +82,13 @@
     align-items: center;
 }
 
+.linkToRecoveryPassword {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5em;
+    align-items: center;
+}
+
 .buttonToBack {
     margin: 0.5em auto;
     z-index: 1000;

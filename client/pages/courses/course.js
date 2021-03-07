@@ -41,7 +41,7 @@ const DescriptionCourse = ({id}) => {
     return (
         <Layout>
             <Head>
-                <title>Profe Paco!</title>
+                <title>{title} | Profe Paco</title>
             </Head>
             <div className={styles.courseDescription}>
                 <div className={styles.courseDescription_header}>

@@ -9,7 +9,7 @@ const HomePage = () => {
     return (
         <Layout>
             <Head>
-                <title>Profe Paco!</title>
+                <title>Profe Paco</title>
             </Head>
             <div className={styles.home_container}>
                 <div className={styles.home_containerHeader}>

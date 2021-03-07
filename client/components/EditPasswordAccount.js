@@ -45,7 +45,7 @@ const EditPasswordAccount = ({validationSchema, disableSchema, user, stateSchema
         <form onSubmit={(e) => {handleOnSubmit(e)}} className={styles.gridForm}>
             {disableErrorAlert || errorAlertPassword}
             <TextField type='password' variant='outlined' value={currentPassword.value} error={currentPassword.errorfield} label='Contraseña actual' size='small' name='currentPassword' onChange={(e) => {handleOnChange(e)}}/>
-            <TextField type='password' variant='outlined' value={newPassword.value} error={newPassword.errorfield} label='Nueva contraseña: (mínimo 6 digitos)' size='small' name='newPassword' onChange={(e) => {handleOnChange(e)}}/>
+            <TextField type='password' variant='outlined' value={newPassword.value} error={newPassword.errorfield} label='Nueva contraseña' size='small' name='newPassword' onChange={(e) => {handleOnChange(e)}}/>
             <TextField type='password' variant='outlined' value={confirmNewPassword.value} error={confirmNewPassword.errorfield} label='Confirmar nueva contraseña' size='small' name='confirmNewPassword' onChange={(e) => {handleOnChange(e)}}/>
             {isLoadingMutation}
         </form>

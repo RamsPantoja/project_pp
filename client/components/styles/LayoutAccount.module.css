@@ -40,3 +40,9 @@
     display: grid;
     padding: 0.5em;
 }
+
+@media(max-width: 540px) {
+    .contentAccount {
+        grid-template-columns: 1fr;
+    }
+}

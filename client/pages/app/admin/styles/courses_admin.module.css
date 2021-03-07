@@ -39,13 +39,13 @@
     flex: 1;
 }
 
-@media(max-width: 1024px) {
+@media(max-width: 1106px) {
     .coursesGrid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media(max-width: 540px) {
+@media(max-width: 636px) {
     .coursesGrid {
         grid-template-columns: auto;
     }

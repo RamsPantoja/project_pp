@@ -77,7 +77,7 @@ const ShoppingCart = ({id}) => {
     return (
         <Layout>
             <Head>
-                <title>Profe Paco!</title>
+                <title>Shopping - {title} | Profe Paco</title>
             </Head>
             <div className={styles.shoppingContainer}>
                 <div className={styles.shoppingCourseInf}>

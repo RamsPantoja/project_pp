@@ -26,7 +26,7 @@ const Courses = () => {
     return (
         <Layout>
             <Head>
-                <title>Profe Paco</title>
+                <title>Cursos | Profe Paco</title>
             </Head>
             <div className={styles.coursesContainer}>
                 <div className={styles.coursesHeader}>

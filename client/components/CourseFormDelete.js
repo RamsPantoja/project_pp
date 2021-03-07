@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { DELETE_COURSE } from '../apollo/mutations';
 import { useSnackbar } from 'notistack';
 
-const CourseFormDelete = ({handleOnClickToDeleteCourse, title}) => { 
+const CourseFormDelete = ({handleOnClickToDeleteCourse, title, id}) => { 
     const { enqueueSnackbar } = useSnackbar();
     const [state, setState] = useState({
         title: {value: '', errorfield: false, required: true}
@@ -17,7 +17,8 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse, title}) => {
 
     const [deleteCourseByTitle, {data, error, loading}] = useMutation(DELETE_COURSE, {
         variables: {
-            title: state.title.value
+            title: state.title.value,
+            id: id
         },
         onCompleted: async (data) => {
             handleOnClickToDeleteCourse();
@@ -55,11 +56,11 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse, title}) => {
         <Fragment>
             <div className={styles.backgroundContainer}></div>
             <div className={styles.displayForm}>
-                <form className={styles.form}>
+                <form className={styles.form} onSubmit={(e) => {deleteCourse(e)}}>
                     <span className={styles.userEmailToConfirm}>{title}</span>
                     <TextField label='Confirma el nombre del curso' fullWidth={true} size='small' name='title' error={state.title.errorfield} variant='outlined' value={state.title.value} onChange={(e) => {handleOnChange(e)}}/>
                     <div>
-                        <Button variant='contained' style={{background: '#ff5555', color:'#ffffff'}} startIcon={<DeleteIcon/>} onClick={(e) => {deleteCourse(e)}}>Eliminar</Button>
+                        <Button type='submit' variant='contained' style={{background: '#ff5555', color:'#ffffff'}} startIcon={<DeleteIcon/>}>Eliminar</Button>
                         <Button color='default' variant='outlined' startIcon={<CancelIcon/>} onClick={(e) => {handleOnClickToDeleteCourse(e)}}>Cancelar</Button>
                     </div>
                 </form>

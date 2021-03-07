@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_USER = gql `
-    mutation CreateUserForm($input: inputUser) {
+    mutation CreateUserForm($input: inputUser!) {
         createUser(input: $input)
     }
 `;
@@ -13,14 +13,14 @@ export const INSERT_USER_IN_COURSE = gql `
 `
 
 export const ADD_COURSE = gql `
-    mutation createCourse($input: inputCourse, $img: Upload!) {
+    mutation createCourse($input: inputCourse!, $img: Upload!) {
         addCourse(input: $input, img: $img)
     }
 `
 
 export const DELETE_COURSE = gql `
-    mutation DeleteCourseByTitle($title: String!) {
-        deleteCourseByTitle(title: $title)
+    mutation DeleteCourseByTitle($title: String!, $id: ID!) {
+        deleteCourseByTitle(title: $title, id: $id)
     }
 `
 
@@ -57,5 +57,23 @@ export const RESET_PASSWORD_ACCOUNT = gql `
 export const UPDATE_USER_PROFILE = gql `
     mutation UpdateUserProfile($id: ID!, $email: String!, $firstname: String!, $lastname: String!) {
         updateUserProfile(id: $id, email: $email, firstname: $firstname, lastname: $lastname)
+    }
+`
+
+export const UPDATE_COURSE = gql `
+    mutation UpdateCourse($input: inputCourse!, $id: ID!) {
+        updateCourse(input: $input, id: $id)
+    }
+`
+
+export const RECOVERY_PASSWORD = gql `
+    mutation RecoveryPassword($email: String!) {
+        recoveryPassword(email: $email)
+    }
+`
+
+export const RESET_PASSWORD_RECOVERY = gql `
+    mutation ResetPasswordRecovery($id: ID!, $newPassword: String!) {
+        resetPasswordRecovery(id: $id, newPassword: $newPassword)
     }
 `

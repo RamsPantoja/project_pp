@@ -10,6 +10,7 @@ import { Button, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { DELETE_USER_BY_EMAIL } from '../../../apollo/mutations';
 import { useSnackbar } from 'notistack';
+import Head from 'next/head';
 
 const Users = () => {
     const { enqueueSnackbar } = useSnackbar();
@@ -80,6 +81,9 @@ const Users = () => {
     
     return (
         <LayoutAdmin>
+            <Head>
+                <title>Alumnos | Profe Paco</title>
+            </Head>
             <div className={styles.usersContainerScroll}>
                 <div className={styles.usersContainerContent}>
                     <form className={styles.userSearchField} onSubmit={(e) => {handleGetUserByEmail(e)}}>

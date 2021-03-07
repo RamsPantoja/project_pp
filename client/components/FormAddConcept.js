@@ -37,7 +37,7 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept,
                 { state.conceptList[index].subConceptList.map((item, i) => {
                     return (
                         <div key={i} className={styles.subConceptContainer}>
-                            <TextField label='Subtema' size='small' fullWidth={true} name='subConcept' error={item.errorfield} value={item.value} variant='outlined' onChange={(e) =>{handleOnChangeSubConceptInput(e, i, index)}}/>
+                            <TextField label='Subtema' size='small' fullWidth={true} name='subConcept' error={item.errorfield} value={item.value} variant='outlined' onChange={(e) => {handleOnChangeSubConceptInput(e, i, index)}}/>
                             <Button onClick={(e) => {handleDeleteSubConcept(e, i, index)}} size='small' style={{color:'#ff5555'}}><DeleteIcon/></Button>
                         </div> 
                     )

@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { DELETE_USER_IN_COURSE } from '../../../../apollo/mutations';
 import { getSession } from 'next-auth/client';
 import Image from 'next/image';
+import Head from 'next/head';
 
 const CoursesById = ({id}) => {
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}, pollInterval: 1000});
@@ -32,10 +33,13 @@ const CoursesById = ({id}) => {
 
     return (
         <LayoutAdmin>
+            <Head>
+                <title>{title} | Profe Paco</title>
+            </Head>
             <div className={styles.layoutCoursesById}>
                 <div className={styles.courseInf}>
                     <div className={styles.imageContainer}>
-                        <Image src={coverImg.url} className={styles.imageBorderRadius} layout='fill' objectFit='cover'/>
+                        <Image src={coverImg.url} className={styles.imageBorderRadius} layout='fill' objectFit='cover' objectPosition='50 50'/>
                     </div>
                     <h2>{title}</h2>
                     <p>{description}</p>

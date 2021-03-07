@@ -9,6 +9,7 @@ import { GET_COURSES } from '../../../apollo/querys';
 import { useQuery } from '@apollo/client';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Head from 'next/head';
 
 const CoursesAdmin = () => {
     const router = useRouter();
@@ -41,6 +42,9 @@ const CoursesAdmin = () => {
 
     return (
         <LayoutAdmin>
+            <Head>
+                <title>Cursos | Profe Paco</title>
+            </Head>
             <div className={styles.toPositionFixed}>
                 <div className={styles.coursesContainer}>
                     <div className={styles.header}>
@@ -52,8 +56,11 @@ const CoursesAdmin = () => {
                     <div className={styles.coursesGrid}>
                         {data.getCourses.map((course) => {
                             return (
-                                <CourseCard key={course.id} baseUrl={'/app/admin/courses/course/?id='}
+                                <CourseCard key={course.id} 
+                                baseUrl={'/app/admin/courses/course/?id='}
+                                baseUrlToEditCourse={'/app/admin/edit_course/?id='}
                                 deleteCourseComponent={true}
+                                editCourseComponent={true}
                                 title={course.title}
                                 teacher={course.teacher}
                                 id={course.id}
