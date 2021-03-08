@@ -182,7 +182,7 @@ export const resolvers = {
             }).save();
 
             //Se crea el token con el email que sera enviado al usuario registrado por correo.
-            createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail);
+            createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.vercel.app/api/confirmation_email/');
 
             return `Gracias por registrarte ${input.firstname}, se te ha enviado un correo de confirmación para que actives tu cuenta de PROFEPACO.`;
         },
@@ -357,7 +357,7 @@ export const resolvers = {
                     if (err || !user) {
                         rejects('Verifica el correo ingresado.')
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'http://localhost:3000/api/confirmation_email/');
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.vercel.app/api/confirmation_email/');
                         resolve(result);
                     }
                 })
@@ -438,7 +438,7 @@ export const resolvers = {
                     if( err || !user) {
                         rejects('Hubo un error al enviar el email');
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'http://localhost:3000/app/recovery_password/');
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'https://profepaco.vercel.app/app/recovery_password/');
                         resolve(result)
                     }
                 })
