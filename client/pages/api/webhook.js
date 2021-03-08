@@ -9,7 +9,7 @@ const webHooks = (req, res) => {
             res.end('ok');
         });
     }
-    return res.status(200);
+    return res.status(200).send('Ok');
 }
 
 export default webHooks;
