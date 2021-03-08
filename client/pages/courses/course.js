@@ -20,6 +20,9 @@ const DescriptionCourse = ({id}) => {
     if (loadingCourse) {
         return (
             <Layout>
+                <Head>
+                    <title>Curso | Profe Paco</title>
+                </Head>               
                 <div className={styles.courseDescription_progress}>
                     <CircularProgress/>
                 </div>

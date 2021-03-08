@@ -99,7 +99,7 @@
 }
 
 
-@media(min-height: 900px) {
+@media(min-width: 900px) {
     .buttonToBack {
         position: absolute;
         z-index: 1000;

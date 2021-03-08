@@ -13,6 +13,9 @@ const Courses = () => {
     if (loading) {
         return (
             <Layout>
+                <Head>
+                    <title>Cursos | Profe Paco</title>
+                </Head>                
                 <div className={styles.centerCircularProgress}><CircularProgress/></div>
             </Layout>
         )

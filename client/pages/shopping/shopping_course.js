@@ -34,6 +34,9 @@ const ShoppingCart = ({id}) => {
     if (loading) {
         return (
             <Layout>
+                <Head>
+                    <title>Shopping - Curso | Profe Paco</title>
+                </Head>
                 <div className={styles.shoppingDescription_progress}>
                     <CircularProgress/>
                 </div>
