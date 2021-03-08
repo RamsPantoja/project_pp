@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import Head from 'next/head';
 import { useQuery } from '@apollo/client';
 import { CURRENT_USER } from '../apollo/querys';
+import { TextField } from '@material-ui/core';
 
 const About = () => {
     return (
@@ -10,7 +11,6 @@ const About = () => {
             <Head>
                 <title>About | Profe Paco</title>
             </Head>
-            <h2>About</h2>
         </Layout>
     )
 }
