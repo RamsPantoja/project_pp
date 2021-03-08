@@ -26,9 +26,8 @@
     border-radius: 0.2em;
     max-width: 30em;
     min-width: 15em;
-    justify-content: center;
     align-items: center;
-    height: 40em;
+    overflow: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

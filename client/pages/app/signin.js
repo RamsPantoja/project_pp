@@ -43,7 +43,7 @@ const SignIn = ({csrfToken}) => {
                     <div className={styles.sign_in_card}>
                         <div className={styles.sign_inTitle}>
                             <AccountCircleIcon style={{fontSize:100}}/>
-                            <p>Cuenta Usuario</p>
+                            <p>Cuenta usuario</p>
                         </div>
                         {matchErrorAlert}
                         <div className={styles.sign_in_form}>

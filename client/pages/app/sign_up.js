@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import Head from 'next/head';
 import styles from '../styles/sign_up.module.css';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SignUpForm from '../../components/SignUpForm';
 import useFormValidation from '../../components/hooks/handleAddUserHook';
 import { stateSchemaInfUser, validationSchema, disableSchema } from '../../components/hooks/handleAddUserHook';
@@ -12,6 +11,7 @@ import { Button } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/client';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const SignUp = () => {
     const router = useRouter();
@@ -63,8 +63,8 @@ const SignUp = () => {
                 <div className={styles.signUp_center}>
                     <div className={styles.signUp_card}>
                         <div className={styles.signUp_title}>
-                            <PersonAddIcon style={{fontSize:100}}/>
-                            <p>Crear Cuenta</p>
+                            <AccountCircleIcon style={{fontSize:100}}/>
+                            <p>Crear cuenta</p>
                         </div>
                         <div className={styles.signUp_form}>
                             <SignUpForm 

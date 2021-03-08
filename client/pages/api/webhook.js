@@ -5,10 +5,11 @@ const webHooks = (req, res) => {
             body += chunk.toString();
         });
         req.on('end', () => {
-            console.log(body, 'webhook response');
-            res.status(200).send('ok');
+            res.end('ok')
         });
     }
+
+    return res.status(200);
 }
 
 export default webHooks;
