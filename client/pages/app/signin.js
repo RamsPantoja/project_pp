@@ -36,10 +36,10 @@ const SignIn = ({csrfToken}) => {
                 <title>Sign In | Profe Paco</title>
             </Head>
             <div className={styles.sign_in}>
-                <div className={styles.buttonToBack}>
-                    <Button style={{color: '#ffffff'}} startIcon={<ArrowBackIosIcon/>} onClick={() => router.back()}>Volver</Button>
-                </div>
                 <div className={styles.sign_in_center}>
+                    <div className={styles.buttonToBack}>
+                        <Button style={{color: '#ffffff'}} startIcon={<ArrowBackIosIcon/>} onClick={() => router.back()}>Volver</Button>
+                    </div>
                     <div className={styles.sign_in_card}>
                         <div className={styles.sign_inTitle}>
                             <AccountCircleIcon style={{fontSize:100}}/>

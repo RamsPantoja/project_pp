@@ -93,9 +93,8 @@
 }
 
 .buttonToBack {
-    top: 1em;
-    left: 2em;
-    margin: 1em 0;
+    margin: 0.5em auto;
+    z-index: 1000;
 }
 
 
@@ -103,5 +102,7 @@
     .buttonToBack {
         position: absolute;
         z-index: 1000;
+        top: 1.5em;
+        left: 2em;
     }
 }
