@@ -6,10 +6,9 @@ const webHooks = (req, res) => {
         });
         req.on('end', () => {
             console.log(body, 'webhook response');
-            res.end('ok');
+            res.status(200).send('ok');
         });
     }
-    return res.status(200).send('Ok');
 }
 
 export default webHooks;

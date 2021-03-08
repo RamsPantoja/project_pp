@@ -321,7 +321,7 @@ export const resolvers = {
                 items: [
                     {
                         title: title,
-                        unit_price: parseInt(price),
+                        unit_price: parseFloat(price),
                         quantity: 1,
                         category_id: 'learnings',
                         currency_id: 'MXN'
@@ -331,7 +331,6 @@ export const resolvers = {
                 payment_methods: {
                     installments: 3
                 },
-                notification_url: 'http://localhost:3000/api/webhook',
                 statement_descriptor: 'PROFEPACO',
             }
 
