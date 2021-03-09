@@ -70,7 +70,8 @@ const ShoppingCart = ({id}) => {
                 price: transformPrice,
                 firstname: session.user.firstname,
                 lastname: session.user.lastname,
-                email: session.user.email
+                email: session.user.email,
+                coverImg: coverImg.url
             }
         })
     }

@@ -8,7 +8,7 @@ mercadopago.configure({
 })
 
 const webHooks = async (req, res) => {
-    if (req.method === 'GET') {
+    if (req.method === 'POST') {
         const notification = {
             type: 'payment'
         }

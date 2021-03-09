@@ -82,7 +82,7 @@ export const typeDefs = gql `
         deleteCourseByTitle(title: String!, id: ID!): String
         deleteUserInCourse(id: ID!, userEmail: String!): String
         deleteUserByEmail(userEmail: String!): String
-        createPreferenceMercadoPago(title: String!, price: Int!, firstname: String!, lastname: String!, email: String!): String
+        createPreferenceMercadoPago(title: String!, price: Int!, firstname: String!, lastname: String!, email: String!, coverImg: String!): String
         sendEmailConfirmation(email: String!): String
         resetPassword(email: String!, currentPassword: String!, newPassword: String!): String
         updateUserProfile(id: ID!, email: String!, firstname: String!, lastname: String!): String

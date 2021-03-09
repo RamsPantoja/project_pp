@@ -308,9 +308,9 @@ export const resolvers = {
         },
 
         //Este resolver se encarga de crear una preferencia de mercado pago en base a los datos proporcionados por el cliente.
-        createPreferenceMercadoPago: async (parent, {title, price, firstname, lastname, email}) => {
+        createPreferenceMercadoPago: async (parent, {title, price, firstname, lastname, email, coverImg}) => {
             //Datos del comprador del curso
-            let payer = {
+            const payer = {
                 name: firstname,
                 surname: lastname,
                 email: email
@@ -324,7 +324,8 @@ export const resolvers = {
                         unit_price: parseFloat(price),
                         quantity: 1,
                         category_id: 'learnings',
-                        currency_id: 'MXN'
+                        currency_id: 'MXN',
+                        picture_url: coverImg
                     }
                 ],
                 payer: payer,
