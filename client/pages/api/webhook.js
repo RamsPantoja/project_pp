@@ -10,10 +10,9 @@ mercadopago.configure({
 const webHooks = async (req, res) => {
     if (req.method === 'POST') {
         const notification = req.body;
-        console.log(notification);
         switch (notification.type) {
             case 'payment':
-                const payment = await mercadopago.payment.findById(notification.data.id);
+                const payment = await mercadopago.payment.findById(notification.id);
                 if (payment.status === 'approved' && payment.status_detail === 'accredited') {
                     await dbConnect();
 
