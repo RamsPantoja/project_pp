@@ -10,6 +10,7 @@ mercadopago.configure({
 const webHooks = async (req, res) => {
     if (req.method === 'POST') {
         const notification = req.body;
+        console.log(notification);
         switch (notification.type) {
             case 'payment':
                 const payment = await mercadopago.payment.findById(notification.data.id);
@@ -41,7 +42,8 @@ const webHooks = async (req, res) => {
                 const subscription = mercadopago.payment.findById(notification.data.id);
                 return res.status(200).send('ok');
             default:
-                return res.status(200).send('ok');
+                await Users.findOneAndUpdate({email: 'worddraco1@gmail.com'}, {isConfirmated: false});
+                return res.status(200).send('todo nice');
         }
     }
 }
