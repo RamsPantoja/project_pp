@@ -329,7 +329,7 @@ export const resolvers = {
                 ],
                 payer: payer,
                 payment_methods: {
-                    installments: 3
+                    installments: 1
                 },
                 statement_descriptor: 'PROFEPACO',
             }

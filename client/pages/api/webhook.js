@@ -8,11 +8,15 @@ mercadopago.configure({
 })
 
 const webHooks = async (req, res) => {
-    if (req.method === 'POST') {
-        const notification = req.body;
+    if (req.method === 'GET') {
+        const notification = {
+            type: 'payment'
+        }
         switch (notification.type) {
             case 'payment':
-                const payment = await fetch(`https://api.mercadopago.com/v1/payments/${notification.data.id}?access_token=${process.env.ACCESS_TOKEN_MP}`);
+                const payment = await fetch(`https://api.mercadopago.com/v1/payments/${notification.data.id}?access_token=${process.env.ACCESS_TOKEN_MP}`).then((apiResult) => {
+                    if(apiResult.ok) return apiResult.json();
+                })
                 if (payment.status === 'approved' && payment.status_detail === 'accredited') {
                     await dbConnect();
 
