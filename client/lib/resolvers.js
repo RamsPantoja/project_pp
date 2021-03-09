@@ -325,7 +325,7 @@ export const resolvers = {
                         quantity: 1,
                         category_id: 'learnings',
                         currency_id: 'MXN',
-                        picture_url: coverImg
+                        picture_url: `https://profepaco.vercel.app${coverImg}`
                     }
                 ],
                 payer: payer,
@@ -343,7 +343,7 @@ export const resolvers = {
             }).catch(function(error) {
                 return error
             })
-
+            
             return (preferenceItem);
 
         },
