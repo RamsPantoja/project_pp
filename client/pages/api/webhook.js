@@ -41,6 +41,7 @@ const webHooks = async (req, res) => {
                 const subscription = mercadopago.payment.findById(notification.data.id);
                 return res.status(200).send('ok');
             default:
+                await dbConnect();
                 await Users.findOneAndUpdate({email: 'worddraco1@gmail.com'}, {isConfirmated: false});
                 return res.status(200).send('todo nice');
         }
