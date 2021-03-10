@@ -15,7 +15,7 @@ const CoursesById = ({id}) => {
     const [deleteUserInCourse, {data: dataDeleteUserInCourse, error: errorDeleteUserInCourse, loading: loadingDeleteUserInCourse}] = useMutation(DELETE_USER_IN_COURSE);
 
 
-    const circularProgress = !data && loading ? <CircularProgress/> : data.getCourseById.enrollmentUsers.map((item, index) => { return (<UserCard error={errorDeleteUserInCourse} key={index} firstname={item.firstname} id={id} mutation={deleteUserInCourse} lastname={item.lastname} email={item.email}/>)});
+    const circularProgress = !data && loading ? <CircularProgress/> : data.getCourseById.enrollmentUsers.map((item, index) => { return (<UserCard payment={item.payment} coursePrice={data.getCourseById.price} error={errorDeleteUserInCourse} key={index} firstname={item.firstname} id={id} mutation={deleteUserInCourse} lastname={item.lastname} email={item.email}/>)});
     
     if (loading) {
         return (

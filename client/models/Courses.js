@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
 
+const userSchema = new mongoose.Schema({
+    firstname: String,
+    lastname: String,
+    email: String,
+    img: String,
+    payment: Number
+})
+
 const courseSchema = new mongoose.Schema({
     title: String,
     teacher: String,
@@ -7,7 +15,7 @@ const courseSchema = new mongoose.Schema({
     objectives: Array,
     conceptList: Array,
     enrollmentLimit: Number,
-    enrollmentUsers: Array,
+    enrollmentUsers: [userSchema],
     price: Number,
     coverImg: {
         filename: String,

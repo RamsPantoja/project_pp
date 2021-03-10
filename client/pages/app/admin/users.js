@@ -74,7 +74,7 @@ const Users = () => {
 
 
 
-    const userCardByEmail = dataUserByEmail && !loadingUserByEmail? <UserCard mutation={deleteUserByEmail} firstname={dataUserByEmail.getUserByEmail.firstname} lastname={dataUserByEmail.getUserByEmail.lastname} email={dataUserByEmail.getUserByEmail.email} userId={dataUserByEmail.getUserByEmail.id}/> : null
+    const userCardByEmail = dataUserByEmail && !loadingUserByEmail? <UserCard basicCard={true} payment={false} mutation={deleteUserByEmail} firstname={dataUserByEmail.getUserByEmail.firstname} lastname={dataUserByEmail.getUserByEmail.lastname} email={dataUserByEmail.getUserByEmail.email} userId={dataUserByEmail.getUserByEmail.id}/> : null
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null
     const errorUserByEmailApollo = errorUserByEmail && !dataUserByEmail ? <span className={styles.disableErrorAlert}>{errorUserByEmail.message}</span> : null
     const buttonToLoadMore = data.getUsers.users.length >= 1 ? <Button variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={ async () => {await fetchMore({variables: {after: data.getUsers.users[data.getUsers.users.length - 1].id}})}}>Cargar mas...</Button> : null;
@@ -101,7 +101,9 @@ const Users = () => {
                             lastname={item.lastname}
                             email={item.email}
                             mutation={deleteUserByEmail}
-                            userId={item.id}/>
+                            userId={item.id}
+                            basicCard={true}
+                            payment={false}/>
                         )
                     })}
                     {buttonToLoadMore}

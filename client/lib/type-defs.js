@@ -12,6 +12,7 @@ export const typeDefs = gql `
         img: String
         isAdmin: Boolean
         isConfirmated: Boolean
+        payment: Int
     }
 
     type Course {

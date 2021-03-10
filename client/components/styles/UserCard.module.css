@@ -4,10 +4,43 @@
     justify-content: space-around;
     border: 1px solid #eaeaea;
     padding: 1em;
-    border-radius: 0.5em;
+    border-radius: 0.2em;
+    background-color: #ffffff;
+    color: #000000;
+    transition: 0.2s ease;
+}
+
+.userCardPendingPayment {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1em;
+    border-radius: 0.2em;
+    background-color: #ff9800;
+    color: #ffffff;
+    transition: 0.2s ease;
+}
+
+.userCardTotalPayment {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1em;
+    border-radius: 0.2em;
+    background-color: #4caf50;
+    color: #ffffff;
+    transition: 0.2s ease;
 }
 
 .userCard:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.userCardPendingPayment:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.userCardTotalPayment:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -51,11 +84,18 @@
 }
 
 @media(max-width: 440px) {
-    .userCard {
+    .userCardTotalPayment {
         flex-direction: column;
     }
 
+    .userCardPendingPayment {
+        flex-direction: column;
+    }
     .userCardButtonsMargin {
         margin: 1em 0;
+    }
+
+    .userCard {
+        flex-direction: column;
     }
 }

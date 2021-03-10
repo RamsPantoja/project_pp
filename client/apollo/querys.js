@@ -36,6 +36,7 @@ export const GET_COURSE_BY_ID = gql `
                 firstname
                 lastname
                 email
+                payment
             }
             coverImg {
                 filename
