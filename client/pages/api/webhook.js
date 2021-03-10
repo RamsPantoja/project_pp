@@ -24,7 +24,7 @@ const webHooks = async (req, res) => {
                         return res.status(401).send('Course no found');
                     }
 
-                    const user = await Users.findOne({email: payment.payer.email});
+                    const user = await Users.findOne({firstname: payment.additional_info.payer.first_name, latname: payment.additional_info.payer.last_name});
 
                     if(!user) {
                         return res.status(401).send('User no found')
