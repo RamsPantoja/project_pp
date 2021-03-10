@@ -45,13 +45,13 @@ const webHooks = async (req, res) => {
                     //Crea un nuevo objeto con los datos de user y agrega una nueva key payment.
                     const userWithPayment = {
                         ...user._doc,
-                        payment: payment.amount
+                        payment: payment.transaction_amount
                     }
 
                     try {
                         //Si el usuario ya existe en enrollmentUsers del curso comprado y el pago del usuario es la mitad del precio del curso, entonces, actualiza la key payment del objecto user en enrollmentUsers.
                         if (userAlreadyExistInCourse) {
-                            if(payment.amount === course.price/2) {
+                            if(payment.transaction_amount === course.price/2) {
                                 await Courses.findOneAndUpdate(
                                     {title: payment.description, 'enrollmentUsers.email': payment.payer.email},
                                     {$set: { 'enrollmentUsers.$.payment': course.price}}
