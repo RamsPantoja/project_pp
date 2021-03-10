@@ -9,9 +9,7 @@ mercadopago.configure({
 
 const webHooks = async (req, res) => {
     if (req.method === 'POST') {
-        const notification = {
-            type: 'payment'
-        }
+        const notification  = req.body;
         switch (notification.type) {
             case 'payment':
                 const payment = await fetch(`https://api.mercadopago.com/v1/payments/${notification.data.id}?access_token=${process.env.ACCESS_TOKEN_MP}`).then((apiResult) => {
@@ -40,7 +38,6 @@ const webHooks = async (req, res) => {
                         return res.status(401).send(error);
                     }
                 }
-                break;
             case 'subscription':
                 const subscription = mercadopago.payment.findById(notification.data.id);
                 return res.status(200).send('ok');
