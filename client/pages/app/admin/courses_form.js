@@ -102,6 +102,7 @@ const CoursesForm = ({courseData}) => {
                 }
             }, (error) => {rejects(error)}, () => {
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    setIsLoadingImg(false)
                     const file = {
                         filename: img.file.name,
                         mimetype: img.file.type,
