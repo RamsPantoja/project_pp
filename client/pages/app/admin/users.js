@@ -31,7 +31,7 @@ const Users = () => {
 
     const {data, error, loading, fetchMore} = useQuery(GET_ALL_USERS, {
         variables: {
-            limit: 3
+            limit: 8
         }
     })
 

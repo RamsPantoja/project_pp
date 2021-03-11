@@ -4,9 +4,7 @@ import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
-import bcrypt, { hash } from 'bcrypt';
-import shortid from 'shortid';
-import { createWriteStream } from 'fs';
+import bcrypt from 'bcrypt';
 
 //Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
@@ -18,7 +16,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 //Crea un token que sera enviado por email al usuario que se ha registrado ó para confirmar el email en la sección /account/acoount del lado del cliente.
-const createEmailToken = async (user, SECRET, expiresIn, sgMail, baseUrl) => {
+const createEmailToken = async (user, SECRET, expiresIn, sgMail, baseUrl, message) => {
     const {_id, email, firstname} = user;
     //Se firma el token.
     const emailToken = jwt.sign({_id}, SECRET, {expiresIn});
@@ -31,7 +29,7 @@ const createEmailToken = async (user, SECRET, expiresIn, sgMail, baseUrl) => {
             from: 'worddraco1@gmail.com',
             subject: 'Confirmation email PROFEPACO',
             text: `Hola ${firstname}, haz click en el siguiente enlace para confirmar tu cuenta de PROFEPACO, gracias.`,
-            html: `Por favor, haz click aqui para confirmar tu cuenta: <a href="${url}">${url}</a> `
+            html: `Por favor, haz click aqui para ${message}: <a href="${url}">${url}</a> `
         }
         
         try {
@@ -71,29 +69,6 @@ const paginateResults = ({
             : results.slice(cursorIndex + 1, Math.min(results.length, cursorIndex + 1 + limit))
         : results.slice(0, limit)
 }
-
-//Esta funcion guarda la img subida desde el ciente en la carpeta public/img para ser streameadas desde la app.
-const storeUpload = ({stream, filename, mimetype}) => {
-    const id = shortid.generate();
-    const path = `/images/${id}-${filename}`;
-    return new Promise((resolve, rejects) => 
-        stream.pipe(createWriteStream(`public${path}`))
-        .on("finish", () => resolve({path, filename, mimetype}))
-        .on("error", rejects)
-    );
-};
-
-//Procesa la img subida desdel el cliente.
-const imgMimetypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg'];
-const processUpload = async (createReadStream, mimetype, filename) => {
-    const stream = createReadStream();
-    if(filename !== null && imgMimetypes.includes(mimetype)) {
-        const file = await storeUpload({stream, filename, mimetype});
-        return file;
-    }
-}
-
-
 
 export const resolvers = {
     Query: {
@@ -182,28 +157,27 @@ export const resolvers = {
             }).save();
 
             //Se crea el token con el email que sera enviado al usuario registrado por correo.
-            createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.vercel.app/api/confirmation_email/');
+            createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.vercel.app/api/confirmation_email/', 'confirmar tu cuenta de PROFEPACO.');
 
             return `Gracias por registrarte ${input.firstname}, se te ha enviado un correo de confirmación para que actives tu cuenta de PROFEPACO.`;
         },
         
         //Agrega un curso.
         addCourse: async (parent, {input, img}) => {
-            const {createReadStream, filename, mimetype} = await img;
+            const mimeTypes = ['image/jpeg', 'image/png', 'image/svg', 'image/gif']
+            const {filename, mimetype, url} = await img;
             await dbConnect();
-            
             const courseAlreadyExist = await Courses.findOne({title: input.title});
 
             if(courseAlreadyExist) {
                 throw new Error('El curso ya existe');
             }
-            
-            //ProcessUpload() retorna un objeto que contiene los datos de la img subida desde el cliente.
-            const file = await processUpload(createReadStream, mimetype, filename);
-        
-            if(!file) {
+
+            if(!mimeTypes.includes(mimetype)) {
                 throw new Error('La imagen debe ser .jpg/.png/.svg/.gif');
             }
+            
+            //Retorna un objeto que contiene los datos de la img subida desde el cliente.
 
             const newCourse = await new Courses({
                 title: input.title,
@@ -215,13 +189,11 @@ export const resolvers = {
                 enrollmentUsers: [],
                 price: input.price,
                 coverImg: {
-                    filename: file.filename,
-                    mimetype: file.mimetype,
-                    url: file.path
+                    filename: filename,
+                    mimetype: mimetype,
+                    url: url
                 }
             });
-
-            console.log(newCourse)
 
             return new Promise((resolve, rejects) => {
                 if(newCourse) {
@@ -357,7 +329,7 @@ export const resolvers = {
                     if (err || !user) {
                         rejects('Verifica el correo ingresado.')
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.vercel.app/api/confirmation_email/');
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.vercel.app/api/confirmation_email/', 'confirmar tu cuenta de PROFEPACO');
                         resolve(result);
                     }
                 })
@@ -438,7 +410,7 @@ export const resolvers = {
                     if( err || !user) {
                         rejects('Hubo un error al enviar el email');
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'https://profepaco.vercel.app/app/recovery_password/');
+                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'https://profepaco.vercel.app/app/recovery_password/', 'restablecer tu contraseña');
                         resolve(result)
                     }
                 })

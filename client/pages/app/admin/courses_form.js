@@ -18,12 +18,15 @@ import { getSession } from 'next-auth/client';
 import ImageIcon from '@material-ui/icons/Image';
 import { useSnackbar } from 'notistack';
 import Head from 'next/head';
+import firebase from '../../../lib/firebaseInit';
 
 const CoursesForm = ({courseData}) => {
     const { enqueueSnackbar } = useSnackbar();
     const router = useRouter()
     const ref = createRef();
     const [messageError, setMessageError] = useState(false);
+    const [isLoadingImg, setIsLoadingImg] = useState(false)
+
     const [
         state, 
         disable, 
@@ -71,8 +74,7 @@ const CoursesForm = ({courseData}) => {
                 enrollmentLimit: enrollmentValue,
                 objectives: objectivesValue,
                 conceptList: conceptListValue
-            },
-            img: img.file
+            }
         },
         onCompleted: async (data) => {
             enqueueSnackbar(data.addCourse, {variant: 'success', anchorOrigin: {vertical: 'top', horizontal: 'center'}})
@@ -85,9 +87,35 @@ const CoursesForm = ({courseData}) => {
     
     //Si los objetivos agregados son igual a 6, desactiva el boton de agregar objetivos
     const isDisableButtonToAddObjectives = state.objectives.length === 6 ? true : false;
+
+    //Estas funcion sube la imagen seleccionado por el usuario al bucket de firebase storage.
+    const uploadImgToFirebaseStorage = (img) => {
+        const storage = firebase.storage();
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(`images/${img.file.name}`);
+
+        return new Promise((resolve, rejects) => {
+            const uploadTask = fileRef.put(img.file);
+            uploadTask.on('state_changed', (snapshot) => {
+                if(snapshot.state === 'running') {
+                    setIsLoadingImg(true);
+                }
+            }, (error) => {rejects(error)}, () => {
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    const file = {
+                        filename: img.file.name,
+                        mimetype: img.file.type,
+                        url: downloadURL
+                    }
+
+                    resolve(file);
+                })
+            })
+        });
+    }
     
     //Ejecuta el Mutation addCourse o muestra si falta algun campo abligatorio.
-    const handleAddCourse = (e) => {
+    const handleAddCourse = async (e) => {
         e.preventDefault();
         if (disable.status) {
             setMessageError(true);
@@ -96,7 +124,12 @@ const CoursesForm = ({courseData}) => {
             }
         } else {
             setMessageError(false)
-            addCourse();
+            const file = await uploadImgToFirebaseStorage(img);
+            addCourse({
+                variables: {
+                    img: file
+                }
+            });
         }
     }
 
@@ -111,7 +144,7 @@ const CoursesForm = ({courseData}) => {
 
     const isMessageAlertError = messageError && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
     const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
-    const isLoadingMutation = loading ? <CircularProgress/> : <Button onClick={(e) => {handleAddCourse(e)}} style={{background: '#15639d', color:'#ffffff'}} variant='contained' startIcon={<PostAddIcon/>}>Crear curso</Button>
+    const isLoadingMutation = loading || isLoadingImg ? <CircularProgress/> : <Button onClick={(e) => {handleAddCourse(e)}} style={{background: '#15639d', color:'#ffffff'}} variant='contained' startIcon={<PostAddIcon/>}>Crear curso</Button>
 
     return (
         <LayoutAdmin>

@@ -9,10 +9,19 @@ import { DELETE_USER_IN_COURSE } from '../../../../apollo/mutations';
 import { getSession } from 'next-auth/client';
 import Image from 'next/image';
 import Head from 'next/head';
+import { useSnackbar } from 'notistack';
 
 const CoursesById = ({id}) => {
+    const {enqueueSnackbar} = useSnackbar();
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}, pollInterval: 1000});
-    const [deleteUserInCourse, {data: dataDeleteUserInCourse, error: errorDeleteUserInCourse, loading: loadingDeleteUserInCourse}] = useMutation(DELETE_USER_IN_COURSE);
+    const [deleteUserInCourse, {data: dataDeleteUserInCourse, error: errorDeleteUserInCourse, loading: loadingDeleteUserInCourse}] = useMutation(DELETE_USER_IN_COURSE, {
+        onCompleted: (data) => {
+            enqueueSnackbar(data.deleteUserInCourse, {variant: 'success', anchorOrigin: {vertical: 'top', horizontal: 'center'}})
+        },
+        onError: (error) => {
+            enqueueSnackbar(error.message, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center'}})
+        }
+    });
 
 
     const circularProgress = !data && loading ? <CircularProgress/> : data.getCourseById.enrollmentUsers.map((item, index) => { return (<UserCard payment={item.payment} coursePrice={data.getCourseById.price} error={errorDeleteUserInCourse} key={index} firstname={item.firstname} id={id} mutation={deleteUserInCourse} lastname={item.lastname} email={item.email}/>)});

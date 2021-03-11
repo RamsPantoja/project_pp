@@ -1,8 +1,6 @@
 import { gql } from '@apollo/client';
 
 export const typeDefs = gql `
-    scalar Upload
-
     type User {
         id: ID
         firstname: String
@@ -76,9 +74,15 @@ export const typeDefs = gql `
         price: Int!
     }
 
+    input inputImg {
+        filename: String!
+        mimetype: String!
+        url: String!
+    }
+
     type Mutation {
         createUser(input: inputUser!) : String
-        addCourse(input: inputCourse!, img: Upload!) : String
+        addCourse(input: inputCourse!, img: inputImg!) : String
         insertUserInCourse(email: String!, id: ID!): String
         deleteCourseByTitle(title: String!, id: ID!): String
         deleteUserInCourse(id: ID!, userEmail: String!): String

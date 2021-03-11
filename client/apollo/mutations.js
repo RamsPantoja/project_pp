@@ -13,7 +13,7 @@ export const INSERT_USER_IN_COURSE = gql `
 `
 
 export const ADD_COURSE = gql `
-    mutation createCourse($input: inputCourse!, $img: Upload!) {
+    mutation createCourse($input: inputCourse!, $img: inputImg!) {
         addCourse(input: $input, img: $img)
     }
 `
