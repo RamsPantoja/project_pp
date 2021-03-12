@@ -84,3 +84,9 @@
         flex-direction: column;
     }
 }
+
+@media(max-width: 540px) {
+    .courseEnrollmentList {
+        padding: 0;
+    }
+}

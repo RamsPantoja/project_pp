@@ -128,8 +128,29 @@ export const resolvers = {
                     else resolve(user)
                 })
             })
+        },
+
+        getCoursesByUser: async (parent, {userEmail}) => {
+            await dbConnect();
+            return new Promise((resolve, rejects) => {
+                Courses.find({'enrollmentUsers.email': userEmail},(error, courses) => {
+                    if(error) {
+                        rejects(error)
+                    } else {
+                        const coursesFiltered = courses.map((course) => {
+                            return {
+                                title: course.title,
+                                teacher: course.teacher,
+                                enrollmentUsers: course.enrollmentUsers.filter((enrollmentUser) => enrollmentUser.email === userEmail)
+                            }
+                        })
+                        resolve(coursesFiltered);
+                    }
+                })
+            });
         }
     },
+
     Mutation: {
         //Crea un Usuario en base al input proporcionado desde el lado del cliente.
         createUser: async (parent, {input}) => {
@@ -206,34 +227,6 @@ export const resolvers = {
         
         },
 
-        //Inserta el usuario que compro el curso especifico.
-        insertUserInCourse: async (parent, {email, id}) => {
-            await dbConnect();
-
-            //Se obtiene el usuario de la base de datos.
-            const user = await Users.findOne({email: email});
-
-            if(!user) {
-                throw new Error('User no found')
-            }
-
-            const course = await Courses.findOne({_id: id}, (err, data) => {
-                try {
-                    if (data) {
-                        return data
-                    }
-                } catch (error) {
-                    return error;
-                }
-            })
-
-            //Se inserta el usuario en el curso.
-            course.enrollmentUsers.push(user);
-            course.save();
-
-            return 'Document updated'
-        },
-
         //Elimina un curso con el titulo del curso especificado.
         deleteCourseByTitle: async (parent, {title, id}) => {
             await dbConnect();
@@ -305,6 +298,9 @@ export const resolvers = {
                     installments: 1
                 },
                 statement_descriptor: 'PROFEPACO',
+                back_urls: {
+
+                }
             }
 
             //Se creo un item con todos los datos de la preferencia necesarios para proceder con el pago.
@@ -317,7 +313,6 @@ export const resolvers = {
             })
             
             return (preferenceItem);
-
         },
 
         //Envia un correo de confirmacion al Usuario para que valide su cuenta de profepaco.
@@ -380,7 +375,7 @@ export const resolvers = {
                     lastname: lastname
                 }, (err, user) => {
                     if(err || !user) {
-                        rejects('Algo salio mal al actualizar el perfil.')
+                        rejects('Algo salió mal al actualizar el perfil.')
                     } else {
                         resolve('Se actualizó correctamente el perfil.');
                     }

@@ -9,8 +9,8 @@
     box-sizing: border-box;
     height: 100%;
     width: 100%;
-    background: rgb(255,255,255);
-    background: linear-gradient(333deg, rgba(255,255,255,1) 45%, #15639d 45%);
+    background: rgb(21,99,157);
+    background: linear-gradient(180deg, rgba(21,99,157,1) 30%, rgba(255,255,255,1) 30%);
 }
 
 .signUp_center {

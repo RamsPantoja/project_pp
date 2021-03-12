@@ -56,6 +56,7 @@ export const typeDefs = gql `
         getCourses: [Course]
         getCourseById(id: ID!): Course
         getUserByEmail(email: String!): User
+        getCoursesByUser(userEmail: String!): [Course]
     }
 
     input inputConcept {
