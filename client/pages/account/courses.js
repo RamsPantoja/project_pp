@@ -3,10 +3,11 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
-import { GET_USER_BY_EMAIL } from '../../apollo/querys';
+import { GET_COURSES_BY_USER, GET_USER_BY_EMAIL } from '../../apollo/querys';
 import Layout from '../../components/Layout';
 import LayoutAccount from '../../components/LayoutAccount';
 import styles from './styles/courses.module.css';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const Courses = ({userEmail}) => {
     const {data, loading, error} = useQuery(GET_USER_BY_EMAIL, {
@@ -15,7 +16,17 @@ const Courses = ({userEmail}) => {
         }
     })
 
-    if(loading) {
+    const {data: dataCourses, loading: loadingCourses, error: errorCourses} = useQuery(GET_COURSES_BY_USER, {
+        variables: {
+            userEmail: userEmail
+        }
+    })
+
+    if(error || errorCourses) {
+        return (error || errorCourses);
+    }
+
+    if(loading || loadingCourses) {
         return (
             <Layout>
                 <Head>
@@ -38,12 +49,18 @@ const Courses = ({userEmail}) => {
             <LayoutAccount userName={firstname}>
                 <div className={styles.coursesContainer}>
                     <h3>Tus cursos</h3>
-                    <div className={styles.courseMiniCard}>
-                        <h4>Curso básico de Python</h4>
-                        <p>Bertha Alicia</p>
-                        <p>Pagado:750/1500</p>
-                        <Button variant='contained' size='small' style={{background: '#15639d', color: '#ffffff'}}>Pagar</Button>
-                    </div>
+                    {
+                        dataCourses.getCoursesByUser.map((course) => {
+                            return (
+                                <div key={course.id} className={styles.courseMiniCard}>
+                                    <h4>{course.title}</h4>
+                                    <p>{course.teacher}</p>
+                                    <p>Pagado:{course.enrollmentUsers[0].payment}/{course.price}</p>
+                                    {course.enrollmentUsers[0].payment === course.price ? <CheckCircleIcon/> : <Button variant='contained' size='small' style={{background: '#15639d', color: '#ffffff'}}>Pagar</Button>}    
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </LayoutAccount>
         </Layout>

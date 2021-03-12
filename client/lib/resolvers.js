@@ -139,8 +139,10 @@ export const resolvers = {
                     } else {
                         const coursesFiltered = courses.map((course) => {
                             return {
+                                id: course.id,
                                 title: course.title,
                                 teacher: course.teacher,
+                                price: course.price,
                                 enrollmentUsers: course.enrollmentUsers.filter((enrollmentUser) => enrollmentUser.email === userEmail)
                             }
                         })

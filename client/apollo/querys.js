@@ -71,3 +71,19 @@ export const GET_USER_BY_EMAIL = gql `
         }
     }
 `
+
+export const GET_COURSES_BY_USER = gql `
+    query GetCoursesByUser($userEmail: String!) {
+        getCoursesByUser(userEmail: $userEmail) {
+            id
+            title
+            teacher
+            price
+            enrollmentUsers {
+              payment
+              firstname
+              lastname
+            }
+        }
+    }
+`
