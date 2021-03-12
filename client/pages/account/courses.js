@@ -50,7 +50,11 @@ const Courses = ({userEmail}) => {
         )
     }
 
+    console.log(dataCourses)
+
     const {firstname, lastname, email} = data.getUserByEmail;
+
+    
 
     return (
         <Layout>
@@ -61,17 +65,18 @@ const Courses = ({userEmail}) => {
                 <div className={styles.coursesContainer}>
                     <h3>Tus cursos</h3>
                     {
-                        dataCourses.getCoursesByUser.map((course) => {
-                            return (
-                                <MiniCourseCard key={course.id} 
-                                course={course} 
-                                mutation={createPreferenceMercadoPago}
-                                firstname={firstname}
-                                lastname={lastname}
-                                email={email}
-                                loadingPreferenceMP={loadingPreferenceMP}/>
-                            )
-                        })
+                        dataCourses.getCoursesByUser.length === 0 ? <p>No tienes ningún curso aun :(</p> :
+                            dataCourses.getCoursesByUser.map((course) => {
+                                return (
+                                    <MiniCourseCard key={course.id} 
+                                    course={course} 
+                                    mutation={createPreferenceMercadoPago}
+                                    firstname={firstname}
+                                    lastname={lastname}
+                                    email={email}
+                                    loadingPreferenceMP={loadingPreferenceMP}/>
+                                )
+                            })
                     }
                 </div>
             </LayoutAccount>
