@@ -84,6 +84,9 @@ export const GET_COURSES_BY_USER = gql `
               firstname
               lastname
             }
+            coverImg {
+                url
+            }
         }
     }
 `

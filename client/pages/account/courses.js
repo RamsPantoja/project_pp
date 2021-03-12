@@ -1,5 +1,5 @@
-import { useQuery } from '@apollo/client';
-import { Button, CircularProgress } from '@material-ui/core';
+import { useMutation, useQuery } from '@apollo/client';
+import { CircularProgress } from '@material-ui/core';
 import { getSession } from 'next-auth/client';
 import Head from 'next/head';
 import React from 'react';
@@ -7,20 +7,31 @@ import { GET_COURSES_BY_USER, GET_USER_BY_EMAIL } from '../../apollo/querys';
 import Layout from '../../components/Layout';
 import LayoutAccount from '../../components/LayoutAccount';
 import styles from './styles/courses.module.css';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import MiniCourseCard from '../../components/MiniCourseCard';
+import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
+import { useRouter } from 'next/router';
 
 const Courses = ({userEmail}) => {
+    const router = useRouter();
     const {data, loading, error} = useQuery(GET_USER_BY_EMAIL, {
         variables: {
             email: userEmail
         }
     })
 
+    //Hace un query de todos los cursos que ha comprado el usuario logeado.
     const {data: dataCourses, loading: loadingCourses, error: errorCourses} = useQuery(GET_COURSES_BY_USER, {
         variables: {
             userEmail: userEmail
         }
     })
+
+    //Se define el metodo para crear la prefencia de mercado pago que retornara el link para iniciar el flujo de pago.
+    const [createPreferenceMercadoPago, {data: dataPrefenceMP, error: errorPreferenceMP, loading: loadingPreferenceMP}] = useMutation(CREATE_PREFERENCE_MERCADO_PAGO, {
+        onCompleted: (dataPrefenceMP) => {
+            router.push(dataPrefenceMP.createPreferenceMercadoPago);
+        }
+    });
 
     if(error || errorCourses) {
         return (error || errorCourses);
@@ -39,7 +50,7 @@ const Courses = ({userEmail}) => {
         )
     }
 
-    const {firstname} = data.getUserByEmail;
+    const {firstname, lastname, email} = data.getUserByEmail;
 
     return (
         <Layout>
@@ -52,12 +63,13 @@ const Courses = ({userEmail}) => {
                     {
                         dataCourses.getCoursesByUser.map((course) => {
                             return (
-                                <div key={course.id} className={styles.courseMiniCard}>
-                                    <h4>{course.title}</h4>
-                                    <p>{course.teacher}</p>
-                                    <p>Pagado:{course.enrollmentUsers[0].payment}/{course.price}</p>
-                                    {course.enrollmentUsers[0].payment === course.price ? <CheckCircleIcon/> : <Button variant='contained' size='small' style={{background: '#15639d', color: '#ffffff'}}>Pagar</Button>}    
-                                </div>
+                                <MiniCourseCard key={course.id} 
+                                course={course} 
+                                mutation={createPreferenceMercadoPago}
+                                firstname={firstname}
+                                lastname={lastname}
+                                email={email}
+                                loadingPreferenceMP={loadingPreferenceMP}/>
                             )
                         })
                     }

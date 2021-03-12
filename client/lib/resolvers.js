@@ -143,7 +143,10 @@ export const resolvers = {
                                 title: course.title,
                                 teacher: course.teacher,
                                 price: course.price,
-                                enrollmentUsers: course.enrollmentUsers.filter((enrollmentUser) => enrollmentUser.email === userEmail)
+                                enrollmentUsers: course.enrollmentUsers.filter((enrollmentUser) => enrollmentUser.email === userEmail),
+                                coverImg: {
+                                    url: course.coverImg.url
+                                }
                             }
                         })
                         resolve(coursesFiltered);
