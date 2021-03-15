@@ -50,11 +50,7 @@ const Courses = ({userEmail}) => {
         )
     }
 
-    console.log(dataCourses)
-
     const {firstname, lastname, email} = data.getUserByEmail;
-
-    
 
     return (
         <Layout>

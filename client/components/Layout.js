@@ -5,8 +5,11 @@ import DropDownUser from './dropdownUser';
 import ButtonsInUp from './ButtonsInUp';
 import { useSession } from 'next-auth/client';
 import ActiveLinkLayout from './ActiveLinkLayout';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Layout = ({children}) => {
+    const router = useRouter();
     const [session, loading] = useSession();
     const isMenu = session && !loading ? <DropDownUser userAuthEmail={session.user.email}/> : <ButtonsInUp session={session} loading={loading}/>
 
@@ -14,7 +17,9 @@ const Layout = ({children}) => {
         <div className={styles.app_container}>
             <header className={styles.header}>
                 <div className={styles.header_site}>
-                    <h1 className={styles.logo_fit}><Link href='/'><a>|Profe/Paco|</a></Link></h1>
+                    <div className={styles.logoContainer} onClick={() => router.push('/')}>
+                        <Image src='/fav.png' width={50} height={50} />
+                    </div>
                     <div className={styles.header_links}>
                         <Link href='/courses' passHref><ActiveLinkLayout name={'Cursos'}/></Link>
                         <Link href='/about' passHref><ActiveLinkLayout name={'Sobre nosotros'}/></Link>

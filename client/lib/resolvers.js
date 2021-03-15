@@ -190,6 +190,7 @@ export const resolvers = {
         
         //Agrega un curso.
         addCourse: async (parent, {input, img}) => {
+            console.log(input)
             const mimeTypes = ['image/jpeg', 'image/png', 'image/svg', 'image/gif']
             const {filename, mimetype, url} = await img;
             await dbConnect();
@@ -203,8 +204,6 @@ export const resolvers = {
                 throw new Error('La imagen debe ser .jpg/.png/.svg/.gif');
             }
             
-            //Retorna un objeto que contiene los datos de la img subida desde el cliente.
-
             const newCourse = await new Courses({
                 title: input.title,
                 teacher: input.teacher,
@@ -218,6 +217,10 @@ export const resolvers = {
                     filename: filename,
                     mimetype: mimetype,
                     url: url
+                },
+                modeSuscription: {
+                    isActivated: input.modeSuscription.isActivated,
+                    amountMonths: input.modeSuscription.amountMonths
                 }
             });
 
@@ -309,7 +312,7 @@ export const resolvers = {
             }
 
             //Se creo un item con todos los datos de la preferencia necesarios para proceder con el pago.
-            const preferenceItem = await mercadopago.preferences.create(preference, payer)
+            const preferenceItem = await mercadopago.preferences.create(preference)
             .then(function(response) {
                 //Retorna el link para pagar hacia el cliente.
                 return response.body.init_point
@@ -417,6 +420,7 @@ export const resolvers = {
             })
         },
 
+        //Resetea la contraseña que el usuario proporciona, cuando inicio el flujo de recuperacion de contraseña.
         resetPasswordRecovery: async (parent, {id, newPassword}) => {
             await dbConnect();
 
@@ -435,6 +439,30 @@ export const resolvers = {
                     }
                 })
             })
+        },
+
+        createPreapprovalPreferenceMercadoPago: async (parent, {input}) => {
+
+            const payload = {
+                auto_recurring: {
+                    currency_id: "MXN",
+                    transaction_amount: input.price,
+                    frequency: 1,
+                    frequency_type: "months",
+                    start_date: mercadopago.utils.date.now().toString(),
+                    end_date: mercadopago.utils.date.now().add(180).toString()
+                  },
+                  back_url: "https://www.mercadopago.com.mx/",
+                  payer_email: input.email,
+                  reason: input.title,
+                  status: "pending"
+            }
+            
+            const init_point = mercadopago.preapproval.create(payload).then((data) => {
+                return data.body.init_point;
+            })
+            
+            return init_point;
         }
     }
 }

@@ -19,6 +19,8 @@ import ImageIcon from '@material-ui/icons/Image';
 import { useSnackbar } from 'notistack';
 import Head from 'next/head';
 import firebase from '../../../lib/firebaseInit';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 const CoursesForm = ({courseData}) => {
     const { enqueueSnackbar } = useSnackbar();
@@ -43,7 +45,7 @@ const CoursesForm = ({courseData}) => {
         handleOnChangeImg
     ] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourseAdd, disableSchemaCourse, courseData);
 
-    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList, img} = state;
+    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList, img, modeSuscription, amountMonths} = state;
 
     //Retorna un array con los valores del item que se encuentra en el array objectives[].
     const objectivesValue = objectives.map((item, i) => {
@@ -73,7 +75,11 @@ const CoursesForm = ({courseData}) => {
                 price: priceValue,
                 enrollmentLimit: enrollmentValue,
                 objectives: objectivesValue,
-                conceptList: conceptListValue
+                conceptList: conceptListValue,
+                modeSuscription: {
+                    isActivated: modeSuscription.value,
+                    amountMonths: parseInt(amountMonths.value)
+                }
             }
         },
         onCompleted: async (data) => {
@@ -163,9 +169,23 @@ const CoursesForm = ({courseData}) => {
                             <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={handleOnChange} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
                             <TextField label='Limit de alumnos' type='number' error={state.enrollmentLimit.errorfield} size='small' variant='outlined' name='enrollmentLimit' value={state.enrollmentLimit.value} onChange={handleOnChange}/>
                             <div className={styles.buttonToUpload}>
-                                <Button startIcon={<ImageIcon/>} onClick={(e) => {handleOnClickSelectFile(e)}} component='span'>Seleccionar imagen</Button>
+                                <Button startIcon={<ImageIcon/>} onClick={(e) => {handleOnClickSelectFile(e)}} component='span'>imagen</Button>
                                 <TextField variant='standard' placeholder='Imagen no seleccionada' value={img.filename} error={img.errorfield}/>
                             </div>
+                            <p>Campo no obligatorio.</p>
+                            <div className={styles.modeSuscriptionContainer}>
+                                <FormControlLabel
+                                    control={<Switch
+                                    name='modeSuscription'
+                                    color='default'
+                                    checked={state.modeSuscription.value}
+                                    onChange={handleOnChange}
+                                    />}
+                                    label='Suscripción'
+                                />
+                                <TextField variant='outlined' value={state.amountMonths.value} name='amountMonths' size='small' label='Meses' type='number' fullWidth={true} disabled={!state.modeSuscription.value} onChange={handleOnChange}/>
+                            </div>
+                            <hr></hr>
                             <input ref={ref} name='img' id='contained-button-file' type='file' hidden onChange={(e) => {handleOnChangeImg(e)}}/>
                             <p>Objetivos(Mínimo:1):</p>
                             { state.objectives.map((item, index) => {
@@ -197,10 +217,10 @@ const CoursesForm = ({courseData}) => {
                                 )
                             })}
                             <div className={styles.formAddConcept}>
-                                <Button onClick={(e) => {handleAddConcept(e)}} size='small' style={{background: '#15639d', color:'#ffffff'}} variant='contained' startIcon={<AddCircleIcon/>}>Agregar tema</Button>
+                                <Button onClick={(e) => {handleAddConcept(e)}} size='small' color='primary' variant='outlined' startIcon={<AddCircleIcon/>}>Agregar tema</Button>
                             </div>
                             <div className={styles.mutationLoading}>
-                                {isMessageAlertError || anyApolloError}
+                                {isMessageAlertError}
                                 {isLoadingMutation}
                             </div>
                         </div>

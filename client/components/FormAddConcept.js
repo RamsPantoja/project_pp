@@ -24,7 +24,7 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept,
     return (
         <div className={styles.formAddConcept}>
             <div className={styles.formInputConcept}>
-                <TextField label='Tema' variant='outlined' name='concept' fullWidth={true} error={item.errorfield} value={item.value} onChange={(e) => {handleOnChangeConceptInput(e, index)}}/>
+                <TextField size='small' label='Tema' variant='outlined' name='concept' fullWidth={true} error={item.errorfield} value={item.value} onChange={(e) => {handleOnChangeConceptInput(e, index)}}/>
                 {iconArrow}
                 <Button onClick={(e) => {handleDeleteConcept(e, index)}} size='small' style={{color:'#ff5555'}}><DeleteIcon/></Button>
             </div>
@@ -42,7 +42,9 @@ const FormAddConcept = ({handleOnChangeConceptInput, index, handleAddSubConcept,
                         </div> 
                     )
                 })}
-                <Button size='small' startIcon={<AddCircleIcon/>} variant='outlined' color='primary' onClick={(e) => {handleAddSubConcept(e, index)}}>Agregar subtema</Button>
+                <div>
+                    <Button size='small' startIcon={<AddCircleIcon/>} variant='outlined' color='primary' onClick={(e) => {handleAddSubConcept(e, index)}}>Agregar subtema</Button>
+                </div>
             </div>
         </div>
     )

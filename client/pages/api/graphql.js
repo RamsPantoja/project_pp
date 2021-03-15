@@ -1,10 +1,14 @@
 import { ApolloServer } from 'apollo-server-micro';
+import MercadoPagoAPI from '../../lib/dataSource';
 import { schema } from '../../lib/schema';
-import { resolvers } from '../../lib/resolvers';
-import { typeDefs } from '../../lib/type-defs';
 
 const apolloServer = new ApolloServer({
     schema,
+    dataSources: () => {
+        return {
+            mercadoPagoAPI: new MercadoPagoAPI()
+        }
+    },
     context: async ({req, res}) => {
         return {
             req: req,

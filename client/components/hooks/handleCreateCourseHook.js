@@ -11,7 +11,9 @@ export const stateSchemaInfCourse = {
     }],
     price: {value: '', errorfield: false},
     enrollmentLimit: {value: '', errorfield: false},
-    img: {filename: '', errorfield: false, file: ''}
+    img: {filename: '', errorfield: false, file: ''},
+    modeSuscription: { value: false, errorfield: false},
+    amountMonths: { value: '', errorfield: false}
 }
 
 export const validationSchemaCourseAdd = {
@@ -25,7 +27,9 @@ export const validationSchemaCourseAdd = {
     conceptList: { required: true},
     price: { required: true},
     enrollmentLimit: { required: true},
-    img: { required: true}
+    img: { required: true},
+    modeSuscription: { required: false},
+    amountMonths: { required: false}
 }
 
 
@@ -40,7 +44,9 @@ export const validationSchemaCourseEdit = {
     conceptList: { required: true},
     price: { required: true},
     enrollmentLimit: { required: true},
-    img: { required: false}
+    img: { required: false},
+    modeSuscription: { required: false},
+    amountMonths: { required: false}
 }
 
 
@@ -90,6 +96,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             const imgValue = state.img.filename;
             const isInputRequiredImg = validationSchemaCourse.img.required;
             const enrollmentLimitValue = state.enrollmentLimit.value;
+            const modeSuscriptionValue = state.modeSuscription.value;
+            const isInputRequiredModeSuscription = validationSchemaCourse.modeSuscription.required;
+            const amountMonthsValue = state.amountMonths.value;
+            const isInputRequiredAmountMonths = validationSchemaCourse.amountMonths.required;
 
             //Retorna un True si no hay valor en alguno de los campos objective
             const hasErrorInObjectives = Object.keys(state.objectives).some((key) => {
@@ -109,7 +119,7 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             })
             const lengthObjetives = state.objectives.length;
             const lengthConceptList = state.conceptList.length;
-            return (isInputRequired && !titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0) || (isInputRequiredImg && !imgValue);
+            return (isInputRequired && !titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0) || (isInputRequiredImg && !imgValue) || (isInputRequiredModeSuscription && !modeSuscriptionValue) || (isInputRequiredAmountMonths && !amountMonthsValue)
         })
 
         return hasErrorInState;
@@ -148,13 +158,17 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
     const handleOnChange = useCallback((e) => {
         setIsDirty(true);
         const name = e.target.name;
-        const value = e.target.value
+        let value = e.target.value
         let errorfield = false;
 
         if (validationSchemaCourse[name].required) {
             if (!value) {
                 errorfield = true
             }
+        }
+
+        if (name === 'modeSuscription') {
+            value = e.target.checked;
         }
 
         setState((prevState) => ({

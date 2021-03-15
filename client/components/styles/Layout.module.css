@@ -94,13 +94,21 @@
     display: flex;
 }
 
+.logoContainer {
+    text-align: center;
+}
+
+.logoContainer:hover {
+    cursor: pointer;
+}
+
 @media (min-width: 600px) {
     .header_site {
         flex-direction: row;
         justify-content: space-around;
     }
 
-    .logo_fit {
-        text-align: left;
+    .logoContainer {
+        text-align: left
     }
 }

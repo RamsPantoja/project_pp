@@ -21,6 +21,10 @@ const courseSchema = new mongoose.Schema({
         filename: String,
         mimetype: String,
         url: String
+    },
+    modeSuscription: {
+        isActivated: Boolean,
+        amountMonths : Number
     }
 });
 

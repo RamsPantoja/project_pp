@@ -22,8 +22,14 @@ export const typeDefs = gql `
         conceptList: [Concept]
         enrollmentLimit: Int
         enrollmentUsers: [User]
-        price: Int
-        coverImg: CoverImg
+        price: Float
+        coverImg: CoverImg,
+        modeSuscription: modeSuscription
+    }
+
+    type modeSuscription {
+        isActivated: Boolean
+        amountMonths: Int
     }
 
     type Concept {
@@ -72,13 +78,25 @@ export const typeDefs = gql `
         objectives: [String]!
         conceptList: [inputConcept]!
         enrollmentLimit: Int!
-        price: Int!
+        price: Float!
+        modeSuscription: inputSuscription!
+    }
+
+    input inputSuscription {
+        isActivated: Boolean
+        amountMonths: Int
     }
 
     input inputImg {
         filename: String!
         mimetype: String!
         url: String!
+    }
+
+    input inputPreapproval {
+        title: String!
+        price: Float!
+        email: String!
     }
 
     type Mutation {
@@ -88,12 +106,13 @@ export const typeDefs = gql `
         deleteCourseByTitle(title: String!, id: ID!): String
         deleteUserInCourse(id: ID!, userEmail: String!): String
         deleteUserByEmail(userEmail: String!): String
-        createPreferenceMercadoPago(title: String!, price: Int!, firstname: String!, lastname: String!, email: String!, coverImg: String!): String
+        createPreferenceMercadoPago(title: String!, price: Float!, firstname: String!, lastname: String!, email: String!, coverImg: String!): String
         sendEmailConfirmation(email: String!): String
         resetPassword(email: String!, currentPassword: String!, newPassword: String!): String
         updateUserProfile(id: ID!, email: String!, firstname: String!, lastname: String!): String
         updateCourse(input: inputCourse!, id: ID!): String
         recoveryPassword(email: String!): String
         resetPasswordRecovery(id: ID!, newPassword: String!): String
+        createPreapprovalPreferenceMercadoPago(input: inputPreapproval!): String
     }
 `
