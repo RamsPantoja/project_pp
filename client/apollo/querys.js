@@ -15,6 +15,10 @@ export const GET_COURSES = gql `
                 filename
                 url
             }
+            modeSuscription {
+                isActivated
+                amountMonths
+            }
         }
     }
 `
@@ -41,6 +45,10 @@ export const GET_COURSE_BY_ID = gql `
             coverImg {
                 filename
                 url
+            }
+            modeSuscription {
+                isActivated
+                amountMonths
             }
         }
     }
@@ -86,6 +94,10 @@ export const GET_COURSES_BY_USER = gql `
             }
             coverImg {
                 url
+            }
+            modeSuscription {
+                isActivated
+                amountMonths
             }
         }
     }

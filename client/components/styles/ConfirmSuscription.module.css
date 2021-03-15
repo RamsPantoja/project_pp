@@ -1,0 +1,42 @@
+.backgroundContainer {
+    background-color: rgb(0, 0, 0);
+    z-index: 1001;
+    transform: translateZ(0px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    opacity: 0.85;
+}
+
+.confirmSuscription {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1002;
+}
+
+.cardConfirmSuscription {
+    display: grid;
+    z-index: 1003;
+    gap: 1em;
+    justify-items: center;
+    background-color: #ffffff;
+    padding: 1em;
+    border-radius: 0.2em;
+}
+
+.buttons {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+}

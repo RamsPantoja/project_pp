@@ -8,14 +8,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { useMutation, useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button, RadioGroup } from '@material-ui/core';
-import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
+import { CREATE_PREAPPROVAL, CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 import { useRouter } from 'next/router'
 import { getSession, useSession } from 'next-auth/client';
 import Image from 'next/image';
+import ConfirmSuscription from '../../components/ConfirmSuscription';
 
 const ShoppingCart = ({id}) => {
     const router = useRouter();
+    //Obtiene la session que existe.
     const [session] = useSession();
+    const [confirmSuscription, setConfirmSuscription] = useState(false);
 
     const { data, error, loading } = useQuery(GET_COURSE_BY_ID, {
         variables: {
@@ -23,9 +26,16 @@ const ShoppingCart = ({id}) => {
         }
     })
 
+    //Este mutation crea una preferencia de mercado pago y redirecciona al usuario al checkout para que proceda con el flujo de pago.
     const [createPreferenceMercadoPago, {data: dataCreatePreferenceMercadoPago, error: errorCreatePreferenceMercadoPago, loading: loadingCreatePreferenceMercadoPago}] = useMutation(CREATE_PREFERENCE_MERCADO_PAGO, {
         onCompleted: async (dataCreatePreferenceMercadoPago) => {
             router.push(dataCreatePreferenceMercadoPago.createPreferenceMercadoPago);
+        }
+    });
+
+    const [createPreapprovalPreferenceMercadoPago, {data: dataCreatePreapprovalPreferenceMercadoPago, error: errorCreatePreapprovalPreferenceMercadoPago, loading: loadingCreatePreapprovalPreferenceMercadoPago}] = useMutation(CREATE_PREAPPROVAL, {
+        onCompleted: async (dataCreatePreapprovalPreferenceMercadoPago) => {
+            router.push(dataCreatePreapprovalPreferenceMercadoPago.createPreapprovalPreferenceMercadoPago);
         }
     });
 
@@ -48,8 +58,9 @@ const ShoppingCart = ({id}) => {
         return error.message
     }
 
-    const {title, teacher, price, coverImg} = data.getCourseById
+    const {title, teacher, price, coverImg, modeSuscription} = data.getCourseById
 
+    //Actualiza el valor del precio si se activa el checkradio A ó B.
     const handleOnChangeInputRadio = (e) => {
         e.preventDefault();
         const value = e.target.value;
@@ -60,29 +71,45 @@ const ShoppingCart = ({id}) => {
         }
     }
 
+    //Divide el precio entre si el usuario elige pagar en dos pagos.
     const transformPrice = totalOption === 1 ? price : totalOption === 2 ? price/totalOption : null;
 
-    const handleCreatePreferenceMutation = (e) => {
-        e.preventDefault();
-        createPreferenceMercadoPago({
-            variables: {
-                title: title,
-                price: transformPrice,
-                firstname: session.user.firstname,
-                lastname: session.user.lastname,
-                email: session.user.email,
-                coverImg: coverImg.url
-            }
-        })
+    const handleOnClickSetConfirmSuscription = () => {
+        if (confirmSuscription) {
+            setConfirmSuscription(false)
+        } else {
+            setConfirmSuscription(true)
+        }
     }
 
-    const isCreatePreferenceLoading = loadingCreatePreferenceMercadoPago ? <div className={styles.loadingMutation}><CircularProgress/></div> : <Button style={{background: '#dbf998', color:'#15639d', fontWeight: 'bold'}} onClick={(e) => {handleCreatePreferenceMutation(e)}}>Comprar</Button>
+    //Ejecuta el mutation de createPreferenceMercadoPago si el curso es de pago unico, de lo contrario, ejecuta el mutation si es de tipo suscripción.
+    const handleCreatePreferenceMutation = (e) => {
+        e.preventDefault();
+        if (modeSuscription.isActivated) {
+            handleOnClickSetConfirmSuscription();
+        } else {
+            createPreferenceMercadoPago({
+                variables: {
+                    title: title,
+                    price: parseFloat(transformPrice),
+                    firstname: session.user.firstname,
+                    lastname: session.user.lastname,
+                    email: session.user.email,
+                    coverImg: coverImg.url
+                }
+            });
+        }
+    }
+
+    const isCreatePreferenceLoading = loadingCreatePreferenceMercadoPago || loadingCreatePreapprovalPreferenceMercadoPago ? <div className={styles.loadingMutation}><CircularProgress/></div> : <Button variant='contained' style={{background: '#dbf998', color:'#15639d', fontWeight: 'bold'}} onClick={(e) => {handleCreatePreferenceMutation(e)}}>{modeSuscription.isActivated ? 'SUSCRIBIRSE' : 'COMPRAR'}</Button>
+    const isConfirmSuscription = confirmSuscription ? <ConfirmSuscription title={title} price={price} email={session.user.email} modeSuscription={modeSuscription} handleOnClickSetConfirmSuscription={handleOnClickSetConfirmSuscription} mutation={createPreapprovalPreferenceMercadoPago}/> : null;
 
     return (
         <Layout>
             <Head>
                 <title>Shopping - {title} | Profe Paco</title>
             </Head>
+            {isConfirmSuscription}
             <div className={styles.shoppingContainer}>
                 <div className={styles.shoppingCourseInf}>
                     <div className={styles.imageContainer}>
@@ -93,18 +120,21 @@ const ShoppingCart = ({id}) => {
                         <ul className={styles.shoppingDescription_grid}>
                             <li className={styles.shoppingConcept}>Descripción:<p>{title}</p></li>
                             <li className={styles.shoppingConcept}>Profesor:<p>{teacher}</p></li>
+                            <li className={styles.shoppingConcept}>Tipo:<p>{modeSuscription.isActivated ? 'Suscripción mensual' : 'Pago único'}</p></li>
                             <li className={styles.shoppingConcept}>Precio:<p>${price}</p></li>
                         </ul>
                     </div>
                 </div>
                 <div className={styles.shoppingAmount}>
-                    <div className={styles.shoppingAmountSelect}>
-                        <p>Monto a pagar:</p>
-                        <RadioGroup row={true} name='position' defaultValue='a' onChange={(e) => {handleOnChangeInputRadio(e)}}>
-                            <FormControlLabel value='a' labelPlacement='start' label='Un pago' control={<Radio style={{color: '#15639d'}}/>}/>
-                            <FormControlLabel value='b' labelPlacement='start' label='Dos pagos' control={<Radio style={{color: '#15639d'}}/>}/>
-                        </RadioGroup>
-                    </div>
+                    { modeSuscription.isActivated ? null :
+                        <div className={styles.shoppingAmountSelect}>
+                            <p>Monto a pagar:</p>
+                            <RadioGroup row={true} name='position' defaultValue='a' onChange={(e) => {handleOnChangeInputRadio(e)}}>
+                                <FormControlLabel value='a' labelPlacement='start' label='Un pago' control={<Radio style={{color: '#15639d'}}/>}/>
+                                <FormControlLabel value='b' labelPlacement='start' label='Dos pagos' control={<Radio style={{color: '#15639d'}}/>}/>
+                            </RadioGroup>
+                        </div>
+                    }
                     <div className={styles.shoppingAmountTotal}>
                         <p>Total: </p>
                         <p>${price/totalOption}</p>

@@ -38,7 +38,7 @@ const CoursesById = ({id}) => {
         )
     }
 
-    const { title, description, teacher, coverImg} = data.getCourseById;
+    const { title, description, teacher, coverImg, modeSuscription} = data.getCourseById;
 
     return (
         <LayoutAdmin>
@@ -52,6 +52,7 @@ const CoursesById = ({id}) => {
                     </div>
                     <h2>{title}</h2>
                     <p>{description}</p>
+                    <span>Tipo: {modeSuscription.isActivated ? 'Suscripción' : 'Pago'}</span>
                     <span>{teacher}</span>
                 </div>
                 <div className={styles.courseEnrollmentList}>

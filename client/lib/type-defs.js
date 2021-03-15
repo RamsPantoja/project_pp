@@ -97,6 +97,7 @@ export const typeDefs = gql `
         title: String!
         price: Float!
         email: String!
+        amountMonths: Int!
     }
 
     type Mutation {

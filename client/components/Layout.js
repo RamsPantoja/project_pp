@@ -18,7 +18,7 @@ const Layout = ({children}) => {
             <header className={styles.header}>
                 <div className={styles.header_site}>
                     <div className={styles.logoContainer} onClick={() => router.push('/')}>
-                        <Image src='/fav.png' width={50} height={50} />
+                        <Image src='/fav.png' alt='logotipo_profepaco' width={50} height={50} />
                     </div>
                     <div className={styles.header_links}>
                         <Link href='/courses' passHref><ActiveLinkLayout name={'Cursos'}/></Link>

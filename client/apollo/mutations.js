@@ -37,7 +37,7 @@ export const DELETE_USER_BY_EMAIL = gql `
 `
 
 export const CREATE_PREFERENCE_MERCADO_PAGO = gql `
-    mutation CreatePreferenceMercadoPago($title: String!, $price: Int!, $firstname: String!, $lastname: String!, $email: String!, $coverImg: String!) {
+    mutation CreatePreferenceMercadoPago($title: String!, $price: Float!, $firstname: String!, $lastname: String!, $email: String!, $coverImg: String!) {
         createPreferenceMercadoPago(title: $title, price: $price, firstname: $firstname, lastname: $lastname, email: $email, coverImg: $coverImg)
     }
 `
@@ -75,5 +75,11 @@ export const RECOVERY_PASSWORD = gql `
 export const RESET_PASSWORD_RECOVERY = gql `
     mutation ResetPasswordRecovery($id: ID!, $newPassword: String!) {
         resetPasswordRecovery(id: $id, newPassword: $newPassword)
+    }
+`
+
+export const CREATE_PREAPPROVAL = gql `
+    mutation CreatePreapprovalPreferenceMercadoPago($input: inputPreapproval!) {
+        createPreapprovalPreferenceMercadoPago(input: $input)
     }
 `

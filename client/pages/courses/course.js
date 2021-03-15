@@ -30,7 +30,7 @@ const DescriptionCourse = ({id}) => {
         )
     }
 
-    const {title, description, price, objectives, conceptList, coverImg} = data.getCourseById;
+    const {title, description, price, objectives, conceptList, coverImg, modeSuscription} = data.getCourseById;
 
     const handleOnClickSession = (e) => {
         e.preventDefault();
@@ -59,7 +59,7 @@ const DescriptionCourse = ({id}) => {
                             })}
                         </ul>
                         <span className={styles.price}>{`$ ${price}`}</span>
-                        <button onClick={(e) => {handleOnClickSession(e)}}>OBTENER CURSO</button>
+                        <button onClick={(e) => {handleOnClickSession(e)}}>{modeSuscription.isActivated ? 'SUSCRIBIRSE' : 'OBTENER'}</button>
                     </div>
                     <div className={styles.courseDescription_headerImg}>
                         <Image className={styles.borderImgRadius} src={coverImg.url} alt={coverImg.filename} quality={100} layout='fill' objectFit='cover'/>

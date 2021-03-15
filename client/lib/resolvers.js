@@ -190,7 +190,6 @@ export const resolvers = {
         
         //Agrega un curso.
         addCourse: async (parent, {input, img}) => {
-            console.log(input)
             const mimeTypes = ['image/jpeg', 'image/png', 'image/svg', 'image/gif']
             const {filename, mimetype, url} = await img;
             await dbConnect();
@@ -443,6 +442,8 @@ export const resolvers = {
 
         createPreapprovalPreferenceMercadoPago: async (parent, {input}) => {
 
+            const monthsToDays = (input.amountMonths * 31);
+
             const payload = {
                 auto_recurring: {
                     currency_id: "MXN",
@@ -450,7 +451,7 @@ export const resolvers = {
                     frequency: 1,
                     frequency_type: "months",
                     start_date: mercadopago.utils.date.now().toString(),
-                    end_date: mercadopago.utils.date.now().add(180).toString()
+                    end_date: mercadopago.utils.date.now().add(monthsToDays).toString()
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,
