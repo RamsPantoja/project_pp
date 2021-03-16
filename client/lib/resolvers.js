@@ -445,8 +445,8 @@ export const resolvers = {
 
             const monthsToDays = (input.amountMonths * 31);
 
-            const startDate = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-            const endDate = moment().add(monthsToDays, 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+            const start_date = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+            const end_date = moment().add(monthsToDays, 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
 
             const payload = {
                 auto_recurring: {
@@ -454,8 +454,8 @@ export const resolvers = {
                     transaction_amount: input.price,
                     frequency: 1,
                     frequency_type: "months",
-                    start_date: startDate,
-                    end_date: endDate
+                    start_date: start_date,
+                    end_date: end_date
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,
