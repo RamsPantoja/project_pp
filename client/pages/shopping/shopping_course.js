@@ -13,9 +13,11 @@ import { useRouter } from 'next/router'
 import { getSession, useSession } from 'next-auth/client';
 import Image from 'next/image';
 import ConfirmSuscription from '../../components/ConfirmSuscription';
+import { useSnackbar } from 'notistack';
 
 const ShoppingCart = ({id}) => {
     const router = useRouter();
+    const { enqueueSnackbar } = useSnackbar();
     //Obtiene la session que existe.
     const [session] = useSession();
     const [confirmSuscription, setConfirmSuscription] = useState(false);
@@ -36,6 +38,9 @@ const ShoppingCart = ({id}) => {
     const [createPreapprovalPreferenceMercadoPago, {data: dataCreatePreapprovalPreferenceMercadoPago, error: errorCreatePreapprovalPreferenceMercadoPago, loading: loadingCreatePreapprovalPreferenceMercadoPago}] = useMutation(CREATE_PREAPPROVAL, {
         onCompleted: async (dataCreatePreapprovalPreferenceMercadoPago) => {
             router.push(dataCreatePreapprovalPreferenceMercadoPago.createPreapprovalPreferenceMercadoPago);
+        },
+        onError: (errorCreatePreapprovalPreferenceMercadoPago) => {
+            enqueueSnackbar(errorCreatePreapprovalPreferenceMercadoPago.message, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center'}})
         }
     });
 
