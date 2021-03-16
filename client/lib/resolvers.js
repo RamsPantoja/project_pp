@@ -5,6 +5,7 @@ import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import moment from 'moment';
 
 //Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
@@ -444,8 +445,8 @@ export const resolvers = {
 
             const monthsToDays = (input.amountMonths * 31);
 
-            const startDate = mercadopago.utils.date.now().toString();
-            const endDate = mercadopago.utils.date.now().add(monthsToDays).toString()
+            const startDate = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+            const endDate = moment().add(monthsToDays, 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
 
             const payload = {
                 auto_recurring: {
