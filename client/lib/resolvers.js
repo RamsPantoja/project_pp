@@ -448,6 +448,9 @@ export const resolvers = {
             const start_date = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
             const end_date = moment().add(monthsToDays, 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
 
+            console.log(start_date)
+            console.log(end_date)
+
             const payload = {
                 auto_recurring: {
                     currency_id: "MXN",
