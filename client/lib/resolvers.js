@@ -444,14 +444,17 @@ export const resolvers = {
 
             const monthsToDays = (input.amountMonths * 31);
 
+            const startDate = mercadopago.utils.date.now().toString();
+            const endDate = mercadopago.utils.date.now().add(monthsToDays).toString()
+
             const payload = {
                 auto_recurring: {
                     currency_id: "MXN",
                     transaction_amount: input.price,
                     frequency: 1,
                     frequency_type: "months",
-                    start_date: `${mercadopago.utils.date.now().toString}+$`,
-                    end_date: `${mercadopago.utils.date.now().add(monthsToDays).toString()}+$`
+                    start_date: startDate,
+                    end_date: endDate
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,
