@@ -448,29 +448,30 @@ export const resolvers = {
             const start_date = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
             const end_date = moment().add(monthsToDays, 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
 
-            console.log(start_date)
-            console.log(end_date)
-
             const payload = {
                 auto_recurring: {
                     currency_id: "MXN",
                     transaction_amount: input.price,
                     frequency: 1,
                     frequency_type: "months",
-                    start_date: `${start_date}`,
-                    end_date: `${end_date}`
+                    start_date: start_date,
+                    end_date: end_date
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,
                   reason: input.title,
                   status: "pending"
             }
-            
-            const init_point = mercadopago.preapproval.create(payload).then((data) => {
-                return data.body.init_point;
+
+            return new Promise((resolve, rejects) => {
+                mercadopago.preapproval.create(payload).then((data) => {
+                    if(data) {
+                        resolve(data.body.init_point);
+                    } else {
+                        rejects(end_date);
+                    }
+                })
             })
-            
-            return init_point;
         }
     }
 }
