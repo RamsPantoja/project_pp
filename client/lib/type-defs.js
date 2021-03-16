@@ -98,6 +98,8 @@ export const typeDefs = gql `
         price: Float!
         email: String!
         amountMonths: Int!
+        start_date: String!
+        end_date: String!
     }
 
     type Mutation {

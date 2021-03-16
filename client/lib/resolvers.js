@@ -443,19 +443,14 @@ export const resolvers = {
 
         createPreapprovalPreferenceMercadoPago: async (parent, {input}) => {
 
-            const monthsToDays = (input.amountMonths * 31);
-
-            const start_date = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-            const end_date = moment().add(monthsToDays, 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-
             const payload = {
                 auto_recurring: {
                     currency_id: "MXN",
                     transaction_amount: input.price,
                     frequency: 1,
                     frequency_type: "months",
-                    start_date: start_date,
-                    end_date: end_date
+                    start_date: input.start_date,
+                    end_date: input.end_date
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,

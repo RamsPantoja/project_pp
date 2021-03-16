@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 import styles from './styles/ConfirmSuscription.module.css';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import moment from 'moment';
 
 const ConfirmSuscription = ({mutation, handleOnClickSetConfirmSuscription, title, price, email, modeSuscription}) => {
 
@@ -15,7 +16,9 @@ const ConfirmSuscription = ({mutation, handleOnClickSetConfirmSuscription, title
                     title: title,
                     price: parseFloat(price),
                     email: email,
-                    amountMonths: modeSuscription.amountMonths
+                    amountMonths: modeSuscription.amountMonths,
+                    start_date: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+                    end_date: moment().add((modeSuscription.amountMonths * 31), 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
                 }
             }    
         });
