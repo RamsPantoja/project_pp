@@ -31,14 +31,12 @@ const webHooks = async (req, res) => {
                         return res.status(401).send('User no found')
                     }
 
-                    let userAlreadyExistInCourse;
+                    let userAlreadyExistInCourse = false;
 
                     //Busca en el array enrollmentUsers el email con el que se hizo la compra, si email existe, retorna true.
                     for (let index = 0; index < course.enrollmentUsers.length; index++) {
                         if (payment.payer.email === course.enrollmentUsers[index].email) {
                             userAlreadyExistInCourse = true;
-                        } else {
-                            userAlreadyExistInCourse = false;
                         }
                     }
 
