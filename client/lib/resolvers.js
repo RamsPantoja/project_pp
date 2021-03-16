@@ -454,8 +454,8 @@ export const resolvers = {
                     transaction_amount: input.price,
                     frequency: 1,
                     frequency_type: "months",
-                    start_date: start_date,
-                    end_date: end_date
+                    start_date: `${start_date}`,
+                    end_date: `${end_date}`
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,
