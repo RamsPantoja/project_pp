@@ -95,6 +95,7 @@ export const GET_COURSES_BY_USER = gql `
               lastname
             }
             coverImg {
+                filename
                 url
             }
             modeSuscription {

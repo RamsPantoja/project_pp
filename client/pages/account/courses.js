@@ -62,10 +62,11 @@ const Courses = ({userEmail}) => {
                     <h3>Tus cursos</h3>
                     {
                         dataCourses.getCoursesByUser.length === 0 ? <p>No tienes ningún curso aun :(</p> :
-                            dataCourses.getCoursesByUser.map((course) => {
+                            dataCourses.getCoursesByUser.map((course, index) => {
                                 return (
                                     <MiniCourseCard key={course.id} 
-                                    course={course} 
+                                    course={course}
+                                    index={index} 
                                     mutation={createPreferenceMercadoPago}
                                     firstname={firstname}
                                     lastname={lastname}

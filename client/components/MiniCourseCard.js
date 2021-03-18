@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../pages/account/styles/courses.module.css';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Button, CircularProgress } from '@material-ui/core';
 
-const MiniCourseCard = ({course, mutation, firstname, lastname, email, loadingPreferenceMP}) => {
+const MiniCourseCard = ({course, mutation, firstname, lastname, email, loadingPreferenceMP, index}) => {
+    const [whichIndex, setWhichIndex] = useState(null);
 
-    const handleCreatePreferenceMercadoPago = (e) => {
+    const handleCreatePreferenceMercadoPago = (e, index) => {
         e.preventDefault();
+        setWhichIndex(index);
         mutation({
             variables: {
                 title: course.title,
@@ -19,10 +21,10 @@ const MiniCourseCard = ({course, mutation, firstname, lastname, email, loadingPr
         });
     }
 
-    const isLoadingMutation = loadingPreferenceMP ? <CircularProgress size={30} /> : <Button onClick={(e) => {handleCreatePreferenceMercadoPago(e)}} variant='contained' size='small' style={{background: '#15639d', color: '#ffffff'}}>Pagar</Button>
+    const isLoadingMutation = loadingPreferenceMP && index === whichIndex ? <CircularProgress size={30} /> : <Button onClick={(e) => {handleCreatePreferenceMercadoPago(e, index)}} variant='contained' size='small' style={{background: '#15639d', color: '#ffffff'}}>Pagar</Button>
 
     return (
-        <div key={course.id} className={styles.courseMiniCard}>
+        <div className={styles.courseMiniCard}>
             <h4>{course.title}</h4>
             <p>{course.teacher}</p>
             <p>Pagado:{course.enrollmentUsers[0].payment}/{course.price}</p>
