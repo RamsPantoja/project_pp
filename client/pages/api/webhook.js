@@ -12,7 +12,8 @@ const webHooks = async (req, res) => {
         const {query: {id, topic}} = req;
         switch (topic) {
             case 'payment':
-                const payment = mercadopago.payment.get(id);
+                const responseMercagoPago = await mercadopago.payment.get(id);
+                const payment = responseMercagoPago.body;
                 //Si el status del pago buscado desde la Api de mercado pago es exactamente igual 'approved' agrega el user al curso.
                 if (payment.status === 'approved' && payment.status_detail === 'accredited') {
                     await dbConnect();
@@ -59,7 +60,7 @@ const webHooks = async (req, res) => {
                         }
                         return res.status(200).send('Ok');
                     } catch (error) {
-                        return res.status(401).send(element);
+                        return res.status(401).send('Error...');
                     }
                 }
             default:
