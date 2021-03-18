@@ -35,15 +35,6 @@ const ShoppingCart = ({id}) => {
         }
     });
 
-    const [createPreapprovalPreferenceMercadoPago, {data: dataCreatePreapprovalPreferenceMercadoPago, error: errorCreatePreapprovalPreferenceMercadoPago, loading: loadingCreatePreapprovalPreferenceMercadoPago}] = useMutation(CREATE_PREAPPROVAL, {
-        onCompleted: async (dataCreatePreapprovalPreferenceMercadoPago) => {
-            router.push(dataCreatePreapprovalPreferenceMercadoPago.createPreapprovalPreferenceMercadoPago);
-        },
-        onError: (errorCreatePreapprovalPreferenceMercadoPago) => {
-            enqueueSnackbar(errorCreatePreapprovalPreferenceMercadoPago.message, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center'}})
-        }
-    });
-
     const [totalOption, setTotalOption] = useState(1);
     
     if (loading) {
@@ -63,8 +54,7 @@ const ShoppingCart = ({id}) => {
         return error.message
     }
 
-    const {title, teacher, price, coverImg, modeSuscription} = data.getCourseById
-
+    const {title, teacher, price, coverImg, modeSuscription} = data.getCourseById;
     //Actualiza el valor del precio si se activa el checkradio A ó B.
     const handleOnChangeInputRadio = (e) => {
         e.preventDefault();
@@ -106,8 +96,8 @@ const ShoppingCart = ({id}) => {
         }
     }
 
-    const isCreatePreferenceLoading = loadingCreatePreferenceMercadoPago || loadingCreatePreapprovalPreferenceMercadoPago ? <div className={styles.loadingMutation}><CircularProgress/></div> : <Button variant='contained' style={{background: '#dbf998', color:'#15639d', fontWeight: 'bold'}} onClick={(e) => {handleCreatePreferenceMutation(e)}}>{modeSuscription.isActivated ? 'SUSCRIBIRSE' : 'COMPRAR'}</Button>
-    const isConfirmSuscription = confirmSuscription ? <ConfirmSuscription title={title} price={price} email={session.user.email} modeSuscription={modeSuscription} handleOnClickSetConfirmSuscription={handleOnClickSetConfirmSuscription} mutation={createPreapprovalPreferenceMercadoPago}/> : null;
+    const isCreatePreferenceLoading = loadingCreatePreferenceMercadoPago ? <div className={styles.loadingMutation}><CircularProgress/></div> : <Button variant='contained' style={{background: '#dbf998', color:'#15639d', fontWeight: 'bold'}} onClick={(e) => {handleCreatePreferenceMutation(e)}}>{modeSuscription.isActivated ? 'SUSCRIBIRSE' : 'COMPRAR'}</Button>
+    const isConfirmSuscription = confirmSuscription ? <ConfirmSuscription modeSuscription={modeSuscription} handleOnClickSetConfirmSuscription={handleOnClickSetConfirmSuscription}/> : null;
 
     return (
         <Layout>

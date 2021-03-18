@@ -77,9 +77,3 @@ export const RESET_PASSWORD_RECOVERY = gql `
         resetPasswordRecovery(id: $id, newPassword: $newPassword)
     }
 `
-
-export const CREATE_PREAPPROVAL = gql `
-    mutation CreatePreapprovalPreferenceMercadoPago($input: inputPreapproval!) {
-        createPreapprovalPreferenceMercadoPago(input: $input)
-    }
-`

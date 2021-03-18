@@ -24,7 +24,9 @@ const courseSchema = new mongoose.Schema({
     },
     modeSuscription: {
         isActivated: Boolean,
-        amountMonths : Number
+        amountMonths : Number,
+        paymentUrl: String,
+        preapproval_plan_id: String
     }
 });
 

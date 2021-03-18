@@ -49,6 +49,8 @@ export const GET_COURSE_BY_ID = gql `
             modeSuscription {
                 isActivated
                 amountMonths
+                paymentUrl
+                preapproval_plan_id
             }
         }
     }

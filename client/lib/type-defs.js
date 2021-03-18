@@ -30,6 +30,8 @@ export const typeDefs = gql `
     type modeSuscription {
         isActivated: Boolean
         amountMonths: Int
+        paymentUrl: String
+        preapproval_plan_id: String
     }
 
     type Concept {

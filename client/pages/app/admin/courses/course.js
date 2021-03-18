@@ -52,7 +52,7 @@ const CoursesById = ({id}) => {
                     </div>
                     <h2>{title}</h2>
                     <p>{description}</p>
-                    <span>Tipo: {modeSuscription.isActivated ? 'Suscripción' : 'Pago'}</span>
+                    <span>Tipo: {modeSuscription.isActivated ? 'Suscripción' : 'Pago único'}</span>
                     <span>{teacher}</span>
                 </div>
                 <div className={styles.courseEnrollmentList}>

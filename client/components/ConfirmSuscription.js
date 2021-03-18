@@ -5,24 +5,15 @@ import styles from './styles/ConfirmSuscription.module.css';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 
-const ConfirmSuscription = ({mutation, handleOnClickSetConfirmSuscription, title, price, email, modeSuscription}) => {
-
+const ConfirmSuscription = ({handleOnClickSetConfirmSuscription, modeSuscription}) => {
+    const router = useRouter();
+    
     const handleOnClickConfirm = (e) => {
         e.preventDefault();
-        mutation({
-            variables: {
-                input: {
-                    title: title,
-                    price: parseFloat(price),
-                    email: email,
-                    amountMonths: modeSuscription.amountMonths,
-                    start_date: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-                    end_date: moment().add((modeSuscription.amountMonths * 31), 'days').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-                }
-            }    
-        });
         handleOnClickSetConfirmSuscription();
+        router.push(modeSuscription.paymentUrl);
     }
 
     return (

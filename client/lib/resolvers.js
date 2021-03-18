@@ -1,7 +1,7 @@
 import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
-import mercadopago from 'mercadopago';
+import mercadopago, { preapproval } from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -190,7 +190,7 @@ export const resolvers = {
         },
         
         //Agrega un curso.
-        addCourse: async (parent, {input, img}) => {
+        addCourse: async (parent, {input, img}, {dataSources}) => {
             const mimeTypes = ['image/jpeg', 'image/png', 'image/svg', 'image/gif']
             const {filename, mimetype, url} = await img;
             await dbConnect();
@@ -202,6 +202,27 @@ export const resolvers = {
 
             if(!mimeTypes.includes(mimetype)) {
                 throw new Error('La imagen debe ser .jpg/.png/.svg/.gif');
+            }
+
+            const preapprovalPreference = {
+                back_url:"https://www.mercadopago.com.mx",
+                reason: input.title,
+                auto_recurring:{
+                    frequency:"1",
+                    frequency_type:"months",
+                    transaction_amount: input.price,
+                    currency_id:"MXN",
+                    repetitions: input.modeSuscription.amountMonths
+                }   
+            }
+
+            let preapprovalPlan = {
+                init_point: '',
+                id: ''
+            };
+
+            if(input.modeSuscription.isActivated === true) {
+                preapprovalPlan = await dataSources.mercadoPagoAPI.createPreapprovalPlan(preapprovalPreference)
             }
             
             const newCourse = await new Courses({
@@ -220,7 +241,9 @@ export const resolvers = {
                 },
                 modeSuscription: {
                     isActivated: input.modeSuscription.isActivated,
-                    amountMonths: input.modeSuscription.amountMonths
+                    amountMonths: input.modeSuscription.amountMonths,
+                    paymentUrl: preapprovalPlan.init_point,
+                    preapproval_plan_id: preapprovalPlan.id
                 }
             });
 
@@ -441,6 +464,7 @@ export const resolvers = {
             })
         },
 
+        //Crea una suscripcion pendiente de pago. Este resolver solo se difinira aqui para futuras implementaciones de suscripcion.
         createPreapprovalPreferenceMercadoPago: async (parent, {input}) => {
 
             const payload = {
