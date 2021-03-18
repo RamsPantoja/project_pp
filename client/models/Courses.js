@@ -5,7 +5,11 @@ const userSchema = new mongoose.Schema({
     lastname: String,
     email: String,
     img: String,
-    payment: Number
+    payment: Number,
+    preapproval_id: String,
+    status: String,
+    last_charged_date: String,
+    next_payment_date: String
 })
 
 const courseSchema = new mongoose.Schema({

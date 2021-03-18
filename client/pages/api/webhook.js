@@ -12,6 +12,7 @@ const webHooks = async (req, res) => {
         const {query: {id, topic}} = req;
         switch (topic) {
             case 'payment':
+                //Obtiene el pago por id desde la api de mercado pago.
                 const responseMercagoPago = await mercadopago.payment.get(id);
                 const payment = responseMercagoPago.body;
                 //Si el status del pago buscado desde la Api de mercado pago es exactamente igual 'approved' agrega el user al curso.
@@ -39,28 +40,65 @@ const webHooks = async (req, res) => {
                         }
                     }
 
-                    //Crea un nuevo objeto con los datos de user y agrega una nueva key payment.
-                    const userWithPayment = {
-                        ...user._doc,
-                        payment: payment.transaction_amount
-                    }
-
                     try {
-                        //Si el usuario ya existe en enrollmentUsers del curso comprado y el pago del usuario es la mitad del precio del curso, entonces, actualiza la key payment del objecto user en enrollmentUsers.
-                        if (userAlreadyExistInCourse) {
-                            if(payment.transaction_amount === course.price/2) {
-                                await Courses.findOneAndUpdate(
-                                    {title: payment.description, 'enrollmentUsers.email': payment.payer.email},
-                                    {$set: { 'enrollmentUsers.$.payment': course.price}}
-                                )
-                            }
-                        } else if (userAlreadyExistInCourse === false || !userAlreadyExistInCourse) {
-                            course.enrollmentUsers.push(userWithPayment);
-                            course.save();
+                        switch (payment.operation_type) {
+                            case 'recurring_payment':
+                                //Obtiene la suscripcion creado por el usuario con toda la informacion relevante. 
+                                const preapproval = await fetch(`https://api.mercadopago.com/preapproval/search?status=authorized&reason=${payment.description}&payer_email=${payment.payer.email}&access_token=${process.env.ACCESS_TOKEN_MP}`).then((responseMercagoPago) => {
+                                    if(responseMercagoPago.ok) {
+                                        return responseMercagoPago.json();
+                                    }
+                                });
+
+                                //Crea un objeto con los datos de la suscripcion y el usuario que se suscribio.
+                                const userWithRecurringPayment = {
+                                    ...user._doc,
+                                    preapproval_id: preapproval.results[0].id,
+                                    status: preapproval.results[0].status,
+                                    last_charged_date: preapproval.results[0].summarized.last_charged_date,
+                                    next_payment_date: preapproval.results[0].next_payment_date,
+                                }
+
+                                if (userAlreadyExistInCourse) {
+                                    await Courses.findOneAndUpdate(
+                                        {title: payment.description, 'enrollmentUsers.email': payment.payer.email},
+                                        {$set: {
+                                            'enrollmentUsers.$.status': userWithRecurringPayment.status,
+                                            'enrollmentUsers.$.last_charged_date': userWithRecurringPayment.last_charged_date,
+                                            'enrollmentUsers.$.next_payment_date': userWithRecurringPayment.next_payment_date,
+                                        }}
+                                    )
+                                } else if (userAlreadyExistInCourse === false || !userAlreadyExistInCourse) {
+                                    course.enrollmentUsers.unshift(userWithRecurringPayment);
+                                    course.save();
+                                }
+                                break;
+                            case 'regular_payment':
+                                //Crea un nuevo objeto con los datos de user y agrega una nueva key payment.
+                                const userWithRegularPayment = {
+                                    ...user._doc,
+                                    payment: payment.transaction_amount
+                                }
+
+                                //Si el usuario ya existe en enrollmentUsers del curso comprado y el pago del usuario es la mitad del precio del curso, entonces, actualiza la key payment del objecto user en enrollmentUsers.
+                                if (userAlreadyExistInCourse) {
+                                    if(payment.transaction_amount === course.price/2) {
+                                        await Courses.findOneAndUpdate(
+                                            {title: payment.description, 'enrollmentUsers.email': payment.payer.email},
+                                            {$set: { 'enrollmentUsers.$.payment': course.price}}
+                                        )
+                                    }
+                                } else if (userAlreadyExistInCourse === false || !userAlreadyExistInCourse) {
+                                    course.enrollmentUsers.unshift(userWithRegularPayment);
+                                    course.save();
+                                }
+                                break;
+                            default:
+                                break;
                         }
                         return res.status(200).send('Ok');
                     } catch (error) {
-                        return res.status(401).send('Error...');
+                        return res.status(401).send(error);
                     }
                 }
             default:

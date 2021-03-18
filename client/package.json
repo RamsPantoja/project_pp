@@ -26,7 +26,7 @@
     "firebase": "^8.3.0",
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",
-    "mercadopago": "^1.5.5",
+    "mercadopago": "^1.5.6",
     "moment": "^2.29.1",
     "mongoose": "^5.11.15",
     "next": "^10.0.6",
