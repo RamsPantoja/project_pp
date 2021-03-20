@@ -59,12 +59,27 @@ export const typeDefs = gql `
         url: String
     }
     
+    type userInSuscription {
+        payer_email: String
+        reason: String
+        last_charged_date: String
+        status: String
+        last_modified: String
+        next_payment_date: String
+        date_created: String,
+        end_date: String,
+        quotas: String,
+        charged_quantity: Int,
+        charged_amount: Float
+    }
+
     type Query {
         getUsers(limit: Int!, after: ID): PaginationInf!
         getCourses: [Course]
         getCourseById(id: ID!): Course
         getUserByEmail(email: String!): User
         getCoursesByUser(userEmail: String!): [Course]
+        getUsersInSuscription(limit: Int!, offset: Int!, preapproval_plan_id: String!): [userInSuscription]
     }
 
     input inputConcept {

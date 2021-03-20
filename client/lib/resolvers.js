@@ -154,6 +154,32 @@ export const resolvers = {
                     }
                 })
             });
+        },
+        getUsersInSuscription: async (parent, {limit, offset, preapproval_plan_id}, {dataSources}) => {
+            const data = await dataSources.mercadoPagoAPI.getUsersInSuscription(limit, offset, preapproval_plan_id);
+            return new Promise((resolve, rejects) => {
+                if (data) {
+                    const usersInSuscription = data.results.map((user) => {
+                        return {
+                            payer_email: user.payer_email,
+                            reason: user.reason,
+                            last_charged_date: user.summarized.last_charged_date,
+                            status: user.status,
+                            next_payment_date: user.next_payment_date,
+                            last_modified: user.last_modified,
+                            charged_quantity: user.summarized.charged_quantity,
+                            date_created: user.date_created,
+                            end_date: user.auto_recurring.end_date,
+                            quotas: user.summarized.quotas,
+                            charged_amount: user.summarized.charged_amount,
+                        }
+                    });
+
+                    resolve(usersInSuscription);
+                } else {
+                    rejects('No se encuentran los usuarios :(')
+                }
+            })
         }
     },
 

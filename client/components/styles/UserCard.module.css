@@ -7,6 +7,7 @@
     border-radius: 0.2em;
     background-color: #ffffff;
     color: #000000;
+    font-weight: bold;
     transition: 0.2s ease;
 }
 
@@ -18,6 +19,7 @@
     border-radius: 0.2em;
     background-color: #ff9800;
     color: #ffffff;
+    font-weight: bold;
     transition: 0.2s ease;
 }
 
@@ -29,6 +31,7 @@
     border-radius: 0.2em;
     background-color: #4caf50;
     color: #ffffff;
+    font-weight: bold;
     transition: 0.2s ease;
 }
 

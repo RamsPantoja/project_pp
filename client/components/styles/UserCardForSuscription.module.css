@@ -1,0 +1,62 @@
+.userCardForSuscriptionCancelled {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid #eaeaea;
+    padding: 1em;
+    border-radius: 0.2em;
+    background-color: #ffffff;
+    color: #000000;
+    transition: 0.2s ease;
+}
+
+.userCardForSuscriptionAuthorized {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid #4caf50;
+    padding: 1em;
+    border-radius: 0.2em;
+    background-color: #4caf50;
+    color: #000000;
+    transition: 0.2s ease;
+    color: #ffffff;
+}
+
+
+.userCardForSuscriptionCancelled:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.userCardForSuscriptionAuthorized:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.userCardInf {
+    display: grid;
+    gap: 1em;
+}
+
+.status {
+    display: flex;
+    font-weight: bold;
+}
+
+.status > p {
+    padding: 0 0.5em;
+    font-weight: lighter;
+}
+
+.buttonContainer {
+    display: flex;
+    padding: 1em 0;
+}
+
+@media(max-width: 540px) {
+    .userCardForSuscriptionCancelled {
+        flex-direction: column;
+    }
+
+    .userCardForSuscriptionAuthorized {
+        flex-direction: column;
+    }
+}

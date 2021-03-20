@@ -18,6 +18,7 @@ export const GET_COURSES = gql `
             modeSuscription {
                 isActivated
                 amountMonths
+                preapproval_plan_id
             }
         }
     }
@@ -93,6 +94,8 @@ export const GET_COURSES_BY_USER = gql `
               payment
               firstname
               lastname
+              preapproval_id
+              status
             }
             coverImg {
                 filename
@@ -102,6 +105,24 @@ export const GET_COURSES_BY_USER = gql `
                 isActivated
                 amountMonths
             }
+        }
+    }
+`
+
+export const GET_USERS_IN_SUSCRIPTION = gql `
+    query GetUsersInSuscription($limit: Int!, $offset: Int!, $preapproval_plan_id: String!) {
+        getUsersInSuscription(limit: $limit, offset: $offset, preapproval_plan_id: $preapproval_plan_id) {
+            payer_email
+            status
+            reason
+            last_modified
+            last_charged_date
+            next_payment_date
+            charged_quantity
+            date_created
+            end_date
+            quotas
+            charged_amount
         }
     }
 `

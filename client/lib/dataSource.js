@@ -17,6 +17,16 @@ class MercadoPagoAPI extends RESTDataSource {
         preapproval_preference, // request body
       );
     }
+
+    async getUsersInSuscription(limit, offset, preapproval_plan_id) {
+      const data = await this.get(`preapproval/search`, {
+        limit: limit,
+        offset: offset,
+        preapproval_plan_id: preapproval_plan_id,
+        criteria: 'desc'
+      });
+      return data;
+    }
 }
 
 export default MercadoPagoAPI;

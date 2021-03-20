@@ -57,7 +57,7 @@ const CoursesAdmin = () => {
                         {data.getCourses.map((course) => {
                             return (
                                 <CourseCard key={course.id} 
-                                baseUrl={'/app/admin/courses/course/?id='}
+                                baseUrl={`/app/admin/courses/course/?preapproval_plan_id=${course.modeSuscription.preapproval_plan_id}&id=`}
                                 baseUrlToEditCourse={'/app/admin/edit_course/?id='}
                                 deleteCourseComponent={true}
                                 editCourseComponent={true}
