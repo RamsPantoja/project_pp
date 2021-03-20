@@ -3,7 +3,7 @@ import React from 'react';
 import { Fragment } from 'react';
 import styles from './styles/SummarySuscription.module.css';
 
-const SummarySuscription = ({payer_email, date_created, end_date, quotas, charged_quantity, charged_amount, handleOnClickButtonDetails}) => {
+const SummarySuscription = ({payer_email, date_created, end_date, quotas, charged_quantity, charged_amount, handleOnClickButtonDetails, last_charged_date}) => {
     return (
         <Fragment>
             <div className={styles.backgroundContainer}></div>
@@ -25,6 +25,10 @@ const SummarySuscription = ({payer_email, date_created, end_date, quotas, charge
                     <div className={styles.cardDetail}>
                         <p>Monto total recibido</p>
                         <p>{charged_amount ? charged_amount : 0}</p>
+                    </div>
+                    <div className={styles.cardDetail}>
+                        <p>Fecha de último cargo</p>
+                        <p>{last_charged_date}</p>
                     </div>
                     <Button size='small' variant='contained' style={{backgroundColor: '#15629c', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonDetails(e)}}>Aceptar</Button>
                 </div>
