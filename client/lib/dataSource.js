@@ -23,6 +23,7 @@ class MercadoPagoAPI extends RESTDataSource {
         limit: limit,
         offset: offset,
         preapproval_plan_id: preapproval_plan_id,
+        end_date: 'NOW',
         criteria: 'desc'
       });
       return data;

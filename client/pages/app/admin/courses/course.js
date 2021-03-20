@@ -20,7 +20,7 @@ const CoursesById = ({id, preapproval_plan_id}) => {
     //Obtiene todos los usuarios suscritos al curso.
     const { data: dataUsersFromApiMP, error: errorUsersFromApiMP, loading: loadingUsersFromApiMP, fetchMore} = useQuery(GET_USERS_IN_SUSCRIPTION, {
         variables: {
-            limit: 10, 
+            limit: 100, 
             offset: 0,
             preapproval_plan_id: preapproval_plan_id
         }
@@ -79,7 +79,7 @@ const CoursesById = ({id, preapproval_plan_id}) => {
     });
 
     const whichUsersToPaginate = modeSuscription.isActivated ? usersToPaginateFromApiMercadoPago : usersToPaginateInEnrollmentUsers;
-    const buttonToLoadMore = modeSuscription.isActivated ? <Button variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={() => fetchMore({variables: {offset: dataUsersFromApiMP.getUsersInSuscription.length}})}>Cargar más</Button> : null;
+    //const buttonToLoadMore = modeSuscription.isActivated ? <Button variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={() => fetchMore({variables: {offset: dataUsersFromApiMP.getUsersInSuscription.length}})}>Cargar más</Button> : null;
 
     return (
         <LayoutAdmin>
@@ -100,7 +100,6 @@ const CoursesById = ({id, preapproval_plan_id}) => {
                     <h3>Alumnos inscritros:</h3>
                     <div className={styles.courseEnrollmentGrid}>
                         {whichUsersToPaginate}
-                        {buttonToLoadMore}
                     </div>
                 </div>
             </div>

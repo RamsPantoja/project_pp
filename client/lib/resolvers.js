@@ -175,7 +175,7 @@ export const resolvers = {
                         }
                     });
 
-                    resolve(usersInSuscription);
+                    resolve(usersInSuscription.reverse());
                 } else {
                     rejects('No se encuentran los usuarios :(')
                 }
