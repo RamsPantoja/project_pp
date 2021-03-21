@@ -147,6 +147,10 @@ export const resolvers = {
                                 enrollmentUsers: course.enrollmentUsers.filter((enrollmentUser) => enrollmentUser.email === userEmail),
                                 coverImg: {
                                     url: course.coverImg.url
+                                },
+                                modeSuscription: {
+                                    isActivated: course.modeSuscription.isActivated,
+                                    amountMonths: course.modeSuscription.amountMonths
                                 }
                             }
                         })
@@ -180,6 +184,32 @@ export const resolvers = {
                     rejects('No se encuentran los usuarios :(')
                 }
             })
+        },
+
+        getPreapproval: async (parent, {preapproval_id, email}, {dataSources}) => {
+            const data = await dataSources.mercadoPagoAPI.getPreapproval(preapproval_id, email);
+            return new Promise((resolve, rejects) => {
+                if (data) {
+                    const preapproval = data.results.map((preapproval) => {
+                        return {
+                            payer_email: preapproval.payer_email,
+                            reason: preapproval.reason,
+                            last_charged_date: preapproval.summarized.last_charged_date,
+                            status: preapproval.status,
+                            next_payment_date: preapproval.next_payment_date,
+                            last_modified: preapproval.last_modified,
+                            charged_quantity: preapproval.summarized.charged_quantity,
+                            date_created: preapproval.date_created,
+                            end_date: preapproval.auto_recurring.end_date,
+                            quotas: preapproval.summarized.quotas,
+                            charged_amount: preapproval.summarized.charged_amount
+                        }
+                    });
+                    resolve(preapproval);
+                } else {
+                    rejects('No se encuentra la suscripción')
+                }
+            });
         }
     },
 
@@ -498,9 +528,9 @@ export const resolvers = {
                     currency_id: "MXN",
                     transaction_amount: input.price,
                     frequency: 1,
-                    frequency_type: "months",
-                    start_date: input.start_date,
-                    end_date: input.end_date
+                    frequency_type: "days",
+                    start_date: mercadopago.utils.date.now().toString(),
+                    end_date: mercadopago.utils.date.now().add(2).toString()
                   },
                   back_url: "https://www.mercadopago.com.mx/",
                   payer_email: input.email,
@@ -515,6 +545,25 @@ export const resolvers = {
                     } else {
                         rejects(end_date);
                     }
+                })
+            })
+        },
+
+        cancelPreapproval: async (parent, {preapproval_id}) => {
+            await dbConnect();
+            return new Promise((resolve, rejects) => {
+                mercadopago.preapproval.cancel(preapproval_id).then((response) => {
+                    const preapproval = response.body;
+                    Courses.findOneAndUpdate({title: preapproval.reason, 'enrollmentUsers.email': preapproval.payer_email},
+                    {$set: { 'enrollmentUsers.$.status': preapproval.status}}, (err, data) => {
+                        if (data) {
+                            resolve('Se ha cancelado la suscripción correctamente.');
+                        } else if (err) {
+                            rejects('No se pudo actualizar el status.')
+                        }
+                    });
+                }).catch((error) => {
+                    rejects('Error al cancelar la suscripción.');
                 })
             })
         }

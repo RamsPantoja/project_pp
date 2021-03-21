@@ -11,6 +11,8 @@ export const typeDefs = gql `
         isAdmin: Boolean
         isConfirmated: Boolean
         payment: Int
+        preapproval_id: String
+        status: String
     }
 
     type Course {
@@ -80,6 +82,7 @@ export const typeDefs = gql `
         getUserByEmail(email: String!): User
         getCoursesByUser(userEmail: String!): [Course]
         getUsersInSuscription(limit: Int!, offset: Int!, preapproval_plan_id: String!): [userInSuscription]
+        getPreapproval(preapproval_id: String!, email: String!): [userInSuscription]
     }
 
     input inputConcept {
@@ -115,8 +118,6 @@ export const typeDefs = gql `
         price: Float!
         email: String!
         amountMonths: Int!
-        start_date: String!
-        end_date: String!
     }
 
     type Mutation {
@@ -134,5 +135,6 @@ export const typeDefs = gql `
         recoveryPassword(email: String!): String
         resetPasswordRecovery(id: ID!, newPassword: String!): String
         createPreapprovalPreferenceMercadoPago(input: inputPreapproval!): String
+        cancelPreapproval(preapproval_id: String!): String
     }
 `

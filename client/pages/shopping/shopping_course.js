@@ -142,7 +142,7 @@ const ShoppingCart = ({id}) => {
 }
 
 export async function getServerSideProps({query, req}) {
-    const session = await getSession({req})
+    const session = await getSession({req});
 
     if (!session && req) {
         return {

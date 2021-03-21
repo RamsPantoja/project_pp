@@ -10,6 +10,7 @@ import styles from './styles/courses.module.css';
 import MiniCourseCard from '../../components/MiniCourseCard';
 import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 import { useRouter } from 'next/router';
+import MiniCourseCardSuscription from '../../components/MiniCourseCardSuscription';
 
 const Courses = ({userEmail}) => {
     const router = useRouter();
@@ -63,16 +64,22 @@ const Courses = ({userEmail}) => {
                     {
                         dataCourses.getCoursesByUser.length === 0 ? <p>No tienes ningún curso aun :(</p> :
                             dataCourses.getCoursesByUser.map((course, index) => {
-                                return (
-                                    <MiniCourseCard key={course.id} 
-                                    course={course}
-                                    index={index} 
-                                    mutation={createPreferenceMercadoPago}
-                                    firstname={firstname}
-                                    lastname={lastname}
-                                    email={email}
-                                    loadingPreferenceMP={loadingPreferenceMP}/>
-                                )
+                                if (course.modeSuscription.isActivated) {
+                                    return (
+                                        <MiniCourseCardSuscription key={course.id} course={course}/>
+                                    )
+                                } else {
+                                    return (
+                                        <MiniCourseCard key={course.id} 
+                                        course={course}
+                                        index={index} 
+                                        mutation={createPreferenceMercadoPago}
+                                        firstname={firstname}
+                                        lastname={lastname}
+                                        email={email}
+                                        loadingPreferenceMP={loadingPreferenceMP}/>
+                                    )
+                                }
                             })
                     }
                 </div>

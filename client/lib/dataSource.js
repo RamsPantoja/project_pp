@@ -28,6 +28,15 @@ class MercadoPagoAPI extends RESTDataSource {
       });
       return data;
     }
+
+    async getPreapproval(preapproval_id, email) {
+      const data = await this.get(`preapproval/search`, {
+        id: preapproval_id,
+        payer_email: email
+      })
+
+      return data;
+    }
 }
 
 export default MercadoPagoAPI;

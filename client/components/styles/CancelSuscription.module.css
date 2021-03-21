@@ -34,26 +34,7 @@
     max-width: 640px;
 }
 
-.cardDetail {
-    display: flex;
-    justify-content: space-between;
-}
-
-.centerCircularProgress {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1003;
-}
-
 .buttons {
     display: flex;
     justify-content: space-between;
-}
-
-@media(max-width: 400px) {
-    .buttons {
-        flex-direction: column-reverse;
-        gap: 0.5em;
-    }
 }

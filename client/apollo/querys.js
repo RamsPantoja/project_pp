@@ -94,6 +94,7 @@ export const GET_COURSES_BY_USER = gql `
               payment
               firstname
               lastname
+              email
               preapproval_id
               status
             }
@@ -112,6 +113,24 @@ export const GET_COURSES_BY_USER = gql `
 export const GET_USERS_IN_SUSCRIPTION = gql `
     query GetUsersInSuscription($limit: Int!, $offset: Int!, $preapproval_plan_id: String!) {
         getUsersInSuscription(limit: $limit, offset: $offset, preapproval_plan_id: $preapproval_plan_id) {
+            payer_email
+            status
+            reason
+            last_modified
+            last_charged_date
+            next_payment_date
+            charged_quantity
+            date_created
+            end_date
+            quotas
+            charged_amount
+        }
+    }
+`
+
+export const GET_PREAPPROVAL = gql `
+    query GetPreapproval($preapproval_id: String!, $email: String!) {
+        getPreapproval(preapproval_id: $preapproval_id, email: $email) {
             payer_email
             status
             reason

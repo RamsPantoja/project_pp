@@ -77,3 +77,9 @@ export const RESET_PASSWORD_RECOVERY = gql `
         resetPasswordRecovery(id: $id, newPassword: $newPassword)
     }
 `
+
+export const CANCEL_PREAPPROVAL = gql `
+    mutation CancelPreapproval($preapproval_id: String!) {
+        cancelPreapproval(preapproval_id: $preapproval_id)
+    }
+`
