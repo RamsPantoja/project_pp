@@ -33,7 +33,7 @@ const Courses = () => {
             </Head>
             <div className={styles.coursesContainer}>
                 <div className={styles.coursesHeader}>
-                    <h1>Nuestros Cursos</h1>
+                    <h2>Nuestros Cursos</h2>
                 </div>
                 <div className={styles.flexContent}>
                     <div className={styles.centerContent}>

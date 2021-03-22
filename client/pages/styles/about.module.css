@@ -1,0 +1,43 @@
+.aboutContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.aboutHeader {
+    display: flex;
+    justify-content: space-around;
+    height: 10em;
+    align-items: center;
+    background-color: #15639d;
+    color: #ffffff;
+}
+
+
+.centerContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+
+.aboutContent {
+    display: grid;
+    gap: 1em;
+    max-width: 1200px;
+    background-color: #ffffff;
+    margin: 1em;
+    padding: 2em;
+    border-radius: 0.2em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.aboutContent > p {
+    font-weight: bold;
+}
+
+.curriculum {
+    display: grid;
+    gap: 0.5em;
+    margin: 1em;
+}

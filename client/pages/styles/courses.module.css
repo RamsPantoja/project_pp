@@ -7,11 +7,11 @@
 
 .coursesHeader {
     display: flex;
-    flex: 1;
     background-color: #15639d;
     color: #ffffff;
     justify-content: space-around;
-    padding: 3em;
+    height: 10em;
+    align-items: center;
 }
 
 .flexContent {

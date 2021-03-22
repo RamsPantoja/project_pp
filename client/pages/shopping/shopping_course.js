@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { useMutation, useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Button, RadioGroup } from '@material-ui/core';
-import { CREATE_PREAPPROVAL, CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
+import { CREATE_PREFERENCE_MERCADO_PAGO } from '../../apollo/mutations';
 import { useRouter } from 'next/router'
 import { getSession, useSession } from 'next-auth/client';
 import Image from 'next/image';
@@ -136,6 +136,12 @@ const ShoppingCart = ({id}) => {
                     </div>
                     {isCreatePreferenceLoading}
                 </div>
+            </div>
+            <div className={styles.bannerContainer}>
+                <Image src='/images/bannerMercadoPago.jpg' width="728" height="90" title="Mercado Pago - Medios de pago" alt="Mercado Pago - Medios de pago"/>
+            </div>
+            <div className={styles.bannerContainerMovil}>
+                <Image src='/images/bannerMercadoPagoMovil.jpg' title="Mercado Pago - Medios de pago" alt="Mercado Pago - Medios de pago" width="120" height="240"/>
             </div>
         </Layout>
     )

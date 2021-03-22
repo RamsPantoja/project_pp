@@ -11,7 +11,6 @@ import Image from 'next/image';
 import Head from 'next/head';
 import { useSnackbar } from 'notistack';
 import UserCardForSuscription from '../../../../components/UserCardForSuscription';
-import { Button } from '@material-ui/core';
 
 const CoursesById = ({id, preapproval_plan_id}) => {
     const {enqueueSnackbar} = useSnackbar();

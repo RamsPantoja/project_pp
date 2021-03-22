@@ -23,7 +23,6 @@ const Layout = ({children}) => {
                     <div className={styles.header_links}>
                         <Link href='/courses' passHref><ActiveLinkLayout name={'Cursos'}/></Link>
                         <Link href='/about' passHref><ActiveLinkLayout name={'Sobre nosotros'}/></Link>
-                        <Link href='/contact' passHref><ActiveLinkLayout name={'Contacto'}/></Link>
                         <p>|</p>
                         <div className={`${(!session && loading) ? styles.loading : styles.loaded}`}>
                             {isMenu}
