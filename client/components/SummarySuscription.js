@@ -1,9 +1,13 @@
 import { Button } from '@material-ui/core';
+import moment from 'moment';
 import React from 'react';
 import { Fragment } from 'react';
 import styles from './styles/SummarySuscription.module.css';
 
-const SummarySuscription = ({payer_email, date_created, end_date, quotas, charged_quantity, charged_amount, handleOnClickButtonDetails, last_charged_date}) => {
+const SummarySuscription = ({status, payer_email, date_created, end_date, quotas, charged_quantity, charged_amount, handleOnClickButtonDetails, last_charged_date}) => {
+    const lastDaySuscription = moment(last_charged_date).add(1, 'month');
+    const haveAccess = moment().isAfter(lastDaySuscription._d);
+
     return (
         <Fragment>
             <div className={styles.backgroundContainer}></div>
@@ -12,7 +16,7 @@ const SummarySuscription = ({payer_email, date_created, end_date, quotas, charge
                     <h3>{payer_email}</h3>
                     <div className={styles.cardDetail}>
                         <p>Fecha de adhesión</p>
-                        <p>{date_created}</p>
+                        <p>{moment(date_created).format('YYYY-MM-DD')}</p>
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Pagos recibidos</p>
@@ -20,7 +24,7 @@ const SummarySuscription = ({payer_email, date_created, end_date, quotas, charge
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Duración de la suscripción</p>
-                        <p>{end_date}</p>
+                        <p>{status === 'cancelled' ? moment(lastDaySuscription._d).format('YYYY-MM-DD') : moment(end_date).format('YYYY-MM-DD')}</p>
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Monto total recibido</p>
@@ -28,7 +32,11 @@ const SummarySuscription = ({payer_email, date_created, end_date, quotas, charge
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Fecha de último cargo</p>
-                        <p>{last_charged_date}</p>
+                        <p>{moment(last_charged_date).format('YYYY-MM-DD')}</p>
+                    </div>
+                    <div className={styles.cardDetail}>
+                        <p>Acceso al curso</p>
+                        <p>{haveAccess ? 'Denegado' : 'Permitido'}</p>
                     </div>
                     <Button size='small' variant='contained' style={{backgroundColor: '#15629c', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonDetails(e)}}>Aceptar</Button>
                 </div>

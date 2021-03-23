@@ -37,7 +37,7 @@ const Account = ({userEmail}) => {
 
     const componentIsConfirmated = isConfirmated ? <IsConfirmated/> :  <div className={styles.confirmationEmailAccount}>
                                                                             <h4>Confirmación de email</h4>
-                                                                            <p>Al presionar el boton de "Confirmar email", se te enviara un correo a tu dirección de correo electrónico con el link para confirmar tu correo.</p>
+                                                                            <p>Al presionar el botón de "Confirmar email", se te enviará un correo a tu dirección de correo electrónico con el link para confirmar tu correo.</p>
                                                                             <EditEmailAccount 
                                                                             stateSchema={stateSchemaEmail}
                                                                             validationSchema={validationSchemaEmail}
@@ -55,7 +55,7 @@ const Account = ({userEmail}) => {
                     {componentIsConfirmated}
                     <div className={styles.resetPassword}>
                         <h4>Restablecer contraseña</h4>
-                        <p>Al restablecer tu contraseña, tendras que iniciar sesión con tu nueva contraseña, por lo tanto, no olvides tu nueva contraseña.</p>
+                        <p>Al restablecer tu contraseña, tendrás que iniciar sesión con tu nueva contraseña, por lo tanto, no olvides tu nueva contraseña.</p>
                         <EditPasswordAccount
                         stateSchema={stateSchemaPassword}
                         validationSchema={validationSchemaPassword}

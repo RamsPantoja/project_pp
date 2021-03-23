@@ -28,7 +28,7 @@ const MiniCourseCardSuscription = ({course}) => {
         }
     }
 
-    const summarySuscription = isSummarySuscription ? <SummarySuscriptionForClient handleOnClickCancelSuscriptionModal={handleOnClickCancelSuscriptionModal} handleOnClickButtonDetails={handleOnClickButtonDetails} payer_email={enrollmentUsers[0].email} preapproval_id={enrollmentUsers[0].preapproval_id}/> : null;
+    const summarySuscription = isSummarySuscription ? <SummarySuscriptionForClient status={enrollmentUsers[0].status} handleOnClickCancelSuscriptionModal={handleOnClickCancelSuscriptionModal} handleOnClickButtonDetails={handleOnClickButtonDetails} payer_email={enrollmentUsers[0].email} preapproval_id={enrollmentUsers[0].preapproval_id}/> : null;
     const cancelSuscription = isCancelSuscription ? <CancelSuscription handleOnClickCancelSuscriptionModal={handleOnClickCancelSuscriptionModal} preapproval_id={enrollmentUsers[0].preapproval_id}/> : null;
     return (
         <Fragment>

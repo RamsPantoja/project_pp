@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import React from 'react';
 import { Fragment } from 'react';
 import { CANCEL_PREAPPROVAL } from '../apollo/mutations';
@@ -8,6 +8,8 @@ import { useSnackbar } from 'notistack';
 
 const CancelSuscription = ({preapproval_id, handleOnClickCancelSuscriptionModal}) => {
     const { enqueueSnackbar } = useSnackbar();
+
+    //Cancela la suscripcion especifica del usuario logeado.
     const [cancelSuscription, {data, error, loading}] = useMutation(CANCEL_PREAPPROVAL, {
         variables: {
             preapproval_id: preapproval_id
@@ -27,6 +29,8 @@ const CancelSuscription = ({preapproval_id, handleOnClickCancelSuscriptionModal}
         cancelSuscription();
     }
 
+    const isLoadingMutation = loading ? <CircularProgress size={30}/> : <Button variant='contained' size='small' style={{backgroundColor: '#ff5555', color: '#ffffff'}} onClick={(e) => {handleOnClickCancelSuscription(e)}}>Sí, cancelar suscripción</Button>
+
     return (
         <Fragment>
             <div className={styles.backgroundContainer}></div>
@@ -36,7 +40,7 @@ const CancelSuscription = ({preapproval_id, handleOnClickCancelSuscriptionModal}
                     <p>Dejaremos de debitarle pagos a su tarjeta.</p>
                     <p>Ten en cuenta que luego no podrás volver a activar la suscripción.</p>
                     <div className={styles.buttons}>
-                        <Button variant='contained' size='small' style={{backgroundColor: '#ff5555', color: '#ffffff'}} onClick={(e) => {handleOnClickCancelSuscription(e)}}>Sí, cancelar suscripción</Button>
+                        {isLoadingMutation}
                         <Button variant='contained' size='small' color='default' onClick={() => handleOnClickCancelSuscriptionModal()}>No, gracias</Button>
                     </div>
                 </div>

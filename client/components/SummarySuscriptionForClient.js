@@ -5,8 +5,11 @@ import { Fragment } from 'react';
 import { GET_PREAPPROVAL } from '../apollo/querys';
 import styles from './styles/SummarySuscription.module.css';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import moment from 'moment';
 
-const SummarySuscriptionForClient = ({payer_email, handleOnClickButtonDetails, preapproval_id, handleOnClickCancelSuscriptionModal}) => {
+const SummarySuscriptionForClient = ({status, payer_email, handleOnClickButtonDetails, preapproval_id, handleOnClickCancelSuscriptionModal}) => {
+
+    //Obtiene la suscripción del usuario logeado.
     const {data, error, loading} = useQuery(GET_PREAPPROVAL, {
         variables: {
             preapproval_id: preapproval_id,
@@ -35,6 +38,13 @@ const SummarySuscriptionForClient = ({payer_email, handleOnClickButtonDetails, p
 
     const {date_created, charged_amount, charged_quantity, quotas, end_date, last_charged_date} = data.getPreapproval[0];
 
+    //Calcula la fecha de expiracion de la suscripcion del usuario, si este ha cancelado la suscripcion previamente.
+    const lastDaySuscription = moment(last_charged_date).add(1, 'month');
+    const haveAccess = moment().isAfter(lastDaySuscription._d);
+
+    //Si la suscription esta en status cancelled, no muestra el boton de cancelar suscripcion.
+    const buttonToCancelSuscription = status === 'cancelled' ? null : <Button size='small' variant='contained' style={{backgroundColor: '#ff5555', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonCancelSuscription(e)}}>cancelar suscripción</Button>
+
     return (
         <Fragment>
             <div className={styles.backgroundContainer}></div>
@@ -43,7 +53,7 @@ const SummarySuscriptionForClient = ({payer_email, handleOnClickButtonDetails, p
                     <h3>{payer_email}</h3>
                     <div className={styles.cardDetail}>
                         <p>Fecha de adhesión</p>
-                        <p>{date_created}</p>
+                        <p>{moment(date_created).format('YYYY-MM-DD')}</p>
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Pagos recibidos</p>
@@ -51,7 +61,7 @@ const SummarySuscriptionForClient = ({payer_email, handleOnClickButtonDetails, p
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Duración de la suscripción</p>
-                        <p>{end_date}</p>
+                        <p>{status === 'cancelled' ? moment(lastDaySuscription._d).format('YYYY-MM-DD') : moment(end_date).format('YYYY-MM-DD')}</p>
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Monto total recibido</p>
@@ -59,11 +69,15 @@ const SummarySuscriptionForClient = ({payer_email, handleOnClickButtonDetails, p
                     </div>
                     <div className={styles.cardDetail}>
                         <p>Fecha de último cargo</p>
-                        <p>{last_charged_date}</p>
+                        <p>{moment(last_charged_date).format('YYYY-MM-DD')}</p>
+                    </div>
+                    <div className={styles.cardDetail}>
+                        <p>Acceso al curso</p>
+                        <p>{haveAccess ? 'Denegado' : 'Permitido'}</p>
                     </div>
                     <div className={styles.buttons}>
                         <Button startIcon={<ArrowBackIosIcon/>} size='small' variant='contained' style={{backgroundColor: '#15629c', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonDetails(e)}}>volver</Button>
-                        <Button size='small' variant='contained' style={{backgroundColor: '#ff5555', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonCancelSuscription(e)}}>cancelar suscripción</Button>
+                        {buttonToCancelSuscription}
                     </div>
                 </div>
             </div>
