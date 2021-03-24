@@ -1,48 +1,38 @@
-.aboutContainer {
+.noticePrivacy {
     display: flex;
+    flex: 1;
     flex-direction: column;
 }
 
-.aboutHeader {
+.noticePrivacyHeader {
     display: flex;
+    flex: 1;
     justify-content: space-around;
-    height: 10em;
     align-items: center;
     background-color: #15639d;
     color: #ffffff;
+    height: 10em;
 }
 
-
-.centerContent {
+.noticePrivacyCenter {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     flex: 1;
 }
 
-
-.aboutContent {
+.noticePrivacyContent {
     display: grid;
     gap: 1em;
     max-width: 1200px;
-    background-color: #ffffff;
     margin: 1em;
     padding: 2em;
     border-radius: 0.2em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.descriptionAbout {
-    display: grid;
-    gap: 1em;
-}
-
-.aboutContent > p {
-    font-weight: bold;
-}
-
-.curriculum {
+.registerInf {
     display: grid;
     gap: 0.5em;
-    margin: 1em;
+    padding: 0 1.5em;
 }

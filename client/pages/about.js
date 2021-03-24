@@ -27,6 +27,13 @@ const About = () => {
                             <li>Conferencista</li>
                             <li>Edutuber</li>
                         </ul>
+                        <div className={styles.descriptionAbout}>
+                            <p>Profe. Paco, es una página de facebook que se creó en el año 2011 con el fin de ayudar a docentes y padres de familia con técnicas, materiales y actividades de aprendizaje, con la filosofía de aprender cantando, jugando y riendo, además de incorporar la risoterapia en las aulas;  comenzó a generar interés entre las personas de México y Latinoamérica, esta página de facebook actualmente cuenta con más 700 mil seguidores. </p>
+                            <p>A partir de 2020, ante la necesidad de crear una forma de ayudar a los niños que estaban desde casa “aprendiendo”, nació Cazadores de letras, un curso diseñado para acompañar a niños de 5 a 7 años durante su proceso de adquirir la lectoescritura con la filosofía mencionada anteriormente; y sobre todo a costos muy accesibles. El curso ha tenido gran aceptación y debido a esto se abrió el curso a docentes que quisieran adquirir la metodología para aplicarla con sus alumnos.</p>
+                            <p>Cerca de 800 niños y 400 docentes de México y Latinoamérica se han graduado de este primer curso con excelentes resultados.</p>
+                            <p>Ahora, Profe. Paco cuenta con más cursos para niños y docentes.</p>
+                            <p>La visión de Profe. Paco es seguir creciendo en cuanto a cursos y en un futuro cercano conferencias presenciales. </p>
+                        </div>
                     </div>
                 </div>
             </div>

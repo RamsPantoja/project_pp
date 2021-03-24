@@ -12,8 +12,8 @@ const ConfirmationSuccess = () => {
             </Head>
             <div className={styles.sucessContainer}>
                 <div className={styles.successCard}>
-                    <h2>Success!</h2>
-                    <p>Gracias por confirmar tu cuenta de PROFEPACO, haz click aqui para iniciar sesión: </p>
+                    <h2>¡Success!</h2>
+                    <p>Gracias por confirmar tu cuenta de PROFEPACO, haz click aquí para iniciar sesión: </p>
                     <Link href='/app/signin'><a className={styles.linkToSignIn}>Iniciar sesión</a></Link>
                 </div>
             </div>            

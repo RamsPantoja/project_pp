@@ -56,7 +56,7 @@ const HomePage = () => {
                         <ul className={styles.footerLinks}>
                             <li className={styles.listLink}><Link href='/help/how_to_buy'><a className={styles.footerLink}>¿Cómo comprar?</a></Link></li>
                             <li className={styles.listLink}><Link href='/about'><a className={styles.footerLink}>Sobre nosotros</a></Link></li>
-                            <li className={styles.listLink}><Link href='/help/how_to_buy'><a className={styles.footerLink}>Aviso de privacidad</a></Link></li>
+                            <li className={styles.listLink}><Link href='/help/notice_of_privacy'><a className={styles.footerLink}>Aviso de privacidad</a></Link></li>
                         </ul>
                         <div className={styles.socialNetworks}>
                             <IconButton onClick={() => router.push('https://www.facebook.com/elprofepaco')}>

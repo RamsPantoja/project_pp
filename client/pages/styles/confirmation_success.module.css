@@ -6,7 +6,7 @@
     flex: 1;
     padding: 0.5em;
     background: rgb(255,255,255);
-    background: linear-gradient(333deg, rgba(255,255,255,1) 45%, #15639d 45%);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 50%, #15639d 50%);
     position: fixed;
     top: 0;
     left: 0;
@@ -34,7 +34,7 @@
     color: #ffffff;
     padding: 0.5em;
     background-color: #15639d;
-    border-radius: 0.5em;
+    border-radius: 0.2em;
     text-align: center;
     transition: 0.2s ease;
 }
