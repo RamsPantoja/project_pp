@@ -7,7 +7,7 @@ const NoticeOfProvacy = () => {
     return (
         <Layout>
             <Head>
-                <title>Aviso de privacidad</title>
+                <title>Ayuda - Aviso de privacidad | Profe Paco</title>
             </Head>
             <div className={styles.noticePrivacyContainer}>
                 <div className={styles.noticePrivacyHeader}>
