@@ -1,6 +1,7 @@
 .courseDescription {
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .courseDescription_header {
@@ -169,13 +170,5 @@
     .courseDescription_headerImg {
         flex: none;
         width: 90%;
-    }
-}
-
-
-@media(min-width: 1024px) {
-    .conceptContent {
-        flex: none;
-        height: 100vh;
     }
 }

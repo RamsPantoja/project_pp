@@ -64,7 +64,11 @@ const EditCourseForm = memo(({courseData, id}) => {
                 price: priceValue,
                 enrollmentLimit: enrollmentValue,
                 objectives: objectivesValue,
-                conceptList: conceptListValue
+                conceptList: conceptListValue,
+                modeSuscription: {
+                    isActivated: courseData.modeSuscription.isActivated,
+                    amountMonths: courseData.modeSuscription.amountMonths
+                }
             },
             id: id
         },
