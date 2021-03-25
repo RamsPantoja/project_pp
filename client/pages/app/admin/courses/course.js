@@ -17,7 +17,7 @@ const CoursesById = ({id, preapproval_plan_id}) => {
     const {data, error, loading} = useQuery(GET_COURSE_BY_ID,{variables:{id: id}, pollInterval: 1000});
 
     //Obtiene todos los usuarios suscritos al curso.
-    const { data: dataUsersFromApiMP, error: errorUsersFromApiMP, loading: loadingUsersFromApiMP, fetchMore} = useQuery(GET_USERS_IN_SUSCRIPTION, {
+    const { data: dataUsersFromApiMP, error: errorUsersFromApiMP, loading: loadingUsersFromApiMP} = useQuery(GET_USERS_IN_SUSCRIPTION, {
         variables: {
             limit: 100, 
             offset: 0,

@@ -2,7 +2,6 @@ import {
     ApolloClient,
     InMemoryCache } from '@apollo/client';
 import { useMemo } from 'react';
-import { offsetLimitPagination } from '@apollo/client/utilities';
 
 let apolloClient;
 
@@ -53,8 +52,7 @@ const createApolloClient = () => {
                                     }
                                 }
                             }
-                        },
-                        getUsersInSuscription: offsetLimitPagination()
+                        }
                     }
                 },
                 Course: {
