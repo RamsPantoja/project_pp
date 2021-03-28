@@ -1,46 +1,40 @@
-.sucessContainer {
+.successPayment {
     display: flex;
-    flex-direction: column;
+    top: 0;
+    position: fixed;
     justify-content: center;
+    bottom: 0;
+    left: 0;
     align-items: center;
-    flex: 1;
-    padding: 0.5em;
+    right: 0;
+    box-sizing: border-box;
     background: rgb(255,255,255);
     background: linear-gradient(0deg, rgba(255,255,255,1) 50%, #15639d 50%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
 }
 
-.successCard {
+.successInf {
     display: grid;
-    padding: 2em;
-    background-color: #ffffff;
-    border-radius: 0.2em;
     gap: 1em;
+    padding: 2em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 0.2em;
     justify-items: center;
     font-weight: bold;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
 }
 
-.successCard > h2 {
-    text-align: center;
-}
-
-.linkToSignIn {
+.linkToYourCourses {
     display: block;
     text-decoration: none;
     color: #ffffff;
     padding: 0.5em;
     background-color: #15639d;
     border-radius: 0.2em;
-    text-align: center;
+    font-weight: bold;
     transition: 0.2s ease;
 }
 
-.linkToSignIn:hover {
+.linkToYourCourses:hover {
     transform: scale(1.01);
     background-color: #1983ff;
 }

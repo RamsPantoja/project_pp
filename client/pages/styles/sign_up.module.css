@@ -10,7 +10,7 @@
     height: 100%;
     width: 100%;
     background: rgb(21,99,157);
-    background: linear-gradient(180deg, rgba(21,99,157,1) 30%, rgba(255,255,255,1) 30%);
+    background: linear-gradient(180deg, rgba(21,99,157,1) 50%, rgba(255,255,255,1) 50%);
 }
 
 .signUp_center {
@@ -32,6 +32,12 @@
     width: 100%;
     gap: 0.5em;
     background-color: #ffffff;
+}
+
+.successUserCard {
+    display: grid;
+    gap: 1em;
+    justify-items: center;
 }
 
 .signUp_card > h2 {
@@ -74,15 +80,12 @@
 }
 
 .linkToHome {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
     text-decoration: none;
     background-color: #16649e;
     color: #ffffff;
-    padding: 0.5em;
-    margin-top: 0.5em;
-    border-radius: 0.5em;
+    padding: 0.5em 1em;
+    border-radius: 0.2em;
     transition: 0.2s ease;
 }
 

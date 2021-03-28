@@ -40,10 +40,10 @@ const SignUp = () => {
                 </Head>
                 <div className={styles.signUp}>
                     <div className={styles.signUp_userCreated}>
-                        <div className={styles.signUp_card}>
+                        <div className={styles.successUserCard}>
                             <h2>¡Success!</h2>
                             <p>{data.createUser}</p>
-                            <Link href='/'><a className={styles.linkToHome}>Home</a></Link>
+                            <Link href='/'><a className={styles.linkToHome}>Ir a inicio</a></Link>
                         </div>
                     </div>
                 </div>

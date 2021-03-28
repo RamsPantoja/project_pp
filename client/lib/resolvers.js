@@ -261,7 +261,7 @@ export const resolvers = {
             }
 
             const preapprovalPreference = {
-                back_url:"https://www.mercadopago.com.mx",
+                back_url:"https://profepaco.com/success_suscription",
                 reason: input.title,
                 auto_recurring:{
                     frequency:"1",
@@ -300,7 +300,7 @@ export const resolvers = {
                     amountMonths: input.modeSuscription.amountMonths,
                     paymentUrl: preapprovalPlan.init_point,
                     preapproval_plan_id: preapprovalPlan.id
-                }
+                },
             });
 
             return new Promise((resolve, rejects) => {
@@ -377,7 +377,7 @@ export const resolvers = {
                         quantity: 1,
                         category_id: 'learnings',
                         currency_id: 'MXN',
-                        picture_url: `https://profepaco.vercel.app${coverImg}`
+                        picture_url: coverImg
                     }
                 ],
                 payer: payer,
@@ -386,8 +386,9 @@ export const resolvers = {
                 },
                 statement_descriptor: 'PROFEPACO',
                 back_urls: {
-
-                }
+                    success: "https://profepaco.com/success_payment"
+                },
+                auto_return: 'approved'
             }
 
             //Se creo un item con todos los datos de la preferencia necesarios para proceder con el pago.
@@ -549,6 +550,7 @@ export const resolvers = {
             })
         },
 
+        //Cancela la suscripcion especifica del usuario.
         cancelPreapproval: async (parent, {preapproval_id}) => {
             await dbConnect();
             return new Promise((resolve, rejects) => {
