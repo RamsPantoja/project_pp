@@ -14,7 +14,6 @@ const Sidebar = () => {
             </div>
             <nav className={styles.navBar}>
                 <ul className={styles.navBarList}>
-                    <Link href='/app/admin/notifications' passHref><ActiveLink name={'Notificaciones'}/></Link>
                     <Link href='/app/admin/courses' passHref><ActiveLink name={'Cursos'}/></Link>
                     <Link href='/app/admin/users' passHref><ActiveLink name={'Alumnos'}/></Link>
                 </ul>

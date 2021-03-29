@@ -85,7 +85,7 @@ export async function getServerSideProps({req}) {
     if ((session && session.user.isAdmin === true) && req) {
         return {
             redirect: {
-                destination: '/app/admin/notifications',
+                destination: '/app/admin/courses',
                 permanent: false
             }
         }
