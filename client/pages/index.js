@@ -10,6 +10,7 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import { useRouter } from 'next/router';
+import SliderImage from '../components/SliderImage';
 
 const HomePage = () => {
     const router = useRouter();
@@ -29,11 +30,7 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className={styles.featureList_container}>
-                    <ul className={styles.feature_list}>
-                        <li className={styles.cardFeature}>Escuelas con nuevas formas de aprendizaje para profundizar en lo que quieres triunfar.</li>
-                        <li className={styles.cardFeature}>Más de 600 cursos para crear tu ruta personalizada y adquirir habilidades específicas.</li>
-                        <li className={styles.cardFeature}>Contenido actualizado, nuevos cursos, blog posts y podcasts cada semana.</li>
-                    </ul>
+                    <SliderImage/>
                 </div>
                 <div className={styles.featureList2_container}>
                     <div className={styles.img2Container}>
