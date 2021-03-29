@@ -74,7 +74,7 @@ const EditCourseForm = memo(({courseData, id}) => {
         },
         onCompleted: async (data) => {
             enqueueSnackbar(data.updateCourse, {variant: 'success', anchorOrigin: {vertical: 'top', horizontal: 'center'}})
-            router.push('http://localhost:3000/app/admin/courses');
+            router.push('/app/admin/courses');
         },
         onError: (error) => {
             enqueueSnackbar(error.message, {variant: 'error', anchorOrigin: {vertical: 'top', horizontal: 'center'}})
