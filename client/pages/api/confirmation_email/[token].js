@@ -13,7 +13,7 @@ const confirmationEmail = async (req, res) => {
         res.send(error);
     }
     
-    return res.status(200).redirect('/app/confirmation_success');
+    return res.status(200).redirect(`/app/confirmation_success?token=${token}`);
 }
 
 export default confirmationEmail;

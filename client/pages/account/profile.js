@@ -60,7 +60,7 @@ const Profile = ({userEmail}) => {
                 <div className={styles.profileContainer}>
                     <h3>Perfil</h3>
                     <p>Tu información de perfil, es la información que verán los administradores para identificarte.</p>
-                    <p style={{color: '#ff9800'}}>Nota: Al actualizar tu perfil, se cerrará la sesión actual.</p>
+                    <p style={{color: '#ff9800'}}>Nota: Al actualizar tu perfil, se cerrará la sesión actual en 3 segundos.</p>
                     <EditProfile
                     validationSchema={validationSchema}
                     disableSchema={disableSchema}
