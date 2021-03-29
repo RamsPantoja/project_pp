@@ -1,47 +1,14 @@
 import dbConnect from './dbConnect';
 import Users from '../models/Users';
 import Courses from '../models/Courses';
-import mercadopago, { preapproval } from 'mercadopago';
+import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import moment from 'moment';
-
+import { createEmailConfirmationToken, createEmailRecoveryPasswordToken } from './handleSenderEmails';
 //Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN_MP
 });
-
-//Configuracion de SendGrid para conectarse a su API.
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-
-//Crea un token que sera enviado por email al usuario que se ha registrado ó para confirmar el email en la sección /account/acoount del lado del cliente.
-const createEmailToken = async (user, SECRET, expiresIn, sgMail, baseUrl, message) => {
-    const {_id, email, firstname} = user;
-    //Se firma el token.
-    const emailToken = jwt.sign({_id}, SECRET, {expiresIn});
-
-    //Si el token existe, se crear el constructor con los datos del email que sera enviado al usuario registrado.
-    if (emailToken) {
-        const url = `${baseUrl}${emailToken}`;
-        const msg = {
-            to: email,
-            from: 'em5367.profepaco.com',
-            subject: 'Confirmation email PROFEPACO',
-            text: `Hola ${firstname}, haz click en el siguiente enlace para confirmar tu cuenta de PROFEPACO, gracias.`,
-            html: `Por favor, haz click aqui para ${message}: <a href="${url}">${url}</a> `
-        }
-        
-        try {
-            await sgMail.send(msg);
-            return 'Se te ha enviado un correo de confirmación.'
-        } catch (error) {
-            return error
-        }
-    }
-}
-
 
 //Pagina los resultados del query getUsers en base al cursor(ID) proporcionado por prop del lado del cliente y limit.
 const paginateResults = ({
@@ -240,7 +207,7 @@ export const resolvers = {
             }).save();
 
             //Se crea el token con el email que sera enviado al usuario registrado por correo.
-            createEmailToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.com/api/confirmation_email/', 'confirmar tu cuenta de PROFEPACO.');
+            await createEmailConfirmationToken(newUser, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.com/api/confirmation_email/', 'Confirmation email PROFE PACO');
 
             return `Gracias por registrarte ${input.firstname}, se te ha enviado un correo de confirmación para que actives tu cuenta de PROFEPACO.`;
         },
@@ -412,7 +379,7 @@ export const resolvers = {
                     if (err || !user) {
                         rejects('Verifica el correo ingresado.')
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.com/api/confirmation_email/', 'confirmar tu cuenta de PROFEPACO');
+                        const result = createEmailConfirmationToken(user, process.env.SECRET_EMAIL_TOKEN, '1d', sgMail, 'https://profepaco.com/api/confirmation_email/', 'Confirmation email PROFE PACO');
                         resolve(result);
                     }
                 })
@@ -493,7 +460,7 @@ export const resolvers = {
                     if( err || !user) {
                         rejects('Hubo un error al enviar el email');
                     } else {
-                        const result = createEmailToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'https://profepaco.com/app/recovery_password/', 'restablecer tu contraseña');
+                        const result = createEmailRecoveryPasswordToken(user, process.env.SECRET_EMAIL_TOKEN, '1h', sgMail, 'https://profepaco.com/app/recovery_password/', 'Reset password PROFE PACO');
                         resolve(result)
                     }
                 })
