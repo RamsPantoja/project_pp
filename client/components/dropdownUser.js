@@ -18,7 +18,7 @@ const DropDownUser = ({userAuthEmail}) => {
     
     const handleSignOut = () => {
         setAnchorEl(null);
-        signOut();
+        signOut({callbackUrl: 'https://profepaco.com/'});
     };
     
     const handleClose = () => {
