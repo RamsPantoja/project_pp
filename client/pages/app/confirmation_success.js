@@ -5,10 +5,11 @@ import { Fragment } from 'react';
 import Head from 'next/head';
 import { signOut } from 'next-auth/client';
 
-const ConfirmationSuccess = () => {
-    useEffect(() => {
-        signOut({redirect:false});
-    }, [])
+const ConfirmationSuccess = ({token}) => {
+
+    if (token) {
+        signOut({redirect: false})
+    }
 
     return (
         <Fragment>
@@ -37,7 +38,9 @@ export async function getServerSideProps({query}) {
         }
     }
     return {
-        props: {}
+        props: {
+            token: token
+        }
     }
 }
 
