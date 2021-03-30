@@ -78,21 +78,27 @@ const ShoppingCart = ({id}) => {
     }
 
     //Ejecuta el mutation de createPreferenceMercadoPago si el curso es de pago unico, de lo contrario, ejecuta el mutation si es de tipo suscripción.
-    const handleCreatePreferenceMutation = (e) => {
+    const handleCreatePreferenceMutation = async (e) => {
         e.preventDefault();
-        if (modeSuscription.isActivated) {
-            handleOnClickSetConfirmSuscription();
+        if (session.user.isConfirmated) {
+            if (modeSuscription.isActivated) {
+                handleOnClickSetConfirmSuscription();
+            } else {
+                createPreferenceMercadoPago({
+                    variables: {
+                        title: title,
+                        price: parseFloat(transformPrice),
+                        firstname: session.user.firstname,
+                        lastname: session.user.lastname,
+                        email: session.user.email,
+                        coverImg: coverImg.url
+                    }
+                });
+            }
         } else {
-            createPreferenceMercadoPago({
-                variables: {
-                    title: title,
-                    price: parseFloat(transformPrice),
-                    firstname: session.user.firstname,
-                    lastname: session.user.lastname,
-                    email: session.user.email,
-                    coverImg: coverImg.url
-                }
-            });
+            enqueueSnackbar('Necesitas validar tu cuenta con el correo asociado.', { variant: 'warning', anchorOrigin: { vertical: 'top', horizontal: 'center'}})
+            router.push('/account/user_account');
+            
         }
     }
 

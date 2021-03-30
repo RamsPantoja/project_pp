@@ -17,7 +17,7 @@ const LayoutAccount = ({children, userName}) => {
                 <div className={styles.contentAccount}>
                     <nav className={styles.sidebarAccount}>
                         <Link href='/account/profile' passHref><ActiveLink name={'Perfil'}><FaceIcon style={{padding: '0 0.5em'}}/></ActiveLink></Link>
-                        <Link href='/account/account' passHref><ActiveLink name={'Cuenta'}><AccountCircleIcon style={{padding: '0 0.5em'}}/></ActiveLink></Link>
+                        <Link href='/account/user_account' passHref><ActiveLink name={'Cuenta'}><AccountCircleIcon style={{padding: '0 0.5em'}}/></ActiveLink></Link>
                         <Link href='/account/courses' passHref><ActiveLink name={'Tus cursos'}><ListRoundedIcon style={{padding: '0 0.5em'}}/></ActiveLink></Link>
                     </nav>
                     <div className={styles.infAccount}>
