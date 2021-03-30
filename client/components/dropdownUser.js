@@ -18,7 +18,7 @@ const DropDownUser = ({userAuthEmail}) => {
     
     const handleSignOut = () => {
         setAnchorEl(null);
-        signOut({callbackUrl:'http://localhost:3000/'});
+        signOut();
     };
     
     const handleClose = () => {
