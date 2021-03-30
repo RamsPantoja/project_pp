@@ -7,9 +7,11 @@ import { signOut } from 'next-auth/client';
 
 const ConfirmationSuccess = ({token}) => {
 
-    if (token) {
-        signOut({redirect: false})
-    }
+    useEffect(() => {
+        if (token) {
+            signOut({redirect: false})
+        }
+    }, [token, signOut])
 
     return (
         <Fragment>
