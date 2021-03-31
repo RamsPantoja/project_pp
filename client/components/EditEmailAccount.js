@@ -41,7 +41,7 @@ const EditEmailAccount = ({validationSchema, disableSchema, user, stateSchema}) 
     }
 
     const disableErrorAlert = isDisableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
-    const isLoadingMutation = loading ? <div className={styles.centerCircularProgress}><CircularProgress/></div> : <Button size='small' variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={(e) => {handleOnSubmit(e)}}>Confirmar email</Button>
+    const isLoadingMutation = loading ? <div className={styles.centerCircularProgress}><CircularProgress/></div> : <Button size='small' variant='contained' style={{backgroundColor: '#15639d', color: '#ffffff'}} onClick={(e) => {handleOnSubmit(e)}}>Validar cuenta</Button>
 
 
     return (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GET_COURSE_BY_ID } from '../../apollo/querys';
+import { GET_COURSE_BY_ID, GET_USER_BY_EMAIL } from '../../apollo/querys';
 import Layout from '../../components/Layout';
 import Head from 'next/head';
 import styles from '../styles/shopping_id.module.css';
@@ -15,11 +15,9 @@ import Image from 'next/image';
 import ConfirmSuscription from '../../components/ConfirmSuscription';
 import { useSnackbar } from 'notistack';
 
-const ShoppingCart = ({id}) => {
+const ShoppingCart = ({id, userEmail, firstname, lastname}) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
-    //Obtiene la session que existe.
-    const [session] = useSession();
     const [confirmSuscription, setConfirmSuscription] = useState(false);
 
     const { data, error, loading } = useQuery(GET_COURSE_BY_ID, {
@@ -27,6 +25,12 @@ const ShoppingCart = ({id}) => {
             id: id
         }
     })
+
+    const {data: userData, error: userError, loading: userLoading } = useQuery(GET_USER_BY_EMAIL, {
+        variables: {
+            email: userEmail
+        }
+    });
 
     //Este mutation crea una preferencia de mercado pago y redirecciona al usuario al checkout para que proceda con el flujo de pago.
     const [createPreferenceMercadoPago, {data: dataCreatePreferenceMercadoPago, error: errorCreatePreferenceMercadoPago, loading: loadingCreatePreferenceMercadoPago}] = useMutation(CREATE_PREFERENCE_MERCADO_PAGO, {
@@ -80,7 +84,7 @@ const ShoppingCart = ({id}) => {
     //Ejecuta el mutation de createPreferenceMercadoPago si el curso es de pago unico, de lo contrario, ejecuta el mutation si es de tipo suscripción.
     const handleCreatePreferenceMutation = async (e) => {
         e.preventDefault();
-        if (session.user.isConfirmated) {
+        if (userData.getUserByEmail.isConfirmated) {
             if (modeSuscription.isActivated) {
                 handleOnClickSetConfirmSuscription();
             } else {
@@ -88,9 +92,9 @@ const ShoppingCart = ({id}) => {
                     variables: {
                         title: title,
                         price: parseFloat(transformPrice),
-                        firstname: session.user.firstname,
-                        lastname: session.user.lastname,
-                        email: session.user.email,
+                        firstname: firstname,
+                        lastname: lastname,
+                        email: userEmail,
                         coverImg: coverImg.url
                     }
                 });
@@ -168,7 +172,10 @@ export async function getServerSideProps({query, req}) {
     const id = query.id;
     return {
         props: {
-            id: id
+            id: id,
+            userEmail: session.user.email,
+            firstname: session.user.firstname,
+            lastname: session.user.lastname
         }
     }
 }

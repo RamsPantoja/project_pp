@@ -48,13 +48,12 @@ const options = {
             if (user?.isAdmin === false) {
                 token.firstname = user.firstname;
                 token.lastname = user.lastname;
-                token.isConfirmated = user.isConfirmated;
             }
             return token;
         },
         
         async session(session, user) {
-            return {...session, user: { email: user.email, isAdmin: user.isAdmin, firstname: user.firstname, lastname: user.lastname, isConfirmated: user.isConfirmated}}
+            return {...session, user: { email: user.email, isAdmin: user.isAdmin, firstname: user.firstname, lastname: user.lastname}}
         },
     },
     pages: {

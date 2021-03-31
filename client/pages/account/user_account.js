@@ -36,9 +36,9 @@ const Account = ({userEmail}) => {
     const {firstname, isConfirmated} = data.getUserByEmail;
 
     const componentIsConfirmated = isConfirmated ? <IsConfirmated/> :  <div className={styles.confirmationEmailAccount}>
-                                                                            <h4>Confirmación de email</h4>
-                                                                            <p>Al presionar el botón de "Confirmar email", se te enviará un correo a tu dirección de correo electrónico con el link para confirmar tu correo.</p>
-                                                                            <p>¡IMPORTANTE! Para poder comprar o suscribirse a un curso, necesitas confirmar la cuenta asociada a este correo.</p>
+                                                                            <h4>Validación de cuenta</h4>
+                                                                            <p>Al presionar el botón de "VALIDAR CUENTA", se te enviará un correo a tu dirección de correo electrónico con el link para validar tu cuenta.</p>
+                                                                            <p>¡IMPORTANTE! Para poder comprar o suscribirse a un curso, necesitas validar la cuenta asociada a este correo.</p>
                                                                             <EditEmailAccount 
                                                                             stateSchema={stateSchemaEmail}
                                                                             validationSchema={validationSchemaEmail}
