@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { signIn, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 
 const DescriptionCourse = ({id}) => {
     const [session, loading] = useSession();
@@ -30,7 +31,7 @@ const DescriptionCourse = ({id}) => {
         )
     }
 
-    const {title, description, price, objectives, conceptList, coverImg, modeSuscription} = data.getCourseById;
+    const {title, description, price, objectives, conceptList, coverImg, modeSuscription, enrollmentUsers, enrollmentLimit} = data.getCourseById;
 
     const handleOnClickSession = (e) => {
         e.preventDefault();
@@ -40,6 +41,8 @@ const DescriptionCourse = ({id}) => {
             signIn();
         }
     }
+
+    const buttonToShoppingCourse = enrollmentUsers.length >= enrollmentLimit ? <div className={styles.fullCourseAlert}><span style={{paddingRight: '0.5em'}}>El curso está lleno</span><SentimentVeryDissatisfiedIcon/></div> : <button onClick={(e) => {handleOnClickSession(e)}}>{modeSuscription.isActivated ? 'SUSCRIBIRSE' : 'OBTENER'}</button>
 
     return (
         <Layout>
@@ -58,8 +61,9 @@ const DescriptionCourse = ({id}) => {
                                 )
                             })}
                         </ul>
+                        <span className={styles.typeCourse}>Tipo: {modeSuscription.isActivated ? 'Suscripción': 'Pago único'}</span>
                         <span className={styles.price}>{`$ ${price}`}</span>
-                        <button onClick={(e) => {handleOnClickSession(e)}}>{modeSuscription.isActivated ? 'SUSCRIBIRSE' : 'OBTENER'}</button>
+                        {buttonToShoppingCourse}
                     </div>
                     <div className={styles.courseDescription_headerImg}>
                         <Image className={styles.borderImgRadius} src={coverImg.url} alt={coverImg.filename} quality={100} layout='fill' objectFit='cover'/>

@@ -41,7 +41,7 @@
     font-weight: bold;
     font-size: 1rem;
     border: none;
-    border-radius: 1em;
+    border-radius: 0.2em;
     background-color: #dbf998;
     margin-top: 1em;
 }
@@ -79,7 +79,11 @@
 
 .price {    
     font-size: 2.5rem;
-    padding-top: 1em;
+}
+
+.typeCourse {
+    font-weight: bold;
+    padding: 1em 0;
 }
 
 .conceptContent {
@@ -154,6 +158,19 @@
     box-sizing: border-box;
     overflow: hidden;
     padding: 1em;
+}
+
+.fullCourseAlert {
+    display: flex;
+    margin-top: 1em;
+    align-items: center;
+    padding: 0.5em;
+    justify-content: space-around;
+    background-color: #ff5555;
+    color: #ffffff;
+    border-radius: 0.2em;
+    max-width: 10em;
+    font-weight: bold;
 }
 
 @media(max-width: 1200px) {
