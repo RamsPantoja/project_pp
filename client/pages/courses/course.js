@@ -61,7 +61,7 @@ const DescriptionCourse = ({id}) => {
                                 )
                             })}
                         </ul>
-                        <span className={styles.typeCourse}>Tipo: {modeSuscription.isActivated ? 'Suscripción': 'Pago único'}</span>
+                        <span className={styles.typeCourse}>Tipo: {modeSuscription.isActivated ? 'Suscripción mensual': 'Pago único'}</span>
                         <span className={styles.price}>{`$ ${price}`}</span>
                         {buttonToShoppingCourse}
                     </div>
