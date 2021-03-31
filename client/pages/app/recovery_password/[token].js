@@ -7,12 +7,14 @@ import { useMutation } from '@apollo/client';
 import { RESET_PASSWORD_RECOVERY } from '../../../apollo/mutations';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
+import BackIn from '../../../components/BackIn';
 
 const resetPasswordRecovery = ({userId}) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
     const [state, handleOnChange, disable] = useFormValidationResetPassword(stateSchemaPassword, validationSchemaPassword, disableSchema);
     const [isDisableErrorAlert, setIsDisableErrorAlert] = useState(false);
+    const [isBackIn, setIsBackIn] = useState(false);
 
     //Resetea la contraseña con la nueva contraseña proporcionada por el usuario.
     const [resetPasswordRecovery, {data, error, loading}] = useMutation(RESET_PASSWORD_RECOVERY, {
@@ -22,9 +24,7 @@ const resetPasswordRecovery = ({userId}) => {
         },
         onCompleted: (data) => {
             enqueueSnackbar(data.resetPasswordRecovery, { variant: 'success', anchorOrigin: { vertical: 'top', horizontal: 'center'}});
-            setTimeout(() => {
-                router.push('/app/signin');
-            }, 5000)
+            setIsBackIn(true)
         },
         onError: (error) => {
             enqueueSnackbar(error.message, { variant: 'error', anchorOrigin: { vertical: 'top', horizontal: 'center'}});
@@ -44,7 +44,8 @@ const resetPasswordRecovery = ({userId}) => {
 
 
     const disableErrorAlert = isDisableErrorAlert && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
-
+    const backIn = isBackIn ? <BackIn/> : null;
+    const buttonToReset = isBackIn ? null : <Button type='submit' variant='contained' style={{background: '#15639d', color: '#ffffff'}}>Restablecer</Button>
     return (
         <div className={styles.recoveryPasswordContainer}>
             <div className={styles.recoveryPasswordCard}>
@@ -54,8 +55,9 @@ const resetPasswordRecovery = ({userId}) => {
                     {disableErrorAlert}
                     <TextField name='newPassword' value={state.newPassword.value} error={state.newPassword.errorfield} size='small' label='Nueva contraseña' type='password' variant='outlined' onChange={(e) => {handleOnChange(e)}}/>
                     <TextField name='confirmNewPassword' value={state.confirmNewPassword.value} error={state.confirmNewPassword.errorfield} size='small' label='Confirmar contraseña' type='password' variant='outlined' onChange={(e) => {handleOnChange(e)}}/>
-                    <Button type='submit' variant='contained' style={{background: '#15639d', color: '#ffffff'}}>Restablecer</Button>
+                    {buttonToReset}
                 </form>
+                {backIn}
             </div>
         </div>
     )
