@@ -4,6 +4,7 @@ import Courses from '../models/Courses';
 import mercadopago from 'mercadopago';
 import sgMail from '@sendgrid/mail';
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import { createEmailConfirmationToken, createEmailRecoveryPasswordToken } from './handleSenderEmails';
 //Configuracion de mercado pago para conectarse a su API.
 mercadopago.configure({
@@ -62,29 +63,32 @@ export const resolvers = {
         //Obtiene todos los cursos.
         getCourses: async (parent) => {
             await dbConnect();
-            const courses = await Courses.find((err, data) => {
-                if(err) {
-                    throw new Error(err)
-                } else {
-                    return data;
-                }
-            })
-
-            return courses
+            return new Promise((resolve, rejects) => {
+                Courses.find((err, courses) => {
+                    if (err) {
+                        rejects(new Error('Something went wrong!'));
+                    } else {
+                        resolve(courses)
+                    }
+                })
+            });
         },
         
         //Obtiene el curso por ID
         getCourseById: async (parent, args) => {
             await dbConnect();
-            const course = await Courses.findOne({_id: args.id}, (err, data) => {
-                if(err) {
-                    throw new Error(err);
-                } else {
-                    return data
-                }
-            });
 
-            return course;
+            return new Promise((resolve, rejects) => {
+                Courses.findOne({_id: args.id}, (err, course) => {
+                    if (err) {
+                        rejects(new Error('Something went wrong!'))
+                    } else if (!course) {
+                        rejects(new Error('Curso no found'))
+                    } else {
+                        resolve(course);
+                    }
+                })
+            });
         },
         
         //Obtiene el usuario por Email.
@@ -92,18 +96,18 @@ export const resolvers = {
             await dbConnect();
             return new Promise((resolve, rejects) => {
                 Users.findOne({email: email}, (err, user) => {
-                    if(err || !user) rejects('No se encuentra el usuario');
+                    if(err || !user) rejects(new Error('Usuario no encontrado'));
                     else resolve(user)
                 })
             })
         },
-
+        //Obtiene los cursos a los que se ha suscrito o comprado un usuario.
         getCoursesByUser: async (parent, {userEmail}) => {
             await dbConnect();
             return new Promise((resolve, rejects) => {
                 Courses.find({'enrollmentUsers.email': userEmail},(error, courses) => {
                     if(error) {
-                        rejects(error)
+                        rejects(new Error('Something went wrong!'))
                     } else {
                         const coursesFiltered = courses.map((course) => {
                             return {
@@ -126,6 +130,8 @@ export const resolvers = {
                 })
             });
         },
+
+        //Obtiene todos los usuarios suscritos a una suscripcion especificada con el preapproval_plan_id.
         getUsersInSuscription: async (parent, {limit, offset, preapproval_plan_id}, {dataSources}) => {
             const data = await dataSources.mercadoPagoAPI.getUsersInSuscription(limit, offset, preapproval_plan_id);
             return new Promise((resolve, rejects) => {
@@ -143,16 +149,18 @@ export const resolvers = {
                             end_date: user.auto_recurring.end_date,
                             quotas: user.summarized.quotas,
                             charged_amount: user.summarized.charged_amount,
+                            preapproval_id: user.id
                         }
                     });
 
                     resolve(usersInSuscription.reverse());
                 } else {
-                    rejects('No se encuentran los usuarios :(')
+                    rejects(new Error('No se encuentran los usuarios :('));
                 }
             })
         },
 
+        //Obtiene una suscription de un usuario con el id de la suscripcion y el email.
         getPreapproval: async (parent, {preapproval_id, email}, {dataSources}) => {
             const data = await dataSources.mercadoPagoAPI.getPreapproval(preapproval_id, email);
             return new Promise((resolve, rejects) => {
@@ -174,8 +182,37 @@ export const resolvers = {
                     });
                     resolve(preapproval);
                 } else {
-                    rejects('No se encuentra la suscripción')
+                    rejects(new Error('No se encuentra la suscripción'));
                 }
+            });
+        },
+        //Este query obtiene el usuario ya registrado en el curso una vez el pago ha sido acreditado, esto en base al preapproval_id retornado por el query getUsersInSuscription.
+        getUserInCourseSuscriptionType: async (parent, {title, preapproval_id}) => {
+            await dbConnect();
+
+            return new Promise((resolve, rejects) => {
+                Courses.findOne({title: title, 'enrollmentUsers.preapproval_id': preapproval_id}, { 'enrollmentUsers.$': 1 }, (err, userData) => {
+                    if (err) {
+                        rejects(new Error('Something went wrong!'));
+                    } else if (!userData) {
+                        resolve({
+                            id: null,
+                            firstname: null,
+                            lastname: null,
+                            email: null
+                        })
+                    } else {
+                        const user = userData.enrollmentUsers.map((enrollmentUser) => {
+                            return {
+                                id: enrollmentUser.id,
+                                firstname: enrollmentUser.firstname,
+                                lastname: enrollmentUser.lastname,
+                                email: enrollmentUser.email
+                            }
+                        });
+                        resolve(user[0]);
+                    }
+                });
             });
         }
     },

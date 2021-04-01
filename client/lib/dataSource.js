@@ -18,6 +18,7 @@ class MercadoPagoAPI extends RESTDataSource {
       );
     }
 
+    //Haace una peticion por metodo get a la https://api.mercadopago.com/preapproval/search, para obtener todos los usuarios inscritos a una suscripcion especifica.
     async getUsersInSuscription(limit, offset, preapproval_plan_id) {
       const data = await this.get(`preapproval/search`, {
         limit: limit,

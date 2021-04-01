@@ -59,7 +59,9 @@ const CoursesById = ({id, preapproval_plan_id}) => {
             quotas={user.quotas}
             charged_quantity={user.charged_quantity}
             charged_amount={user.charged_amount}
-            last_charged_date={user.last_charged_date}/>
+            last_charged_date={user.last_charged_date}
+            preapproval_id={user.preapproval_id}
+            title={title}/>
         )
     })
 

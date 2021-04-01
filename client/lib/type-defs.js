@@ -72,7 +72,15 @@ export const typeDefs = gql `
         end_date: String,
         quotas: String,
         charged_quantity: Int,
-        charged_amount: Float
+        charged_amount: Float,
+        preapproval_id: String
+    }
+
+    type enrollmentUserForSuscription {
+        id: ID
+        firstname: String
+        lastname: String
+        email: String
     }
 
     type Query {
@@ -83,6 +91,7 @@ export const typeDefs = gql `
         getCoursesByUser(userEmail: String!): [Course]
         getUsersInSuscription(limit: Int!, offset: Int!, preapproval_plan_id: String!): [userInSuscription]
         getPreapproval(preapproval_id: String!, email: String!): [userInSuscription]
+        getUserInCourseSuscriptionType(title: String!, preapproval_id: String!): enrollmentUserForSuscription
     }
 
     input inputConcept {

@@ -124,6 +124,7 @@ export const GET_USERS_IN_SUSCRIPTION = gql `
             end_date
             quotas
             charged_amount
+            preapproval_id
         }
     }
 `
@@ -142,6 +143,16 @@ export const GET_PREAPPROVAL = gql `
             end_date
             quotas
             charged_amount
+        }
+    }
+`
+
+export const GET_USER_IN_COURSE_SUCRIPTION_TYPE = gql `
+    query GetUserInCourseSucriptionType($title: String!, $preapproval_id: String!) {
+        getUserInCourseSuscriptionType(title: $title, preapproval_id: $preapproval_id) {
+            firstname
+            lastname
+            email
         }
     }
 `

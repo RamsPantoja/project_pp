@@ -6,7 +6,7 @@ import SummarySuscription from './SummarySuscription';
 import { Fragment } from 'react';
 import moment from 'moment';
 
-const UserCardForSuscription = ({payer_email, status, date_created, end_date, quotas, charged_quantity, charged_amount, last_charged_date}) => {
+const UserCardForSuscription = ({title, preapproval_id, payer_email, status, date_created, end_date, quotas, charged_quantity, charged_amount, last_charged_date}) => {
     const [isSummarySuscription, setIsSummarySuscription] = useState(false);
 
     const handleOnClickButtonDetails = (e) => {
@@ -20,7 +20,7 @@ const UserCardForSuscription = ({payer_email, status, date_created, end_date, qu
 
     const lastDaySuscription = moment(last_charged_date).add(1, 'month');
     const haveAccess = moment().isAfter(lastDaySuscription._d);
-    const summarySuscription = isSummarySuscription ? <SummarySuscription status={status} last_charged_date={last_charged_date} handleOnClickButtonDetails={handleOnClickButtonDetails} payer_email={payer_email} date_created={date_created} end_date={end_date} quotas={quotas} charged_quantity={charged_quantity} charged_amount={charged_amount}/> : null;
+    const summarySuscription = isSummarySuscription ? <SummarySuscription title={title} preapproval_id={preapproval_id} status={status} last_charged_date={last_charged_date} handleOnClickButtonDetails={handleOnClickButtonDetails} payer_email={payer_email} date_created={date_created} end_date={end_date} quotas={quotas} charged_quantity={charged_quantity} charged_amount={charged_amount}/> : null;
 
     return (
         <Fragment>

@@ -13,8 +13,8 @@ const webHooks = async (req, res) => {
         switch (topic) {
             case 'payment':
                 //Obtiene el pago por id desde la api de mercado pago.
-                const responseMercagoPago = await mercadopago.payment.get(id);
-                const payment = responseMercagoPago.body;
+                const responseMercagoPagoPayment = await mercadopago.payment.get(id);
+                const payment = responseMercagoPagoPayment.body;
                 //Si el status del pago buscado desde la Api de mercado pago es exactamente igual 'approved' agrega el user al curso.
                 if (payment.status === 'approved' && payment.status_detail === 'accredited') {
                     await dbConnect();
@@ -43,20 +43,15 @@ const webHooks = async (req, res) => {
                     try {
                         switch (payment.operation_type) {
                             case 'recurring_payment':
-                                //Obtiene la suscripcion creado por el usuario con toda la informacion relevante. 
-                                const preapproval = await fetch(`https://api.mercadopago.com/preapproval/search?status=authorized&reason=${payment.description}&payer_email=${payment.payer.email}&access_token=${process.env.ACCESS_TOKEN_MP}`).then((responseMercagoPago) => {
-                                    if(responseMercagoPago.ok) {
-                                        return responseMercagoPago.json();
-                                    }
-                                });
+                                //Obtiene la suscripcion creado por el usuario con toda la informacion relevante.
+                                const responseMercadoPagoPreapproval = await mercadopago.preapproval.get(payment.metadata.preapproval_id);
+                                const preapproval = responseMercadoPagoPreapproval.body;
 
                                 //Crea un objeto con los datos de la suscripcion y el usuario que se suscribio.
                                 const userWithRecurringPayment = {
                                     ...user._doc,
-                                    preapproval_id: preapproval.results[0].id,
-                                    status: preapproval.results[0].status,
-                                    last_charged_date: preapproval.results[0].summarized.last_charged_date,
-                                    next_payment_date: preapproval.results[0].next_payment_date,
+                                    preapproval_id: preapproval.id,
+                                    status: preapproval.status,
                                 }
 
                                 if (userAlreadyExistInCourse) {
@@ -64,8 +59,7 @@ const webHooks = async (req, res) => {
                                         {title: payment.description, 'enrollmentUsers.email': payment.payer.email},
                                         {$set: {
                                             'enrollmentUsers.$.status': userWithRecurringPayment.status,
-                                            'enrollmentUsers.$.last_charged_date': userWithRecurringPayment.last_charged_date,
-                                            'enrollmentUsers.$.next_payment_date': userWithRecurringPayment.next_payment_date,
+                                            'enrollmentUsers.$preapproval_id': userWithRecurringPayment.preapproval_id
                                         }}
                                     )
                                 } else if (userAlreadyExistInCourse === false || !userAlreadyExistInCourse) {
