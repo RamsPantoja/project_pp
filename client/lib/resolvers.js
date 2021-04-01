@@ -281,8 +281,22 @@ export const resolvers = {
                 id: ''
             };
 
+            //Crea el plan de suscripcion para el curso tipo suscripcion y retorna el objeto preapproval_plan.
+            const getPreapprovalPlan = (preapprovalPreference) => {
+                return dataSources.mercadoPagoAPI.createPreapprovalPlan(preapprovalPreference)
+                    .then((result) => {
+                        if (result) {
+                            return result;
+                        }
+                    }).catch((error) => {
+                        if (error) {
+                            throw new Error('No se puede crear el plan de suscripción para el curso.')
+                        }
+                    });
+            }
+
             if(input.modeSuscription.isActivated === true) {
-                preapprovalPlan = await dataSources.mercadoPagoAPI.createPreapprovalPlan(preapprovalPreference)
+                preapprovalPlan = await getPreapprovalPlan(preapprovalPreference);
             }
             
             const newCourse = await new Courses({
@@ -319,15 +333,24 @@ export const resolvers = {
         },
 
         //Elimina un curso con el titulo del curso especificado.
-        deleteCourseByTitle: async (parent, {title, id}) => {
+        deleteCourseByTitle: async (parent, {title, id, preapproval_plan_id, modeSuscription}, {dataSources}) => {
             await dbConnect();
-            
+
             return new Promise((resolve, rejects) => {
                 Courses.findOneAndRemove({title: title, _id: id}, (error, doc) => {
                     if(error || !doc) {
-                        rejects('No se puede eliminar ó no se encuentra el curso');
+                        rejects(new Error('No se puede eliminar o no se encuentra el curso.'));
+                    } else if (modeSuscription) {
+                        //Cancela el plan de suscripcion para el curso eliminado..
+                        dataSources.mercadoPagoAPI.cancelPreapprovalPlan(preapproval_plan_id).then((result) => {
+                            resolve('Se eliminó correctamente');
+                        }).catch((err) => {
+                            if(err) {
+                                rejects(new Error('No se puede eliminar la suscripción asociada al curso.'))
+                            }
+                        });
                     } else {
-                        resolve('Se eliminó correctamente')
+                        resolve('Se eliminó correctamente.');
                     }
                 });
             });

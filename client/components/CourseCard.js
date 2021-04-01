@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Image from 'next/image';
 import EditIcon from '@material-ui/icons/Edit';
 
-const CourseCard = ({baseUrl, deleteCourseComponent, title, teacher, id, enrollmentLimit, enrollmentUsers, urlImg, filename, editCourseComponent, baseUrlToEditCourse}) => {
+const CourseCard = ({baseUrl, deleteCourseComponent, title, modeSuscription, preapproval_plan_id, teacher, id, enrollmentLimit, enrollmentUsers, urlImg, filename, editCourseComponent, baseUrlToEditCourse}) => {
     const router = useRouter();
     const [isCourseFormDelete, setIsCourseFormDelete] = useState(false);
 
@@ -34,7 +34,7 @@ const CourseCard = ({baseUrl, deleteCourseComponent, title, teacher, id, enrollm
     }
 
     
-    const courseFormDelete = isCourseFormDelete ? <CourseFormDelete title={title} id={id} handleOnClickToDeleteCourse={handleOnClickToDeleteCourse}/> : null;
+    const courseFormDelete = isCourseFormDelete ? <CourseFormDelete modeSuscription={modeSuscription} preapproval_plan_id={preapproval_plan_id} title={title} id={id} handleOnClickToDeleteCourse={handleOnClickToDeleteCourse}/> : null;
     const buttonToDeleteCourse = deleteCourseComponent ? <Button style={{background: '#ff5555', color: '#ffffff'}}  variant='contained' onClick={(e) => {handleOnClickToDeleteCourse(e)}}><DeleteIcon/></Button> : null;
     const buttonToEditCourse = editCourseComponent ? <Button variant='contained' style={{background: '#15639d', color: '#ffffff'}} onClick={(e) => {handleOnClickButtonToEditCourse(e, id)}}><EditIcon/></Button> : null;
     return (

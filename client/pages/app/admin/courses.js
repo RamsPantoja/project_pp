@@ -62,12 +62,14 @@ const CoursesAdmin = () => {
                                 deleteCourseComponent={true}
                                 editCourseComponent={true}
                                 title={course.title}
+                                preapproval_plan_id={course.modeSuscription.preapproval_plan_id}
                                 teacher={course.teacher}
                                 id={course.id}
                                 enrollmentLimit={course.enrollmentLimit}
                                 enrollmentUsers={course.enrollmentUsers.length}
                                 filename={course.coverImg.filename}
-                                urlImg={course.coverImg.url}/>
+                                urlImg={course.coverImg.url}
+                                modeSuscription={course.modeSuscription.isActivated}/>
                             )
                         })}
                     </div>

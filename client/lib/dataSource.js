@@ -30,11 +30,24 @@ class MercadoPagoAPI extends RESTDataSource {
       return data;
     }
 
+    //Obtiene la suscripcion con el email y el preapproval_id
     async getPreapproval(preapproval_id, email) {
       const data = await this.get(`preapproval/search`, {
         id: preapproval_id,
         payer_email: email
       })
+
+      return data;
+    }
+
+    //Cancela un plan de suscripcion o plantilla, con el preapproval_plan_id.
+    async cancelPreapprovalPlan(preapproval_plan_id) {
+      const data = await this.put(
+        `preapproval_plan/${preapproval_plan_id}`,
+        {
+          status: 'cancelled'
+        }
+      )
 
       return data;
     }

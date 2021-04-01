@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { DELETE_COURSE } from '../apollo/mutations';
 import { useSnackbar } from 'notistack';
 
-const CourseFormDelete = ({handleOnClickToDeleteCourse, title, id}) => { 
+const CourseFormDelete = ({handleOnClickToDeleteCourse, title, id, preapproval_plan_id, modeSuscription}) => { 
     const { enqueueSnackbar } = useSnackbar();
     const [state, setState] = useState({
         title: {value: '', errorfield: false, required: true}
@@ -18,7 +18,9 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse, title, id}) => {
     const [deleteCourseByTitle, {data, error, loading}] = useMutation(DELETE_COURSE, {
         variables: {
             title: state.title.value,
-            id: id
+            id: id,
+            preapproval_plan_id: preapproval_plan_id,
+            modeSuscription: modeSuscription
         },
         onCompleted: async (data) => {
             handleOnClickToDeleteCourse();
