@@ -25,7 +25,8 @@ const HomePage = () => {
                         <Image className={styles.objectFit} src='/images/profepaco_portada.png' alt='profepaco_portada' layout='fill' />
                     </div>
                     <div className={styles.home_title}>
-                        <h1>La escuela del Profe Paco es una nueva forma de adquirir aprendizajes.</h1>
+                        <h1>Profe Paco</h1>
+                        <h2>La escuela del Profe Paco es una nueva forma de adquirir aprendizajes.</h2>
                         <p>El escenario es mi salón de clases, la nariz roja es mi corazón, mis manos hablan y mis palabras hacen ruido. Lo que algunos no dicen lo digo yo.</p>
                     </div>
                 </div>
