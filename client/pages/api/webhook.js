@@ -62,7 +62,7 @@ const webHooks = async (req, res) => {
                                             'enrollmentUsers.$preapproval_id': userWithRecurringPayment.preapproval_id
                                         }}
                                     )
-                                } else if (userAlreadyExistInCourse === false || !userAlreadyExistInCourse) {
+                                } else if (userAlreadyExistInCourse === false) {
                                     course.enrollmentUsers.unshift(userWithRecurringPayment);
                                     course.save();
                                 }
@@ -82,7 +82,7 @@ const webHooks = async (req, res) => {
                                             {$set: { 'enrollmentUsers.$.payment': course.price}}
                                         )
                                     }
-                                } else if (userAlreadyExistInCourse === false || !userAlreadyExistInCourse) {
+                                } else if (userAlreadyExistInCourse === false) {
                                     course.enrollmentUsers.unshift(userWithRegularPayment);
                                     course.save();
                                 }
