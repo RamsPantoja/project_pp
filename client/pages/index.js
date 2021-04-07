@@ -38,14 +38,14 @@ const HomePage = () => {
                         <Image className={styles.objectFit2} src='/images/profepaco_avatar.jpg' layout='fill'/>
                     </div>
                     <div className={styles.featureList2_right}>
-                        <h2>La mejor experiencia de aprendizaje</h2>
+                        <h2>Metodología de enseñanza basada en la risoterapia en el aula.</h2>
                         <ul className={styles.feature_list2}>                    
-                            <li className={styles.cardFeature2}>Clases prácticas, concretas y enfocadas en las habilidades de mayor demanda laboral.</li>
-                            <li className={styles.cardFeature2}>Diplomas de certificación físicos de las Escuelas aprobadas.</li>
-                            <li className={styles.cardFeature2}>Descarga las clases con la app y estudia en cualquier lugar sin conexión.</li>
-                            <li className={styles.cardFeature2}>Tus profesores serán personas líderes reconocidas en sus respectivas industrias.</li>
-                            <li className={styles.cardFeature2}>Platzi CDN, ten la mejor experiencia sin importar la velocidad de tu conexión.</li>
-                            <li className={styles.cardFeature2}>Te ayudamos a construir una ruta de aprendizaje específica para ti. Contáctanos</li>
+                            <li className={styles.cardFeature2}>Cazadores de letras y números, la historia jamás contada para aprender la lectoescritura y las matemáticas jugando y cantando, dirigidos a niños y niñas preescolar, primaria y docentes</li>
+                            <li className={styles.cardFeature2}>Talleres virtuales para repasar los contendidos más relevantes en educación primaria.</li>
+                            <li className={styles.cardFeature2}>Sesiones en vivo a través de zoom y grabadas para que tú elijas el horario.</li>
+                            <li className={styles.cardFeature2}>Recursos, materiales y cuadernillos  diseñados para un aprendizaje lúdico y dinámico.</li>
+                            <li className={styles.cardFeature2}>Acompañamiento durante todo tu proceso de aprendizaje en los talleres, cursos y sesiones.</li>
+                            <li className={styles.cardFeature2}>Todos los materiales y las sesiones se encuentran en la sección de guías del grupo de Facebook.</li>
                         </ul>
                     </div>
                 </div>
