@@ -40,7 +40,7 @@ const HomePage = () => {
                     <div className={styles.featureList2_right}>
                         <h2>Metodología de enseñanza basada en la risoterapia en el aula.</h2>
                         <ul className={styles.feature_list2}>                    
-                            <li className={styles.cardFeature2}>Cazadores de letras y números, la historia jamás contada para aprender la lectoescritura y las matemáticas jugando y cantando, dirigidos a niños y niñas preescolar, primaria y docentes</li>
+                            <li className={styles.cardFeature2}>Cazadores de letras y números, la historia jamás contada para aprender la lectoescritura y las matemáticas jugando y cantando, dirigidos a niños y niñas preescolar, primaria y docentes.</li>
                             <li className={styles.cardFeature2}>Talleres virtuales para repasar los contendidos más relevantes en educación primaria.</li>
                             <li className={styles.cardFeature2}>Sesiones en vivo a través de zoom y grabadas para que tú elijas el horario.</li>
                             <li className={styles.cardFeature2}>Recursos, materiales y cuadernillos  diseñados para un aprendizaje lúdico y dinámico.</li>
