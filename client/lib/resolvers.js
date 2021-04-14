@@ -415,7 +415,8 @@ export const resolvers = {
                 back_urls: {
                     success: "https://profepaco.com/success_payment"
                 },
-                auto_return: 'approved'
+                auto_return: 'approved',
+                notification_url: 'https://profepaco.com/api/webhook',
             }
 
             //Se creo un item con todos los datos de la preferencia necesarios para proceder con el pago.
