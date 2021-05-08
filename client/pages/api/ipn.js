@@ -7,9 +7,13 @@ mercadopago.configure({
     access_token: process.env.ACCESS_TOKEN_MP
 });
 
-const nofiticationsIpn = async (req, res) => {
+const notificationsIpn = async (req, res) => {
     if (req.method === 'GET') {
         const bodyNotification = req.body;
         
     }
+
+    return res.status(200).send('OK');
 }
+
+export default notificationsIpn;
