@@ -411,7 +411,7 @@ export const resolvers = {
                 payment_methods: {
                     installments: 1
                 },
-                notification_url: 'https://profepaco-git-feature-ipnnotifications-ramspantoja.vercel.app/api/ipn',
+                notification_url: 'https://profepaco.com/api/ipn',
                 statement_descriptor: 'PROFEPACO',
                 back_urls: {
                     success: "https://profepaco.com/success_payment"
