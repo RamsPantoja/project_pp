@@ -15,7 +15,7 @@
 
 .courseDescription_headerInf {
     display: flex;
-    padding: 2em;
+    padding: 2em 1em;
     flex-direction: column;
     justify-content: center;
 }
@@ -31,6 +31,8 @@
     font-size: 1.1rem;
     padding: 1em 0;
     max-width: 50em;
+    text-align: start;
+    overflow: auto;
 }
 
 .courseDescription_headerInf > button {
@@ -175,6 +177,9 @@
 
 @media(max-width: 1200px) {
     .conceptBlock {
+        width: 100%;
+    }
+    .courseDescription_headerInf {
         width: 100%;
     }
 }
