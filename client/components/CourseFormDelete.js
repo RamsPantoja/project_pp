@@ -14,7 +14,7 @@ const CourseFormDelete = ({handleOnClickToDeleteCourse, title, id, preapproval_p
     const [state, setState] = useState({
         title: {value: '', errorfield: false, required: true}
     });
-
+    
     const [deleteCourseByTitle, {data, error, loading}] = useMutation(DELETE_COURSE, {
         variables: {
             title: state.title.value,

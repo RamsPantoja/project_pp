@@ -317,7 +317,7 @@ export const resolvers = {
                     isActivated: input.modeSuscription.isActivated,
                     amountMonths: input.modeSuscription.amountMonths,
                     paymentUrl: preapprovalPlan.init_point,
-                    preapproval_plan_id: preapprovalPlan.id
+                    preapproval_plan_id: preapprovalPlan.id !== '' ? preapprovalPlan.id : ''
                 },
                 onePay: input.onePay
             });
