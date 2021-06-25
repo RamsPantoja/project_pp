@@ -13,7 +13,8 @@ export const stateSchemaInfCourse = {
     enrollmentLimit: {value: '', errorfield: false},
     img: {filename: '', errorfield: false, file: ''},
     modeSuscription: { value: false, errorfield: false},
-    amountMonths: { value: '', errorfield: false}
+    amountMonths: { value: '', errorfield: false},
+    onePay: { value: false, errorfield: false}
 }
 
 export const validationSchemaCourseAdd = {
@@ -29,7 +30,8 @@ export const validationSchemaCourseAdd = {
     enrollmentLimit: { required: true},
     img: { required: true},
     modeSuscription: { required: false},
-    amountMonths: { required: false}
+    amountMonths: { required: false},
+    onePay: { required: false}
 }
 
 

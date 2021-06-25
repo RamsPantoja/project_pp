@@ -319,6 +319,7 @@ export const resolvers = {
                     paymentUrl: preapprovalPlan.init_point,
                     preapproval_plan_id: preapprovalPlan.id
                 },
+                onePay: input.onePay
             });
 
             return new Promise((resolve, rejects) => {

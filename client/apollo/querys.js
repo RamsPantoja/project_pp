@@ -20,6 +20,7 @@ export const GET_COURSES = gql `
                 amountMonths
                 preapproval_plan_id
             }
+            onePay
         }
     }
 `
@@ -53,6 +54,7 @@ export const GET_COURSE_BY_ID = gql `
                 paymentUrl
                 preapproval_plan_id
             }
+            onePay
         }
     }
 `

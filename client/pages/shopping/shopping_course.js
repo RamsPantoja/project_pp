@@ -58,7 +58,7 @@ const ShoppingCart = ({id, userEmail, firstname, lastname}) => {
         return error.message
     }
 
-    const {title, teacher, price, coverImg, modeSuscription} = data.getCourseById;
+    const {title, teacher, price, coverImg, modeSuscription, onePay} = data.getCourseById;
     //Actualiza el valor del precio si se activa el checkradio A ó B.
     const handleOnChangeInputRadio = (e) => {
         e.preventDefault();
@@ -136,7 +136,7 @@ const ShoppingCart = ({id, userEmail, firstname, lastname}) => {
                             <p>Monto a pagar:</p>
                             <RadioGroup row={true} name='position' defaultValue='a' onChange={(e) => {handleOnChangeInputRadio(e)}}>
                                 <FormControlLabel value='a' labelPlacement='start' label='Un pago' control={<Radio style={{color: '#15639d'}}/>}/>
-                                <FormControlLabel value='b' labelPlacement='start' label='Dos pagos' control={<Radio style={{color: '#15639d'}}/>}/>
+                                { onePay ? null : <FormControlLabel value='b' labelPlacement='start' label='Dos pagos' control={<Radio style={{color: '#15639d'}}/>}/>}
                             </RadioGroup>
                         </div>
                     }

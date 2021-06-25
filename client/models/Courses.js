@@ -31,7 +31,8 @@ const courseSchema = new mongoose.Schema({
         amountMonths : Number,
         paymentUrl: String,
         preapproval_plan_id: String
-    }
+    },
+    onePay: Boolean
 });
 
 export default mongoose.models.Courses || mongoose.model('Courses', courseSchema);

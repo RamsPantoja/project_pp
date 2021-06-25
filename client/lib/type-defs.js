@@ -25,8 +25,9 @@ export const typeDefs = gql `
         enrollmentLimit: Int
         enrollmentUsers: [User]
         price: Float
-        coverImg: CoverImg,
+        coverImg: CoverImg
         modeSuscription: modeSuscription
+        onePay: Boolean
     }
 
     type modeSuscription {
@@ -109,6 +110,7 @@ export const typeDefs = gql `
         enrollmentLimit: Int!
         price: Float!
         modeSuscription: inputSuscription!
+        onePay: Boolean!
     }
 
     input inputSuscription {

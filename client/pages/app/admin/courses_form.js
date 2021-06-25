@@ -150,7 +150,7 @@ const CoursesForm = ({courseData}) => {
 
 
     const isMessageAlertError = messageError && disable.status ? <span className={styles.disableErrorAlert}>{disable.error}</span> : null;
-    const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
+    //const anyApolloError = error ? <span className={styles.disableErrorAlert}>{error.message}</span> : null;
     const isLoadingMutation = loading || isLoadingImg ? <CircularProgress/> : <Button onClick={(e) => {handleAddCourse(e)}} style={{background: '#15639d', color:'#ffffff'}} variant='contained' startIcon={<PostAddIcon/>}>Crear curso</Button>
 
     return (
@@ -166,7 +166,12 @@ const CoursesForm = ({courseData}) => {
                             <TextField label='Nombre del curso' size='small' error={state.title.errorfield} variant='outlined' name='title' value={state.title.value} onChange={handleOnChange}/>
                             <TextField label='Descripción' size='small' error={state.description.errorfield} rowsMax={5} variant='outlined' multiline={true} name='description' value={state.description.value} onChange={handleOnChange}/>
                             <TextField label='Profesor' size='small' error={state.teacher.errorfield} variant='outlined' name='teacher' value={state.teacher.value} onChange={handleOnChange}/>
-                            <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={handleOnChange} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
+                            <div>
+                                <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={handleOnChange} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
+                                <FormControlLabel
+                                    control={<Switch name='onePay' color='default' checked={state.onePay.value} onChange={handleOnChange} />}/>
+                            </div>
+            
                             <TextField label='Limit de alumnos' type='number' error={state.enrollmentLimit.errorfield} size='small' variant='outlined' name='enrollmentLimit' value={state.enrollmentLimit.value} onChange={handleOnChange}/>
                             <div className={styles.buttonToUpload}>
                                 <Button startIcon={<ImageIcon/>} onClick={(e) => {handleOnClickSelectFile(e)}} component='span'>imagen</Button>
