@@ -14,6 +14,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import UpdateIcon from '@material-ui/icons/Update';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch'
 
 const EditCourseForm = memo(({courseData, id}) => {
     const { enqueueSnackbar } = useSnackbar();
@@ -34,7 +36,7 @@ const EditCourseForm = memo(({courseData, id}) => {
         handleDeleteSubConcept
     ] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourseEdit, disableSchemaCourse, courseData);
 
-    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList} = state;
+    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList, onePay} = state;
 
     //Retorna un array con los valores del item que se encuentra en el array objectives[].
     const objectivesValue = objectives.map((item, i) => {
@@ -68,7 +70,8 @@ const EditCourseForm = memo(({courseData, id}) => {
                 modeSuscription: {
                     isActivated: courseData.modeSuscription.isActivated,
                     amountMonths: courseData.modeSuscription.amountMonths
-                }
+                },
+                onePay: onePay.value
             },
             id: id
         },
@@ -112,7 +115,11 @@ const EditCourseForm = memo(({courseData, id}) => {
                         <TextField label='Nombre del curso' size='small' error={state.title.errorfield} variant='outlined' name='title' value={state.title.value} onChange={(e) => {handleOnChange(e)}}/>
                         <TextField label='Descripción' size='small' error={state.description.errorfield} rowsMax={5} variant='outlined' multiline={true} name='description' value={state.description.value} onChange={(e) => {handleOnChange(e)}}/>
                         <TextField label='Profesor' size='small' error={state.teacher.errorfield} variant='outlined' name='teacher' value={state.teacher.value} onChange={(e) => {handleOnChange(e)}}/>
-                        <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={(e) => {handleOnChange(e)}} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
+                        <div className={styles.payInf}>
+                            <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={handleOnChange} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
+                            <FormControlLabel
+                                control={<Switch name='onePay' color='default' checked={state.onePay.value} onChange={handleOnChange}/>} label='Un pago'/>
+                        </div>
                         <TextField label='Limit de alumnos' type='number' error={state.enrollmentLimit.errorfield} size='small' variant='outlined' name='enrollmentLimit' value={state.enrollmentLimit.value} onChange={(e) => {handleOnChange(e)}}/>
                         <p>Objetivos(Mínimo:1):</p>
                         { state.objectives.map((item, index) => {

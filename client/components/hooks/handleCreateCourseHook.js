@@ -48,7 +48,8 @@ export const validationSchemaCourseEdit = {
     enrollmentLimit: { required: true},
     img: { required: false},
     modeSuscription: { required: false},
-    amountMonths: { required: false}
+    amountMonths: { required: false},
+    onePay: { required: false}
 }
 
 
@@ -83,7 +84,8 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
                             return subConcept = {value: subConcept, errorfield: false}
                         })
                     }
-                })
+                }),
+                onePay: { value: courseData.onePay, errorfield: false}
             }))
         }
     }, [courseData, stateSchemaInfCourse]);
@@ -102,6 +104,8 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             const isInputRequiredModeSuscription = validationSchemaCourse.modeSuscription.required;
             const amountMonthsValue = state.amountMonths.value;
             const isInputRequiredAmountMonths = validationSchemaCourse.amountMonths.required;
+            const onePayValue = state.onePay.value;
+            const isOnePayRequired = validationSchemaCourse.onePay.required;
 
             //Retorna un True si no hay valor en alguno de los campos objective
             const hasErrorInObjectives = Object.keys(state.objectives).some((key) => {
@@ -121,7 +125,13 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
             })
             const lengthObjetives = state.objectives.length;
             const lengthConceptList = state.conceptList.length;
-            return (isInputRequired && !titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue) || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0) || (isInputRequiredImg && !imgValue) || (isInputRequiredModeSuscription && !modeSuscriptionValue) || (isInputRequiredAmountMonths && !amountMonthsValue)
+            return (isInputRequired &&  !titleValue || !descriptionValue || !teacherValue || !priceValue || !enrollmentLimitValue) 
+                || (isInputRequired && hasErrorInObjectives || lengthObjetives === 0 ) 
+                || (isInputRequired && hasErrorInConceptList || lengthConceptList === 0) 
+                || (isInputRequiredImg && !imgValue) 
+                || (isInputRequiredModeSuscription && !modeSuscriptionValue) 
+                || (isInputRequiredAmountMonths && !amountMonthsValue)
+                || (isOnePayRequired && !onePayValue)
         })
 
         return hasErrorInState;
@@ -171,6 +181,10 @@ const useHandleFormCourse = (stateSchemaInfCourse, validationSchemaCourse = {}, 
 
         if (name === 'modeSuscription') {
             value = e.target.checked;
+        }
+
+        if (name === 'onePay') {
+            value = e.target.checked
         }
 
         setState((prevState) => ({

@@ -45,7 +45,7 @@ const CoursesForm = ({courseData}) => {
         handleOnChangeImg
     ] = useHandleFormCourse(stateSchemaInfCourse, validationSchemaCourseAdd, disableSchemaCourse, courseData);
 
-    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList, img, modeSuscription, amountMonths} = state;
+    const { title, description, teacher, price, enrollmentLimit, objectives, conceptList, img, modeSuscription, amountMonths, onePay} = state;
 
     //Retorna un array con los valores del item que se encuentra en el array objectives[].
     const objectivesValue = objectives.map((item, i) => {
@@ -79,7 +79,8 @@ const CoursesForm = ({courseData}) => {
                 modeSuscription: {
                     isActivated: modeSuscription.value,
                     amountMonths: parseInt(amountMonths.value)
-                }
+                },
+                onePay: onePay.value
             }
         },
         onCompleted: async (data) => {
@@ -166,12 +167,11 @@ const CoursesForm = ({courseData}) => {
                             <TextField label='Nombre del curso' size='small' error={state.title.errorfield} variant='outlined' name='title' value={state.title.value} onChange={handleOnChange}/>
                             <TextField label='Descripción' size='small' error={state.description.errorfield} rowsMax={5} variant='outlined' multiline={true} name='description' value={state.description.value} onChange={handleOnChange}/>
                             <TextField label='Profesor' size='small' error={state.teacher.errorfield} variant='outlined' name='teacher' value={state.teacher.value} onChange={handleOnChange}/>
-                            <div>
+                            <div className={styles.payInf}>
                                 <TextField placeholder='Precio' type='number' size='small' error={state.price.errorfield} variant='outlined' name='price' value={state.price.value} onChange={handleOnChange} InputProps={{startAdornment: (<InputAdornment position="start"><AttachMoneyIcon/></InputAdornment>)}}/>
                                 <FormControlLabel
-                                    control={<Switch name='onePay' color='default' checked={state.onePay.value} onChange={handleOnChange} />}/>
+                                    control={<Switch name='onePay' color='default' checked={state.onePay.value} onChange={handleOnChange}/>} label='Un pago'/>
                             </div>
-            
                             <TextField label='Limit de alumnos' type='number' error={state.enrollmentLimit.errorfield} size='small' variant='outlined' name='enrollmentLimit' value={state.enrollmentLimit.value} onChange={handleOnChange}/>
                             <div className={styles.buttonToUpload}>
                                 <Button startIcon={<ImageIcon/>} onClick={(e) => {handleOnClickSelectFile(e)}} component='span'>imagen</Button>

@@ -86,6 +86,12 @@
 .modeSuscriptionContainer {
     display: flex;
 }
+
+.payInf {
+    display: flex;
+    justify-content: space-between;
+}
+
 @media(max-width: 1300px) {
     .formFlex {
         flex-direction: column;
