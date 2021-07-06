@@ -77,7 +77,8 @@ const Courses = ({userEmail}) => {
                                         firstname={firstname}
                                         lastname={lastname}
                                         email={email}
-                                        loadingPreferenceMP={loadingPreferenceMP}/>
+                                        loadingPreferenceMP={loadingPreferenceMP}
+                                        id={course.id}/>
                                     )
                                 }
                             })

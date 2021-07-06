@@ -24,18 +24,18 @@ const webHooks = async (req, res) => {
                 //Se obtiene el pago desde la api con el sdk de mercado pago.
                 const responseMercadoPagoPayment = await mercadopago.payment.get(idPaymentNumber);
                 const payment = responseMercadoPagoPayment.body;
-
+                
                 if (payment.status === 'approved' && payment.status_detail === 'accredited') {
                     await dbConnect();
 
                     const course = await Courses.findOne({_id: payment.additional_info.items[0].id});
-
+                    
                     if (!course) {
                         return res.status(401).send('Course no found');
                     }
 
                     const user = await Users.findOne({email: payment.payer.email}, 'firstname lastname email');
-
+                    
                     if (!user) {
                         return res.status(401).send('User no found');
                     }
@@ -63,7 +63,7 @@ const webHooks = async (req, res) => {
                             if (userAlreadyExistInCourse) {
                                 if(payment.transaction_amount === course.price/2) {
                                     await Courses.findOneAndUpdate(
-                                        {title: payment.description, 'enrollmentUsers.email': payment.payer.email},
+                                        {_id: payment.additional_info.items[0].id, 'enrollmentUsers.email': payment.payer.email},
                                         {$set: { 'enrollmentUsers.$.payment': course.price}}
                                     )
                                 }

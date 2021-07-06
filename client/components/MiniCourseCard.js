@@ -3,7 +3,7 @@ import styles from '../pages/account/styles/courses.module.css';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { Button, CircularProgress } from '@material-ui/core';
 
-const MiniCourseCard = ({course, mutation, firstname, lastname, email, loadingPreferenceMP, index}) => {
+const MiniCourseCard = ({course, mutation, firstname, lastname, email, loadingPreferenceMP, index, id}) => {
     const [whichIndex, setWhichIndex] = useState(null);
 
     const handleCreatePreferenceMercadoPago = (e, index) => {
@@ -11,6 +11,7 @@ const MiniCourseCard = ({course, mutation, firstname, lastname, email, loadingPr
         setWhichIndex(index);
         mutation({
             variables: {
+                id: id,
                 title: course.title,
                 price: course.price/2,
                 firstname: firstname,
