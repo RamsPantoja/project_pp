@@ -1,8 +1,16 @@
 import jwt from 'jsonwebtoken';
-import sgMail from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
-//Configuracion de SendGrid para conectarse a su API.
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+//Configuracion del SMTP para enviar los emails con nodemailer.
+const transporter = nodemailer.createTransport({
+    host: 'smtp-relay.sendinblue.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: 'worddraco1@gmail.com',
+        pass: 'RdASpFTI5jaXtLCQ'
+    }
+});
 
 
 //Crea un token que sera enviado por email al usuario que se ha registrado ó para confirmar el email en la sección /account/acoount del lado del cliente.
@@ -15,7 +23,7 @@ export const createEmailConfirmationToken = async (user, SECRET, expiresIn, sgMa
         const url = `${baseUrl}${emailToken}`;
         const msg = {
             to: email,
-            from: 'profepaco@em5367.profepaco.com',
+            from: 'profepaco@profepaco.com',
             subject: subject,
             html: `
                 <div>
@@ -40,7 +48,7 @@ export const createEmailConfirmationToken = async (user, SECRET, expiresIn, sgMa
         }
         
         try {
-            await sgMail.send(msg);
+            await transporter.sendMail(msg);
             return 'Se te ha enviado un correo de confirmación.'
         } catch (error) {
             return error
@@ -57,7 +65,7 @@ export const createEmailRecoveryPasswordToken = async (user, SECRET, expiresIn, 
         const url = `${baseUrl}${emailToken}`;
         const msg = {
             to: email,
-            from: 'profepaco@em5367.profepaco.com',
+            from: 'profepaco@profepaco.com',
             subject: subject,
             html: `
                 <div>
@@ -81,7 +89,7 @@ export const createEmailRecoveryPasswordToken = async (user, SECRET, expiresIn, 
         }
         
         try {
-            await sgMail.send(msg);
+            await transporter.sendMail(msg);
             return 'Se te ha enviado un correo de confirmación.'
         } catch (error) {
             return error
