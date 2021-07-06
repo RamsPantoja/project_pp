@@ -28,7 +28,7 @@ const webHooks = async (req, res) => {
                 if (payment.status === 'approved' && payment.status_detail === 'accredited') {
                     await dbConnect();
 
-                    const course = await Courses.findOne({title: payment.description});
+                    const course = await Courses.findOne({_id: payment.additional_info.items[0].id});
 
                     if (!course) {
                         return res.status(401).send('Course no found');

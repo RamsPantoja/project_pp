@@ -90,6 +90,7 @@ const ShoppingCart = ({id, userEmail, firstname, lastname}) => {
             } else {
                 createPreferenceMercadoPago({
                     variables: {
+                        id: id,
                         title: title,
                         price: parseFloat(transformPrice),
                         firstname: firstname,
