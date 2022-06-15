@@ -19,7 +19,7 @@ export const ADD_COURSE = gql `
 `
 
 export const DELETE_COURSE = gql `
-    mutation DeleteCourseByTitle($title: String!, $id: ID!, $preapproval_plan_id: String!, $modeSuscription: Boolean!) {
+    mutation DeleteCourseByTitle($title: String!, $id: ID!, $preapproval_plan_id: String, $modeSuscription: Boolean!) {
         deleteCourseByTitle(title: $title, id: $id, preapproval_plan_id: $preapproval_plan_id, modeSuscription: $modeSuscription)
     }
 `

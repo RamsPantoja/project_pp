@@ -135,7 +135,7 @@ export const typeDefs = gql `
         createUser(input: inputUser!) : String
         addCourse(input: inputCourse!, img: inputImg!) : String
         insertUserInCourse(email: String!, id: ID!): String
-        deleteCourseByTitle(title: String!, id: ID!, preapproval_plan_id: String!, modeSuscription: Boolean!): String
+        deleteCourseByTitle(title: String!, id: ID!, preapproval_plan_id: String, modeSuscription: Boolean!): String
         deleteUserInCourse(id: ID!, userEmail: String!): String
         deleteUserByEmail(userEmail: String!): String
         createPreferenceMercadoPago(title: String!, price: Float!, firstname: String!, lastname: String!, email: String!, coverImg: String!, id: ID!): String
